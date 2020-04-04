@@ -21,43 +21,69 @@ router.get("/test", (req, res) => {
 
 
 module.exports = (db) => {
-  
+
   //home
   router.get("/", (req, res) => {
-    db.query(`SELECT * FROM users;`)
-    .then(data => {
-      const users = data.rows;
-      res.json({ users });
-    })
-    .catch(err => {
-      res
-      .status(500)
-      .json({ error: err.message });
-    });
+    //TO DO: display rescourse and liked resources 
+    db.query(`
+    SELECT * FROM resources
+    ;`)
+      .then(data => {
+        const resources = data.rows;
+        console.log(resources)
+        res.render('index', resources);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  })
+
+  router.post("/", (req, res) => {
+    const input = req.body;
+    console.log(input);
+    db.query(`
+    SELECT * FROM resources
+    WHERE title = '${input}'
+    ;`)
+      .then(data => {
+        const resources = data.rows;
+        console.log()
+        res.render('index');
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
   })
 
   //search 
   router.get("/users/searchResults", (req, res) => {
     return res.render('searchResults'); //assuming searchResults.ejs
-    
+
     //TO DO: display any resource with searched keyword
   })
-
-
 
 
   //profile
   router.get("/users/profile", (req, res) => {
     return res.render('profile'); //assuming profile.ejs
+
+    //TO DO: display users name, username, email and profile pic 
   })
-  
+
   router.post("/users/profile/edit", (req, res) => {
     return res.render('edit'); //assuming edit.ejs
+
+    //TO DO: form for edit 
+
   })
   //
-  
-  
-  
+
+
+
   return router;
 };
 
