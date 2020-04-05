@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/resource-card.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/search_results.css" type="text/css" />
 
   <!-- Google Fonts link -->
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -33,15 +35,45 @@
   <%- include('partials/_header') %>
 
   <div class="container">
-    <div class="resources-container">
+    <div class="resources-container d-flex flex-wrap flex-row justify-content-between">
+
       <div class="card" style="width: 18rem;">
-        <img style='height:50px; width: 50px' src='<%= resources.url   %>'>
+        <img  src='<%= resources.url   %>'>
         <div class="card-body">
           <%= resources.id %>
           <%= resources.title %>
           <%= resources.description %>
         </div>
       </div>
+
+
+      <div class="card" style="width: 18rem;">
+        <img  src='<%= resources.url   %>'>
+        <div class="card-body">
+          <%= resources.id %>
+          <%= resources.title %>
+          <%= resources.description %>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img  src='<%= resources.url   %>'>
+        <div class="card-body">
+          <%= resources.id %>
+          <%= resources.title %>
+          <%= resources.description %>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <img  src='<%= resources.url   %>'>
+        <div class="card-body">
+          <%= resources.id %>
+          <%= resources.title %>
+          <%= resources.description %>
+        </div>
+      </div>
+
     </div>
   </div>
 
