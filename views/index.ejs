@@ -1,64 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Resource Wall</title>
+
+<head>
+  <title>Resource Wall</title>
 
 
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <!-- Bootstrap CSS-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/header.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/resource-card.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/resource-card.css" type="text/css" />
 
-    <!-- Google Fonts link -->
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+  <!-- Google Fonts link -->
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome Styles -->
-    <script src="https://kit.fontawesome.com/c594e81ef7.js" crossorigin="anonymous"></script>
+  <!-- Font Awesome Styles -->
+  <script src="https://kit.fontawesome.com/c594e81ef7.js" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+</head>
 
-  <body>
-    <%- include('partials/_header') %>
+<body>
+  <%- include('partials/_header') %>
 
-    <main class="container">
-      <div class="resource-container">
-        <div class="resource-card">
-          <img src="assets/drink.jpg" alt="orange drink">
-          <div class="resource-info">
-            <h3>Title</h3>
-            <p>
-              I'm baby intelligentsia banh mi vinyl chambray thundercats. Chia cornhole fam bicycle rights man braid locavore pabst. Meh affogato activated charcoal keffiyeh truffaut tumeric, +1 tacos leggings vexillologist coloring book tumblr viral mixtape. Jianbing fingerstache umami, meggings tacos listicle street art vice put a bird on it. Banh mi iceland pour-over vegan, 3 wolf moon master cleanse organic readymade coloring book affogato you probably haven't heard of them meditation forage four loko.
-            </p>
-            <form action="">
-              <div class="form-group">
-                <label for="exampleFormControlTextarea1">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-              </div>
-            </form>
-            <i class="far fa-heart"></i>
-          </div>
+  <main class="container">
+    <div class="resources-container d-flex flex-row">
+      <div class="card p-3">
+        <img src="assets/drink.jpg" alt="orange drink">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <form action="">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Comments</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </form>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <i class="far fa-heart"></i>
         </div>
-        <div class="resource-card"></div>
-        <div class="resource-card"></div>
-        <div class="resource-card"></div>
-        <div class="resource-card"></div>
-        <div class="resource-card"></div>
       </div>
-    </main>
+
+      <div class="card p-3">
+
+        <img src="assets/drink.jpg" alt="orange drink">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+            card's
+            content.</p>
+          <form action="">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Comments</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </form>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <i class="far fa-heart"></i>
+        </div>
+      </div>
+
+      <div class="card p-3">
+        <img src="assets/drink.jpg" alt="orange drink">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+            card's
+            content.</p>
+          <form action="">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Comments</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </form>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <i class="far fa-heart"></i>
+
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- bootstrap card -->
+
+
+
+  </main>
 
 
 
 
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+</body>
+
 </html>

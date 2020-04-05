@@ -17,49 +17,80 @@ router.get("/test", (req, res) => {
 // router.get("/", (req, res) => {
 //   res.render("index");
 // });
-
 module.exports = (db) => {
+  // Route for add new resource - WORK IN PROGRESS
+  router.post('/addResource', (req, res) => {
+    // add logic for IF logged in, otherwise display message 'please login to add resource'
+
+    //capture user input
+    const resource = req.body;
+    db
+      .query(
+        `
+    INSERT into RESOURCES (title,description,type)
+    VALUES('${resource.title}',
+    '${resource.description}',
+      '${resource.url}')
+  returning *;
+    ;`
+      )
+      .then((res) => res)
+      .catch((e) => res.send(e));
+  });
 
   //home
-  router.get("/", (req, res) => {
-    //TO DO: display rescourse and liked resources 
-    db.query(`
+  router.get('/', (req, res) => {
+    //TO DO: display rescourse and liked resources
+    db
+      .query(
+        `
     SELECT * FROM resources
-    ;`)
-      .then(data => {
-        const resources = data.rows;
-        console.log(resources)
-        res.render('index', resources);
+    ;`
+      )
+      .then((data) => {
+        const resources = data.rows[0];
+        res.render('index', { resources });
       })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
       });
-  })
+})
+//search 
+//TO DO: display any resource with searched keyword
+router.get('/search', (req, res) => {
+  const input = req.query.search;
+  // console.log(`input=======`, input);
+  db
+    .query(
+      `
+  SELECT * FROM resources
+  WHERE title LIKE '%${input}%'
+  ;`
+    )
+    .then((data) => {
+      const resources = data.rows[0];
+      res.render('search_results', { resources });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
 
-
-  //search 
-  router.get("/users/searchResults", (req, res) => {
-    return res.render('searchResults'); //assuming searchResults.ejs
-
-    //TO DO: display any resource with searched keyword
-  })
-
+    //need to add logic to catch error if there are no results and display appropriate message
+  });
 
   //profile
   //TO DO: display users name, username, email and profile pic 
   router.get("/users/profile", (req, res) => {
     db
-    .query(`SELECT * FROM users;`)
-    .then((data) => {
-      const user = data.rows[0];
-      console.log('=====', user);
-      return res.render('profile', { user }); //assuming profile.ejs
-      /*note: ejs file would need user.name, user.username, user.email and profile pic   */
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
+      .query(`SELECT * FROM users;`)
+      .then((data) => {
+        const user = data.rows[0];
+        console.log('=====', user);
+        return res.render('profile', { user }); //assuming profile.ejs
+        /*note: ejs file would need user.name, user.username, user.email and profile pic   */
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
       });
   })
 
@@ -71,31 +102,17 @@ module.exports = (db) => {
     if (req.body[edit] === name) field = username;
     if (req.body[edit] === name) field = email;
     db
-    .query(`UPDATE users SET $1 = $2 WHERE users.id = 1;`, [field, option])
-    .then((data) => {
-      const user = data.rows[0];
-      console.log('=====', user);
-      return res.redirect('/users/profile', { user }); //assuming edit.ejs
-      /*note: ejs file would need user.name, user.username, user.email and profile pic */
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
+      .query(`UPDATE users SET $1 = $2 WHERE users.id = 1;`, [field, option])
+      .then((data) => {
+        const user = data.rows[0];
+        console.log('=====', user);
+        return res.redirect('/users/profile', { user }); //assuming edit.ejs
+        /*note: ejs file would need user.name, user.username, user.email and profile pic */
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
       });
   })
 
   return router;
 };
-
-//test
-router.get("/test", (req, res) => {
-  db.query(`SELECT * FROM users;`)
-    .then(data => {
-      const users = data.rows;
-      res.json({ users });
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: err.message });
-    });
-});
