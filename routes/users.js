@@ -7,26 +7,11 @@
 
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
-
-router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
-
-//test
-router.get('/test', (req, res) => {
-  res.render('test');
-});
-
-//home
-// router.get("/", (req, res) => {
-//   res.render("index");
-// });
 
 module.exports = (db) => {
   //home
   router.get('/', (req, res) => {
     //TO DO: display rescourse and liked resources
-    console.log('before dbquery');
     db
       .query(
         `
@@ -35,7 +20,6 @@ module.exports = (db) => {
       )
       .then((data) => {
         const resources = data.rows[0];
-        console.log('=====', resources);
         res.render('index', { resources });
       })
       .catch((err) => {
@@ -43,31 +27,46 @@ module.exports = (db) => {
       });
   });
 
-  // router.post('/', (req, res) => {
-  //   const input = req.body;
-  //   console.log(input);
-  //   db
-  //     .query(
-  //       `
-  //   SELECT * FROM resources
-  //   WHERE title = '${input}'
-  //   ;`
-  //     )
-  //     .then((data) => {
-  //       const resources = data.rows;
-  //       console.log();
-  //       res.render('index');
-  //     })
-  //     .catch((err) => {
-  //       res.status(500).json({ error: err.message });
-  //     });
-  // });
+  // search
+  router.get('/search', (req, res) => {
+    const input = req.query.search;
+    // console.log(`input=======`, input);
+    db
+      .query(
+        `
+    SELECT * FROM resources
+    WHERE title LIKE '%${input}%'
+    ;`
+      )
+      .then((data) => {
+        const resources = data.rows[0];
+        res.render('search_results', { resources });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
 
-  //search
-  router.get('/users/searchResults', (req, res) => {
-    return res.render('searchResults'); //assuming searchResults.ejs
+    //need to add logic to catch error if there are no results and display appropriate message
+  });
 
-    //TO DO: display any resource with searched keyword
+  // Add new resource to database - WORK IN PROGRESS - need add resource form to be set up to capture inputs
+  router.post('/', (req, res) => {
+    //capture input - use req.body
+    db
+      .query(
+        `
+    INSERT into RESOURCES (title,description,type)
+    VALUES()
+    ;`
+      )
+      .then((data) => {
+        const resources = data.rows[0];
+        console.log(resources);
+        res.render('search_results', { resources });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
   });
 
   //profile
@@ -86,16 +85,3 @@ module.exports = (db) => {
 
   return router;
 };
-
-//test
-router.get('/test', (req, res) => {
-  db
-    .query(`SELECT * FROM users;`)
-    .then((data) => {
-      const users = data.rows;
-      res.json({ users });
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
-});
