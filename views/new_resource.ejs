@@ -21,18 +21,32 @@
 <body>
   <%- include('partials/_header') %>
 
-  <form>
+  <form action='/addResource' method='POST'>
+
     <div class="form-group">
-      <label for="formGroupExampleInput">Example label</label>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+      <label for="formGroupExampleInput">id</label>
+      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name='id'>
+    </div>
+
+    <div class="form-group">
+      <label for="formGroupExampleInput">category_id</label>
+      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name='category_id'>
+    </div>
+
+    <div class="form-group">
+      <label for="formGroupExampleInput">Title</label>
+      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name='title'>
     </div>
     <div class="form-group">
-      <label for="formGroupExampleInput2">Another label</label>
-      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+      <label for="formGroupExampleInput2">Description</label>
+      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name='description'>
     </div>
     <div class="form-group">
-      <label for="formGroupExampleInput">Another label</label>
-      <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Another input">
+      <label for="formGroupExampleInput">URL</label>
+      <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Another input" name='url'>
+    </div>
+    <div class="form-group">
+      <button type='submit'>Submit</button>
     </div>
   </form>
 

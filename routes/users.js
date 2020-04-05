@@ -9,23 +9,28 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
+  // Route to display add resource page
+  router.get('/addResource', (req, res) => {
+    res.render('new_resource');
+  });
+
   // Route for add new resource - WORK IN PROGRESS
   router.post('/addResource', (req, res) => {
     // add logic for IF logged in, otherwise display message 'please login to add resource'
 
     //capture user input
-    const resource = req.body;
+    const input = req.body;
+    console.log(input.id);
     db
       .query(
         `
-    INSERT into RESOURCES (title,description,type)
-    VALUES('${resource.title}',
-    '${resource.description}',
-      '${resource.url}')
-  returning *;
-    ;`
+INSERT INTO resources
+    (id, category_id, title, description, url)
+        VALUES('${input.id}','${input.category_id}','${input.title}',
+        '${input.description}',
+          '${input.url}');`
       )
-      .then((res) => res)
+      .then(res.redirect('/'))
       .catch((e) => res.send(e));
   });
 
@@ -60,6 +65,7 @@ module.exports = (db) => {
       )
       .then((data) => {
         const resources = data.rows[0];
+        console.log('====', resources);
         res.render('search_results', { resources });
       })
       .catch((err) => {
