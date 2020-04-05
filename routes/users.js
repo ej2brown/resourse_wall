@@ -33,13 +33,10 @@ module.exports = (db) => {
   router.get('/', (req, res) => {
     //TO DO: display rescourse and liked resources
     db
-      .query(
-        `
-    SELECT * FROM resources
-    ;`
-      )
+      .query(`SELECT * FROM resources;`)
       .then((data) => {
         const resources = data.rows[0];
+        console.log('=====', resources)
         res.render('index', { resources });
       })
       .catch((err) => {
