@@ -64,7 +64,7 @@ INSERT INTO resources
     ;`
       )
       .then((data) => {
-        const resources = data.rows[0];
+        const resources = data.rows;
         console.log('====', resources);
         res.render('search_results', { resources });
       })
