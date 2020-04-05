@@ -40,24 +40,6 @@ module.exports = (db) => {
       });
   })
 
-  router.post("/", (req, res) => {
-    const input = req.body;
-    console.log(input);
-    db.query(`
-    SELECT * FROM resources
-    WHERE title = '${input}'
-    ;`)
-      .then(data => {
-        const resources = data.rows;
-        console.log()
-        res.render('index');
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  })
 
   //search 
   router.get("/users/searchResults", (req, res) => {
@@ -68,17 +50,37 @@ module.exports = (db) => {
 
 
   //profile
+  //TO DO: display users name, username, email and profile pic 
   router.get("/users/profile", (req, res) => {
-    return res.render('profile'); //assuming profile.ejs
-
-    //TO DO: display users name, username, email and profile pic 
+    db
+    .query(`SELECT * FROM users;`)
+    .then((data) => {
+      const user = data.rows[0];
+      console.log('=====', user);
+      return res.render('profile', { user }); //assuming profile.ejs
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+      });
   })
 
   router.post("/users/profile/edit", (req, res) => {
-    return res.render('edit'); //assuming edit.ejs
-
     //TO DO: form for edit 
-
+    const option = req.body.edit
+    const field = ''
+    if (req.body[edit] === name) field = name;
+    if (req.body[edit] === name) field = username;
+    if (req.body[edit] === name) field = email;
+    db
+    .query(`UPDATE users SET $1 = $2 WHERE users.id = 1;`, [field, option])
+    .then((data) => {
+      const user = data.rows[0];
+      console.log('=====', user);
+      return res.render('edit', { user }); //assuming edit.ejs
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+      });
   })
   //
 
