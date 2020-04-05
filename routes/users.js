@@ -99,8 +99,8 @@ router.get('/search', (req, res) => {
     const option = req.body.edit
     const field = ''
     if (req.body[edit] === name) field = name;
-    if (req.body[edit] === name) field = username;
-    if (req.body[edit] === name) field = email;
+    if (req.body[edit] === username) field = username;
+    if (req.body[edit] === email) field = email;
     db
       .query(`UPDATE users SET $1 = $2 WHERE users.id = 1;`, [field, option])
       .then((data) => {
