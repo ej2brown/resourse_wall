@@ -1,11 +1,10 @@
-.resource-card {
-  width: 300px;
+$card-btn-color: #99B2DD;
 
+.card {
+  width: 18rem;
 }
 
-img {
-  width: 75%;
-  height: 100%;
+.card .btn {
+  color: white;
+  background-color: $card-btn-color;
 }
-
-
