@@ -25,3 +25,10 @@ CREATE TABLE resources (
     url VARCHAR(255) NOT NULL,
     type VARCHAR(255)
     );
+
+
+CREATE TABLE likes ( 
+    id SERIAL PRIMARY KEY NOT NULL,
+    user_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+    resource_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+);
