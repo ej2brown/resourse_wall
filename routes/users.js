@@ -9,6 +9,24 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
+  // Route for add new resource
+  router.post('/addResource', (req, res) => {
+    // add logic for IF logged in, otherwise display message 'please login to add resource'
+    const resource = req.body;
+    db
+      .query(
+        `
+    INSERT into RESOURCES (title,description,type)
+    VALUES('${resource.title}',
+    '${resource.description}',
+      '${resource.url}')
+  returning *;
+    ;`
+      )
+      .then((res) => res)
+      .catch((e) => res.send(e));
+  });
+
   //home
   router.get('/', (req, res) => {
     //TO DO: display rescourse and liked resources
