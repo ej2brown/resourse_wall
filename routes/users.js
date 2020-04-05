@@ -18,8 +18,6 @@ router.get("/test", (req, res) => {
 //   res.render("index");
 // });
 
-
-
 module.exports = (db) => {
 
   //home
@@ -58,6 +56,7 @@ module.exports = (db) => {
       const user = data.rows[0];
       console.log('=====', user);
       return res.render('profile', { user }); //assuming profile.ejs
+      /*note: ejs file would need user.name, user.username, user.email and profile pic   */
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -65,7 +64,7 @@ module.exports = (db) => {
   })
 
   router.post("/users/profile/edit", (req, res) => {
-    //TO DO: form for edit 
+    //TO DO: form for edit then return to profile page
     const option = req.body.edit
     const field = ''
     if (req.body[edit] === name) field = name;
@@ -76,15 +75,13 @@ module.exports = (db) => {
     .then((data) => {
       const user = data.rows[0];
       console.log('=====', user);
-      return res.render('edit', { user }); //assuming edit.ejs
+      return res.redirect('/users/profile', { user }); //assuming edit.ejs
+      /*note: ejs file would need user.name, user.username, user.email and profile pic */
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
       });
   })
-  //
-
-
 
   return router;
 };
