@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 // Web server config
-<<<<<<< HEAD
+
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || 'development';
 const express = require('express');
@@ -10,15 +10,6 @@ const bodyParser = require('body-parser');
 const sass = require('node-sass-middleware');
 const app = express();
 const morgan = require('morgan');
-=======
-const PORT       = process.env.PORT || 5000;
-const ENV        = process.env.ENV || "development";
-const express    = require("express");
-const bodyParser = require("body-parser");
-const sass       = require("node-sass-middleware");
-const app        = express();
-const morgan     = require('morgan');
->>>>>>> 2652fd6a47a438194b601fea3ac4f990ff4fb467
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -53,14 +44,15 @@ const widgetsRoutes = require('./routes/widgets');
 // Note: Feel free to replace the example routes below with your own
 app.use('/api/users', usersRoutes(db));
 app.use('/api/widgets', widgetsRoutes(db));
+app.use('/', usersRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
-app.get('/', (req, res) => {
-  res.render('index');
-});
+// app.get("/", (req, res) => {
+//   res.render("index");
+// });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

@@ -7,51 +7,95 @@
 
 const express = require('express');
 const router = express.Router();
-const { Pool } = require('pg');
-const pool = new Pool({ user: 'labber', password: 'labber', host: 'localhost', database: 'midterm' });
+const bodyParser = require('body-parser');
+
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
+//test
+router.get('/test', (req, res) => {
+  res.render('test');
+});
+
+//home
+// router.get("/", (req, res) => {
+//   res.render("index");
+// });
 
 module.exports = (db) => {
+  //home
   router.get('/', (req, res) => {
+    //TO DO: display rescourse and liked resources
+    console.log('before dbquery');
     db
-      .query(`SELECT * FROM users;`)
+      .query(
+        `
+    SELECT * FROM resources
+    ;`
+      )
       .then((data) => {
-        const users = data.rows;
-        res.json({ users });
+        const resources = data.rows[0];
+        console.log('=====', resources);
+        res.render('index', { resources });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
   });
 
-  const showResults = (name) => {
-    return pool
-      .query(`SELECT * FROM widgets where name = '${input}';`)
-      .then((data) => {
-        const users = data.rows;
-        res.json({ users });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-  };
+  // router.post('/', (req, res) => {
+  //   const input = req.body;
+  //   console.log(input);
+  //   db
+  //     .query(
+  //       `
+  //   SELECT * FROM resources
+  //   WHERE title = '${input}'
+  //   ;`
+  //     )
+  //     .then((data) => {
+  //       const resources = data.rows;
+  //       console.log();
+  //       res.render('index');
+  //     })
+  //     .catch((err) => {
+  //       res.status(500).json({ error: err.message });
+  //     });
+  // });
 
-  router.get('/search', (req, res) => {
-    showResults(req.query).then((results) => res.send({ results }));
+  //search
+  router.get('/users/searchResults', (req, res) => {
+    return res.render('searchResults'); //assuming searchResults.ejs
 
-    return router;
+    //TO DO: display any resource with searched keyword
   });
+
+  //profile
+  router.get('/users/profile', (req, res) => {
+    return res.render('profile'); //assuming profile.ejs
+
+    //TO DO: display users name, username, email and profile pic
+  });
+
+  router.post('/users/profile/edit', (req, res) => {
+    return res.render('edit'); //assuming edit.ejs
+
+    //TO DO: form for edit
+  });
+  //
+
+  return router;
 };
 
-const dbTesting = function() {
-  console.log('fn dbtetsing works');
-};
-exports.dbTesting = dbTesting;
-
-router.post('/dbTest', (req, res) => {
-  dbTesting()
-    .then(() => {
-      console.log('works');
-      res.send({ user: { name: user.name, email: user.email, id: user.id } });
+//test
+router.get('/test', (req, res) => {
+  db
+    .query(`SELECT * FROM users;`)
+    .then((data) => {
+      const users = data.rows;
+      res.json({ users });
     })
-    .catch((e) => res.send(e));
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
 });
