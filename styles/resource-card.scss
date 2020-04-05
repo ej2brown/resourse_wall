@@ -1,7 +1,10 @@
-.resources-container {
-  margin-top: 80px;
-}
+$card-btn-color: #99B2DD;
 
 .card {
   width: 18rem;
+}
+
+.card .btn {
+  color: white;
+  background-color: $card-btn-color;
 }
