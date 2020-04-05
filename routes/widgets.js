@@ -6,22 +6,51 @@
  */
 
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 
 module.exports = (db) => {
-  router.get("/", (req, res) => {
+  router.get('/', (req, res) => {
     let query = `SELECT * FROM widgets`;
     console.log(query);
-    db.query(query)
-      .then(data => {
+    db
+      .query(query)
+      .then((data) => {
         const widgets = data.rows;
         res.json({ widgets });
       })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
       });
   });
+
+  router.get('/b', (req, res) => {
+    let query = `SELECT * FROM widgets where name = 'Chains';`;
+    console.log(query);
+    db
+      .query(query)
+      .then((data) => {
+        const widgets = data.rows;
+        res.json({ widgets });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.post('/search', (req, res) => {
+    let query = `SELECT * FROM widgets
+    WHERE NAME = '%;`;
+    console.log(query);
+    db
+      .query(query)
+      .then((data) => {
+        const widgets = data.rows;
+        res.json({ widgets });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   return router;
 };

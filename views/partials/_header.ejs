@@ -7,14 +7,14 @@
       <a class="navbar-brand" href="#">Resource Wall</a>
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Upload A Resource <span class="sr-only">(current)</span></a>
+          <a method='POST' action='/' class="nav-link" href="#">Upload A Resource <span class="sr-only">(current)</span></a>
         </li>
       </ul>
 
       <!-- Search button can expand on click -->
       <!-- Hidden search bar to save space -->
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <form class="form-inline my-2 my-lg-0" method='GET' action='/search' name="searchText">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search' action='/searchResults'>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           <i class="fas fa-search"></i>
         </button>
