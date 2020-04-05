@@ -9,9 +9,11 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
-  // Route for add new resource
+  // Route for add new resource - WORK IN PROGRESS
   router.post('/addResource', (req, res) => {
     // add logic for IF logged in, otherwise display message 'please login to add resource'
+
+    //capture user input
     const resource = req.body;
     db
       .query(
@@ -65,26 +67,6 @@ module.exports = (db) => {
       });
 
     //need to add logic to catch error if there are no results and display appropriate message
-  });
-
-  // Add new resource to database - WORK IN PROGRESS - need add resource form to be set up to capture inputs
-  router.post('/', (req, res) => {
-    //capture input - use req.body
-    db
-      .query(
-        `
-    INSERT into RESOURCES (title,description,type)
-    VALUES()
-    ;`
-      )
-      .then((data) => {
-        const resources = data.rows[0];
-        console.log(resources);
-        res.render('search_results', { resources });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
   });
 
   //profile
