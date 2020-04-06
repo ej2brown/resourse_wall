@@ -14,40 +14,30 @@ module.exports = (db) => {
     res.render('login');
   });
 
-  // Route to display add resource page
+  // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
     res.render('new_resource');
   });
 
-  // Route for add new resource - WORK IN PROGRESS
+  // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
     // add logic for IF logged in, otherwise display message 'please login to add resource'
 
-    //capture user input
     const input = req.body;
-    console.log(input.id);
     db
       .query(
-        `
-INSERT INTO resources
-    (id, category_id, title, description, url)
-        VALUES('${input.id}','${input.category_id}','${input.title}',
-        '${input.description}',
-          '${input.url}');`
+        `INSERT INTO resources(title, description, url)
+         VALUES('${input.title}','${input.description}','${input.url}');`
       )
       .then(res.redirect('/'))
       .catch((e) => res.send(e));
   });
 
-  //home
+  //HOME ROUTE
   router.get('/', (req, res) => {
     //TO DO: display rescourse and liked resources
     db
-      .query(
-        `
-    SELECT * FROM resources
-    ;`
-      )
+      .query(`SELECT * FROM resources;`)
       .then((data) => {
         const resources = data.rows[0];
         res.render('index', { resources });
@@ -57,20 +47,13 @@ INSERT INTO resources
       });
   });
 
-  // search
+  // SEARCH GET ROUTE
   router.get('/search', (req, res) => {
     const input = req.query.search;
-    // console.log(`input=======`, input);
     db
-      .query(
-        `
-    SELECT * FROM resources
-    WHERE title LIKE '%${input}%'
-    ;`
-      )
+      .query(`SELECT * FROM resources WHERE title LIKE '%${input}%';`)
       .then((data) => {
         const resources = data.rows;
-        console.log('====', resources);
         res.render('search_results', { resources });
       })
       .catch((err) => {
@@ -80,7 +63,7 @@ INSERT INTO resources
     //need to add logic to catch error if there are no results and display appropriate message
   });
 
-  //profile
+  //PROFILE GET ROUTE
   router.get('/users/profile', (req, res) => {
     return res.render('profile'); //assuming profile.ejs
 
