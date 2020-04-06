@@ -28,13 +28,14 @@
 <body>
   <%- include('partials/_header') %>
 
+  <!-- PLACE IMAGES OUTSIDE THE CARD BODY -->
   <main class="container">
     <div class="resources-container d-flex flex-wrap flex-row justify-content-between">
       <div class="card p-3">
+        <img src='<%= resources.url %>' >
         <div class="card-body">
           <h5 class="card-title"><%= resources.title %></h5>
           <p class="card-text"><%= resources.description %></p>
-          <img style='height:100px; width: 100px' src='<%= resources.url   %>' >
           <form action="">
             <div class="form-group">
               <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Add a comment"></textarea>

@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=, initial-scale=1.0">
   <title>Add New Resource</title>
 </head>
 
-  <!-- Bootstrap CSS-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- Bootstrap CSS-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 
-  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+<link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+<link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+<link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+<link rel="stylesheet" href="/styles/header.css" type="text/css" />
 
-  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-  <script type="text/javascript" src="/scripts/app.js"></script>
+<script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+<script type="text/javascript" src="/scripts/app.js"></script>
+
 <body>
   <%- include('partials/_header') %>
 
-  <form action='/addResource' method='POST'>
+  <main class="container">
+    <form action='/addResource' method='POST'>
+      <div class="form-group">
+        <label for="formGroupExampleInput">Title</label>
+        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name='title'>
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput2">Description</label>
+        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input"
+          name='description'>
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput">URL</label>
+        <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Another input" name='url'>
+      </div>
+      <div class="form-group">
+        <button type='submit'>Submit</button>
+      </div>
+    </form>
+  </main>
 
-    <div class="form-group">
-      <label for="formGroupExampleInput">Title</label>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name='title'>
-    </div>
-    <div class="form-group">
-      <label for="formGroupExampleInput2">Description</label>
-      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name='description'>
-    </div>
-    <div class="form-group">
-      <label for="formGroupExampleInput">URL</label>
-      <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Another input" name='url'>
-    </div>
-    <div class="form-group">
-      <button type='submit'>Submit</button>
-    </div>
-  </form>
-
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
   </script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -52,4 +56,5 @@
   </script>
 
 </body>
+
 </html>
