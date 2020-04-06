@@ -1,15 +1,28 @@
-$(() => {
-  $.ajax({
-    method: "GET",
-    url: "/"
-  }).done((users) => {
-    console.log('====AJAX===',users)
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
-});
+// $(() => {
+//   $.ajax({
+//     method: "GET",
+//     url: "/"
+//   }).done((users) => {
+//     for(user of users) {
+//       $("<div>").text(user.name).appendTo($("body"));
+//     }
+//   });;
+// });
 
+$(() => {
+  const loadResources = () => {
+    $.ajax({
+      url: "/",
+      method: "GET",
+      dataType: "JSON",
+    }).done((users) => {
+      for (user of users) {
+        $("<div>").text(user.name).appendTo($("body"));
+      }
+    });
+  };
+  loadResources();
+});
 
 // $(() => {
 //   // takes places rendered resources the page by calling itself right after
