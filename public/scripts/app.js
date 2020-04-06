@@ -13,9 +13,9 @@
 $(() => {
   const loadResources = () => {
     $.ajax({
-      url: "/resources",
-      method: "GET",
-    })
+        url: "/resources",
+        method: "GET",
+      })
       .done((res) => {
         console.log(res)
         renderResources(res)
@@ -27,9 +27,9 @@ $(() => {
 
   const loadUsers = () => {
     $.ajax({
-      url: "/profile",
-      method: "GET",
-    })
+        url: "/profile",
+        method: "GET",
+      })
       .done((users) => {
         for (user of users) {
           $("<div>").text(user.name).appendTo($("body"));
@@ -45,7 +45,7 @@ $(() => {
     const markupArray = [];
     // loops through resources
     for (const resource of resources) {
-      // calls createResourceElement for each resource  
+      // calls createResourceElement for each resource
 
       markupArray.push(createResourceElement(resource));
     }
@@ -55,11 +55,27 @@ $(() => {
   };
 });
 
+$("").submit(function (event) {
+  $.ajax({
+    url: "",
+    method: "POST",
+    data: $(this).serialize(),
+    success: () => {
+      loadResources();
+    }
+  });
+})
+
 //fetches resource object and renders it
 const createResourceElement = function (resource) {
   console.log(resource)
-  const { title, description, name, url } = resource;
-  //TO DO: add time created 
+  const {
+    title,
+    description,
+    name,
+    url
+  } = resource;
+  //TO DO: add time created
   //TO DO: add escape funtion to comments
   const renderedResource = `
         <div class="card-body">
@@ -78,5 +94,8 @@ const createResourceElement = function (resource) {
           </div>
         </div>
       `;
+  //inside $("") put where the button is
   return renderedResource;
 };
+
+
