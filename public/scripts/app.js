@@ -11,7 +11,8 @@ $(() => {
 
 
 const createResourceElement = (resource) => {
-// display resources
+  // store resources in object
+  // display resources
   let markup = `
   <div class="card p-3">
   <div class="card-body">
