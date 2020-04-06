@@ -43,10 +43,11 @@
           <% resources.forEach((res) => { %>
 
             <div class="card" style="width: 18rem;">
-            <%= res.id %>
-          <%= res.title %>
-          <%= res.description %>
-           <img style='height:50px; width: 50px' src='<%= res.url   %>' >
+
+          <p> Title: <%= res.title %>  </p>
+          <p> Description: <%= res.description %>  </p>
+          <p> Category: <%= res.name %>  </p>
+          <img style='height:50px; width: 50px' src='<%= res.url   %>' >
 
             </div>
           <%}) %>

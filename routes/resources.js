@@ -11,7 +11,7 @@ const router = express.Router();
 module.exports = (db) => {
   router.get('/', (req, res) => {
     db
-      .query(`SELECT * FROM resources;`)
+      .query(`SELECT * FROM resources join categories on categories.id = category_id;`)
       .then((data) => {
         const resources = data.rows;
         // res.send('OK')
