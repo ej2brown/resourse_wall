@@ -29,7 +29,7 @@ module.exports = (db) => {
         `INSERT INTO resources(title, description, url)
          VALUES('${input.title}','${input.description}','${input.url}');`
       )
-      .then(res.redirect('/'))
+      .then((res) => res)
       .catch((e) => res.send(e));
   });
 
