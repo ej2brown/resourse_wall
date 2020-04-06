@@ -9,35 +9,35 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
-  // Route for add new resource - WORK IN PROGRESS
+  //LOGIN route
+  router.get('/login', (req, res) => {
+    res.render('login');
+  });
+
+  // ADD RESOURCE GET ROUTE
+  router.get('/addResource', (req, res) => {
+    res.render('new_resource');
+  });
+
+  // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
     // add logic for IF logged in, otherwise display message 'please login to add resource'
 
-    //capture user input
-    const resource = req.body;
+    const input = req.body;
     db
       .query(
-        `
-    INSERT into RESOURCES (title,description,type)
-    VALUES('${resource.title}',
-    '${resource.description}',
-      '${resource.url}')
-  returning *;
-    ;`
+        `INSERT INTO resources(title, description, url)
+         VALUES('${input.title}','${input.description}','${input.url}');`
       )
       .then((res) => res)
       .catch((e) => res.send(e));
   });
 
-  //home
+  //HOME ROUTE
   router.get('/', (req, res) => {
     //TO DO: display rescourse and liked resources
     db
-      .query(
-        `
-    SELECT * FROM resources
-    ;`
-      )
+      .query(`SELECT * FROM resources;`)
       .then((data) => {
         const resources = data.rows[0];
         res.render('index', { resources });
@@ -47,19 +47,13 @@ module.exports = (db) => {
       });
   });
 
-  // search
+  // SEARCH GET ROUTE
   router.get('/search', (req, res) => {
     const input = req.query.search;
-    // console.log(`input=======`, input);
     db
-      .query(
-        `
-    SELECT * FROM resources
-    WHERE title LIKE '%${input}%'
-    ;`
-      )
+      .query(`SELECT * FROM resources WHERE title LIKE '%${input}%';`)
       .then((data) => {
-        const resources = data.rows[0];
+        const resources = data.rows;
         res.render('search_results', { resources });
       })
       .catch((err) => {
@@ -69,7 +63,7 @@ module.exports = (db) => {
     //need to add logic to catch error if there are no results and display appropriate message
   });
 
-  //profile
+  //PROFILE GET ROUTE
   router.get('/users/profile', (req, res) => {
     return res.render('profile'); //assuming profile.ejs
 
