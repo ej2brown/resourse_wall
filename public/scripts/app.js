@@ -10,38 +10,6 @@
 // });
 
 $(() => {
-<<<<<<< HEAD
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for (user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
-});
-
-
-
-// THIS WILL GET RENDERED ON THE PAGE
-$(document).ready(function () {
-
-  // API REQUEST
-  var target = "https://www.google.com";
-  var key = "be57be359a6fbbf623c589b88e58fa26";
-  $.ajax({
-    url: "https://api.linkpreview.net",
-    dataType: "jsonp",
-    data: {
-      q: target,
-      key: key
-    },
-    success: function (response) {
-      console.log(response);
-    }
-  });
-})
-=======
   const loadResources = () => {
     $.ajax({
       url: "/",
@@ -94,7 +62,7 @@ $(document).ready(function () {
 //   const createResourceElement = function (objresource) {
 //       const { title, description, url } = objresource;
 
-//       //TO DO: add time created 
+//       //TO DO: add time created
 //       //TO DO: add escape funtion to comments
 //       const renderedResource = `
 //       <div class="card p-3">
@@ -136,4 +104,3 @@ $(document).ready(function () {
 //       }
 //   })
 // });
->>>>>>> 27d3760419701d49c4513649417da7d20c82abac
