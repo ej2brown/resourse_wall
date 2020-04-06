@@ -11,10 +11,9 @@ module.exports = (db) => {
                 res.json({ user })
             })
             .catch((err) => {
+                //need to add logic to catch error if there are no results and display appropriate message
                 res.status(500).json({ error: err.message });
             });
-        //need to add logic to catch error if there are no results and display appropriate message
-
     })
     return router;
 };
