@@ -9,6 +9,11 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
+  //LOGIN route
+  router.get('/login', (req, res) => {
+    res.render('login');
+  });
+
   // Route to display add resource page
   router.get('/addResource', (req, res) => {
     res.render('new_resource');
