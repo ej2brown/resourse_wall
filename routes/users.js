@@ -83,6 +83,19 @@ module.exports = (db) => {
 
   });
 
+  //HOME ROUTE
+  router.get('/', (req, res) => {
+    //TO DO: display rescourse and liked resources
+    db
+      .query(`SELECT * FROM resources join categories on categories.id = category_id;`)
+      .then((data) => {
+        const resources = data.rows;
+        res.render('index', { resources });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
 
   // SEARCH GET ROUTE
   router.get('/search', (req, res) => {

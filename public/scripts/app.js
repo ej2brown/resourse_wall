@@ -24,8 +24,23 @@ $(() => {
   }
   loadResources();
 
+
+  const loadUsers = () => {
+    $.ajax({
+      url: "/profile",
+      method: "GET",
+    })
+      .done((users) => {
+        for (user of users) {
+          $("<div>").text(user.name).appendTo($("body"));
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  loadUsers();
+
   // appends an formated array into the resource container
-  const renderResources = function(result) {
+  const renderResources = function (result) {
     const resources = result.resources;
     const markupArray = [];
     // loops through resources
@@ -41,7 +56,7 @@ $(() => {
 });
 
 //fetches resource object and renders it
-const createResourceElement = function(resource) {
+const createResourceElement = function (resource) {
   console.log(resource)
   const { title, description, name, url } = resource;
   //TO DO: add time created 

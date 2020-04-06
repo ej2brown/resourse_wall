@@ -47,7 +47,7 @@ const profileRoutes = require('./routes/profile');
 app.use('/api/users', usersRoutes(db));
 app.use('/api/widgets', widgetsRoutes(db));
 app.use('/resources', resourcesRoutes(db));
-app.use('/profile', profileRoutes(db));
+app.use('/', usersRoutes(db));
 
 // app.use('/', usersRoutes(db));
 // Note: mount other resources here, using the same pattern above
