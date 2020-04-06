@@ -53,6 +53,19 @@ $(() => {
     $('.card').empty();
     $('.card').html(markupArray.reverse().join(''));
   };
+
+
+  //inside $("") put where the button is 
+  // $("").submit(function (event) {
+  //   $.ajax({
+  //     url: "",
+  //     method: "POST",
+  //     data: $(this).serialize(),
+  //     success: () => {
+  //       loadResources();
+  //     }
+  //   });
+  // })
 });
 
 //fetches resource object and renders it
