@@ -27,30 +27,31 @@
 
 <body>
   <%- include('partials/_header') %>
-  <h1>categories</h1>
 
 
-  <main>
+  <main class="container margin-top">
 
-    <div class="container">
-      <div class="resources-container d-flex flex-wrap flex-row justify-content-between">
+    <h1>categories</h1>
+    <div class="d-flex flex-wrap flex-row justify-content-center">
+
+      <div class="card" style="width: 18rem;">
+
+
+        <% categories.forEach((cat) => { %>
 
         <div class="card" style="width: 18rem;">
+          <%= cat.name %>
 
-
-            <% categories.forEach((cat) => { %>
-
-              <div class="card" style="width: 18rem;">
-              <%= cat.name %>
-
-
-              </div>
-            <%}) %>
 
         </div>
+        <%}) %>
+
+      </div>
+
+    </div>
 
 
-  <!-- bootstrap card -->
+    <!-- bootstrap card -->
 
 
 
