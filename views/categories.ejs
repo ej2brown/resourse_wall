@@ -2,24 +2,18 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search Results</title>
-
+  <title>Categories</title>
 
 
   <!-- Bootstrap CSS-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-
-
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/header.css" type="text/css" />
   <link rel="stylesheet" href="/styles/resource-card.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/search_results.css" type="text/css" />
 
   <!-- Google Fonts link -->
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -33,28 +27,38 @@
 
 <body>
   <%- include('partials/_header') %>
-
-  <div class="container">
-    <div class="resources-container d-flex flex-wrap flex-row justify-content-between">
-
-      <div class="card" style="width: 18rem;">
+  <h1>categories</h1>
 
 
-          <% resources.forEach((res) => { %>
+  <main>
 
-            <div class="card" style="width: 18rem;">
+    <div class="container">
+      <div class="resources-container d-flex flex-wrap flex-row justify-content-between">
 
-          <p> Title: <%= res.title %>  </p>
-          <p> Description: <%= res.description %>  </p>
-          <p> Category: <%= res.name %>  </p>
-          <img style='height:50px; width: 50px' src='<%= res.url   %>' >
+        <div class="card" style="width: 18rem;">
 
-            </div>
-          <%}) %>
-          
-      </div>
-    </div>
-  </div>
+
+            <% categories.forEach((cat) => { %>
+
+              <div class="card" style="width: 18rem;">
+              <%= cat.name %>
+
+
+              </div>
+            <%}) %>
+
+        </div>
+
+
+  <!-- bootstrap card -->
+
+
+
+  </main>
+
+
+
+
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -66,7 +70,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
-</body>
 </body>
 
 </html>
