@@ -55,6 +55,17 @@ $(() => {
   };
 });
 
+$("").submit(function (event) {
+  $.ajax({
+    url: "",
+    method: "POST",
+    data: $(this).serialize(),
+    success: () => {
+      loadResources();
+    }
+  });
+})
+
 //fetches resource object and renders it
 const createResourceElement = function (resource) {
   console.log(resource)
