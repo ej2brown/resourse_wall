@@ -9,6 +9,21 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
+  //CATEGORIES GET route
+
+  router.get('/categories', (req, res) => {
+    db
+      .query(`SELECT * from categories;`)
+      .then((data) => {
+        const categories = data.rows;
+        console.log(categories);
+        res.render('categories', { categories });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   //LOGIN route
   router.get('/login', (req, res) => {
     res.render('login');
