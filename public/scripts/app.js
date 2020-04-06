@@ -10,40 +10,6 @@ $(() => {
 });
 
 
-const createResourceElement = (resource) => {
-  // store resources in object
-  // display resources
-  let markup = `
-  <div class="card p-3">
-  <div class="card-body">
-    <h5 class="card-title"><${resource.title}></h5>
-    <p class="card-text"><${resource.description}></p>
-    <img style='height:100px; width: 100px' src='< ${resource.url}>' >
-    <form action="">
-      <div class="form-group">
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Add a comment"></textarea>
-      </div>
-    </form>
-    <div class="card-buttons d-flex justify-content-between align-items-center">
-      <a href="#" class="btn btn-primary">Post</a>
-      <i class="far fa-heart"></i>
-    </div>
-  </div>
-</div>
-  `
-}
-
-const renderResource = (resources) => {
-  const arr = [];
-  for (let resource of resources) {
-    arr.push(createResourceElement(resource));
-  }
-  let posts = $('.resources-container').html(arr);
-  return posts;
-};
-
-
-
 
 // THIS WILL GET RENDERED ON THE PAGE
 $(document).ready(function () {
