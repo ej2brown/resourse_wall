@@ -18,35 +18,35 @@ router.get("/test", (req, res) => {
 //   res.render("index");
 // });
 module.exports = (db) => {
-  // Route for add new resource - WORK IN PROGRESS
+  //LOGIN route
+  router.get('/login', (req, res) => {
+    res.render('login');
+  });
+
+  // ADD RESOURCE GET ROUTE
+  router.get('/addResource', (req, res) => {
+    res.render('new_resource');
+  });
+
+  // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
     // add logic for IF logged in, otherwise display message 'please login to add resource'
 
-    //capture user input
-    const resource = req.body;
+    const input = req.body;
     db
       .query(
-        `
-    INSERT into RESOURCES (title,description,type)
-    VALUES('${resource.title}',
-    '${resource.description}',
-      '${resource.url}')
-  returning *;
-    ;`
+        `INSERT INTO resources(title, description, url)
+         VALUES('${input.title}','${input.description}','${input.url}');`
       )
-      .then((res) => res)
+      .then(res.redirect('/'))
       .catch((e) => res.send(e));
   });
 
-  //home
+  //HOME ROUTE
   router.get('/', (req, res) => {
     //TO DO: display rescourse and liked resources
     db
-      .query(
-        `
-    SELECT * FROM resources
-    ;`
-      )
+      .query(`SELECT * FROM resources;`)
       .then((data) => {
         const resources = data.rows[0];
         res.render('index', { resources });
@@ -78,23 +78,36 @@ router.get('/search', (req, res) => {
     //need to add logic to catch error if there are no results and display appropriate message
   });
 
-  //profile
-  //TO DO: display users name, username, email and profile pic 
-  router.get("/users/profile", (req, res) => {
+  // SEARCH GET ROUTE
+  router.get('/search', (req, res) => {
+    const input = req.query.search;
     db
-      .query(`SELECT * FROM users;`)
+      .query(`SELECT * FROM resources WHERE title LIKE '%${input}%';`)
+      .then((data) => {
+        const resources = data.rows;
+        res.render('search_results', { resources });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  })
+  //
+
+  //PROFILE
+  router.get("/profile", (req, res) => {
+    db
+      .query(`SELECT * FROM users WHERE users.id =1;`)
       .then((data) => {
         const user = data.rows[0];
         console.log('=====', user);
-        return res.render('profile', { user }); //assuming profile.ejs
+        res.render('profile', { user }); //assuming profile.ejs
         /*note: ejs file would need user.name, user.username, user.email and profile pic   */
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
   })
-
-  router.post("/users/profile/edit", (req, res) => {
+  router.post("/profile/", (req, res) => {
     //TO DO: form for edit then return to profile page
     const option = req.body.edit
     const field = ''
@@ -106,7 +119,7 @@ router.get('/search', (req, res) => {
       .then((data) => {
         const user = data.rows[0];
         console.log('=====', user);
-        return res.redirect('/users/profile', { user }); //assuming edit.ejs
+        return res.redirect('/profile', { user }); //assuming edit.ejs
         /*note: ejs file would need user.name, user.username, user.email and profile pic */
       })
       .catch((err) => {

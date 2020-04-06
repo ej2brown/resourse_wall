@@ -38,41 +38,23 @@
     <div class="resources-container d-flex flex-wrap flex-row justify-content-between">
 
       <div class="card" style="width: 18rem;">
-        <img  src='<%= resources.url   %>'>
-        <div class="card-body">
-          <%= resources.id %>
-          <%= resources.title %>
-          <%= resources.description %>
-        </div>
+
+
+          <% resources.forEach((res) => { %>
+
+            <div class="card" style="width: 18rem;">
+            <%= res.id %>
+          <%= res.title %>
+          <%= res.description %>
+           <img style='height:50px; width: 50px' src='<%= res.url   %>' >
+
+            </div>
+          <%}) %>
+
       </div>
 
 
-      <div class="card" style="width: 18rem;">
-        <img  src='<%= resources.url   %>'>
-        <div class="card-body">
-          <%= resources.id %>
-          <%= resources.title %>
-          <%= resources.description %>
-        </div>
-      </div>
 
-      <div class="card" style="width: 18rem;">
-        <img  src='<%= resources.url   %>'>
-        <div class="card-body">
-          <%= resources.id %>
-          <%= resources.title %>
-          <%= resources.description %>
-        </div>
-      </div>
-
-      <div class="card" style="width: 18rem;">
-        <img  src='<%= resources.url   %>'>
-        <div class="card-body">
-          <%= resources.id %>
-          <%= resources.title %>
-          <%= resources.description %>
-        </div>
-      </div>
 
     </div>
   </div>
