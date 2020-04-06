@@ -17,26 +17,33 @@
 <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 <link rel="stylesheet" href="/styles/header.css" type="text/css" />
 
+  <!-- Google Fonts link -->
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Styles -->
+  <script src="https://kit.fontawesome.com/c594e81ef7.js" crossorigin="anonymous"></script>
+
 <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
 <script type="text/javascript" src="/scripts/app.js"></script>
 
 <body>
   <%- include('partials/_header') %>
 
-  <main class="container">
+  <main class="container margin-top">
+    <h1>Upload A New Resource</h1>
     <form action='/addResource' method='POST'>
       <div class="form-group">
+        <label for="formGroupExampleInput">URL</label>
+        <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Add a URL" name='url'>
+      </div>
+      <div class="form-group">
         <label for="formGroupExampleInput">Title</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input" name='title'>
+        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Add a title" name='title'>
       </div>
       <div class="form-group">
         <label for="formGroupExampleInput2">Description</label>
-        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input"
+        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Add a description"
           name='description'>
-      </div>
-      <div class="form-group">
-        <label for="formGroupExampleInput">URL</label>
-        <input type="text" class="form-control" id="formGroupExampleInput3" placeholder="Another input" name='url'>
       </div>
       <div class="form-group">
         <button type='submit'>Submit</button>
