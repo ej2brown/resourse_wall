@@ -84,7 +84,6 @@ module.exports = (db) => {
   });
 
 
-
   // SEARCH GET ROUTE
   router.get('/search', (req, res) => {
     const input = req.query.search;
