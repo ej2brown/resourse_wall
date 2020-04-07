@@ -239,34 +239,34 @@ module.exports = (db) => {
       });
   });
 
-  const getLikesCount = function(user_id) {
-    return pool
-      .query(
-        `
-      SELECT COUNT(*)
-      FROM resources
-      JOIN likes ON resources.id = resource_id
-      WHERE user_id = 2;
-    `
-      )
-      .then((res) => res.rows)
-      .catch((err) => console.log(err));
-  };
+  // const getLikesCount = function(user_id) {
+  //   return pool
+  //     .query(
+  //       `
+  //     SELECT COUNT(*)
+  //     FROM resources
+  //     JOIN likes ON resources.id = resource_id
+  //     WHERE user_id = 2;
+  //   `
+  //     )
+  //     .then((res) => res.rows)
+  //     .catch((err) => console.log(err));
+  // };
 
-  exports.getLikesCount = getLikesCount;
+  // exports.getLikesCount = getLikesCount;
 
-  const addLikedResource = function(resource) {
-    return pool
-      .query(
-        `INSERT INTO likes(
-    user_id, resource_id)
-    VALUES (2,1);
-    `
-      )
-      .then((res) => res.rows)
-      .catch((err) => console.log(err));
-  };
-  exports.addLikedResource = addLikedResource;
+  // const addLikedResource = function(resource) {
+  //   return pool
+  //     .query(
+  //       `INSERT INTO likes(
+  //   user_id, resource_id)
+  //   VALUES (2,1);
+  //   `
+  //     )
+  //     .then((res) => res.rows)
+  //     .catch((err) => console.log(err));
+  // };
+  // exports.addLikedResource = addLikedResource;
 
   return router;
 };
