@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router = express.Router();
+const dbParams = require('../lib/db.js');
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
@@ -14,7 +15,6 @@ module.exports = (db) => {
       .query(`
       SELECT * FROM resources 
       JOIN categories ON categories.id = category_id 
-      JOIN resources ON resources.id = resource_id 
       JOIN users ON users.id = user_id
       WHERE users.id = 1;`)
       .then((data) => {
@@ -79,7 +79,6 @@ module.exports = (db) => {
           .catch((e) => res.send(e));
       }
     });
-
   });
 
   // SEARCH GET ROUTE
@@ -116,5 +115,37 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   })
+
+
+
+  const getLikesCount = function (user_id) {
+    return pool
+      .query(
+        `
+      SELECT COUNT(*)
+      FROM resources 
+      JOIN likes ON resources.id = resource_id
+      WHERE user_id = 2;
+    `
+      )
+      .then((res) => res.rows)
+      .catch((err) => console.log(err));
+  };
+
+  exports.getLikesCount = getLikesCount;
+
+
+  const addLikedResource = function (resource) {
+    return pool
+      .query(
+        `INSERT INTO likes(
+    user_id, resource_id)
+    VALUES (2,1);
+    `)
+      .then((res) => res.rows)
+      .catch((err) => console.log(err));
+  }
+  exports.addLikedResource = addLikedResource;
+
   return router;
 };
