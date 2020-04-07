@@ -1,9 +1,10 @@
 INSERT INTO resources
-  (category_id, title, description, url)
+  (category_id, title, description, image, url)
 VALUES
   (1,
     'Pizza Image',
     'Cheese',
+    'https://www.thecookierookie.com/wp-content/uploads/2019/01/soft-pretzel-crust-pizza-cheese-sauce-6-of-8.jpg',
     'https://www.thecookierookie.com/wp-content/uploads/2019/01/soft-pretzel-crust-pizza-cheese-sauce-6-of-8.jpg'
         );
 
@@ -22,7 +23,8 @@ INSERT INTO resources
 VALUES
   (4,
     'Adorable Pets Image',
-    'AWH',
+    'AWH',    
+    'https://www.rebgv.org/content/dam/rebgv_org_content/images/strata%20pets.jpg',
     'https://www.rebgv.org/content/dam/rebgv_org_content/images/strata%20pets.jpg'
         );
 

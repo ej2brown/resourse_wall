@@ -99,7 +99,7 @@ module.exports = (db) => {
   router.get('/likes', (req, res) => {
     db
       .query(`
-          SELECT likes.*, COUNT(resources.id)
+          SELECT likes.*, resources. COUNT(resources.id)
           FROM likes 
           JOIN resources ON resources.id = resource_id 
           JOIN users ON users.id = user_id
