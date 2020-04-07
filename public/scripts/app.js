@@ -76,7 +76,7 @@ $(() => {
 
   //fetches resource object and renders it
   const createResourceElement = function(resource) {
-    const { title, description, name, url } = resource;
+    const { title, description, name, image } = resource;
     // const likesCount = loadLikesCount(resource);
     console.log('RESOURCE', resource);
     // console.log('LIKES COUNT', likesCount)
