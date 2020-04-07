@@ -139,5 +139,17 @@ module.exports = (db) => {
   //     });
   // });
 
+
+  // API REQUEST CODE
+//  const data = {key: 'be57be359a6fbbf623c589b88e58fa26', q: 'https://www.google.com' }
+
+//  fetch('https://api.linkpreview.net', {
+//   method: 'POST',
+//   mode: 'cors',
+//   body: JSON.stringify(data),
+// })
+//   .then(res => res.json())
+//   .then(response => console.log(response))
+
   return router;
 };
