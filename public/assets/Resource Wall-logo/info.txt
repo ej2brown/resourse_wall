@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: sen-extrabold
+font link: http://www.philatype.com/#sen
+font author: Philatype
+font author site: http://www.philatype.com/
+
+
+icon designer: scribble.glyph
+icon designer link: /scribble.glyph
+        
+{"bg-gradient-0":"#395ECA","bg-gradient-1":"#848BD8","icon":"#ffffff","font":"#ffffff","slogan":"#ffffff"}
+      

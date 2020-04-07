@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/styles/header.css" type="text/css" />
 
     <!-- Google Fonts link -->
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Styles -->
     <script src="https://kit.fontawesome.com/c594e81ef7.js" crossorigin="anonymous"></script>
@@ -28,23 +28,29 @@
 
 <body>
   <%- include('partials/_header') %>
-  <main class="container">
-    <div class="login-page margin-top">
-      <h1>Login</h1>
-      <form>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="Enter email">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
+  <main>
+    <div class="login-page d-flex flex-row justify-content-between align-items-center">
+      <div class="side-test d-flex justify-content-center align-items-center">
+        <img src="../assets/support-team.svg" alt="">
+      </div>
+      <!-- <img src="../assets/Resource Wall-logo/default.png" alt=""> -->
+      <div class="test">
+        <h1>Sign in to Account</h1>
+        <form>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
     </div>
   </main>
 
