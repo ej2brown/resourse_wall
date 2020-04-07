@@ -68,11 +68,11 @@ $(() => {
 
   //fetches resource object and renders it
   const createResourceElement = function(resource) {
-    const { title, description, name, url } = resource;
-    // console.log('RESOURCE',resource)
-    // const likesCount = getLikesCount(resource);
-    // console.log('==GET LIKES COUNT==', likesCount)
-    //TO DO: add time created 
+    const { title, description, name, image } = resource;
+    // const likesCount = loadLikesCount(resource);
+    console.log('RESOURCE', resource);
+    // console.log('LIKES COUNT', likesCount)
+    //TO DO: add time created
     //TO DO: add escape funtion to comments
     const renderedResource = `
 
@@ -91,6 +91,7 @@ $(() => {
               <i class="far fa-heart"></i>
           </div>
         </div>
+
       `;
     return renderedResource;
   };
