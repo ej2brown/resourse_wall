@@ -219,11 +219,10 @@ module.exports = (db) => {
   //LIKES
   router.get('/likes', (req, res) => {
     db
-      .query(
-        `
-          SELECT likes.*, COUNT(resources.id)
-          FROM likes
-          JOIN resources ON resources.id = resource_id
+      .query(`
+          SELECT likes.*, resources. COUNT(resources.id)
+          FROM likes 
+          JOIN resources ON resources.id = resource_id 
           JOIN users ON users.id = user_id
           WHERE users.id = 2
           GROUP BY likes.id;
