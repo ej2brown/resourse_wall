@@ -18,10 +18,23 @@ $(() => {
     })
       .done((res) => {
         renderResources(res)
+        console.log('RES=',res)
       })
       .catch((err) => console.log(err));
   }
   loadResources();
+
+  const loadLikes = () => {
+    $.ajax({
+      url: "/resources/likes",
+      method: "GET",
+    })
+      .done((res) => {
+        console.log('RES LIKES=',res)
+      })
+      .catch((err) => console.log(err));
+  }
+  loadLikes();
 
   // const loadUsers = () => {
   //   $.ajax({
