@@ -18,12 +18,10 @@ $(() => {
     })
       .done((res) => {
         renderResources(res)
-        console.log(res)
       })
       .catch((err) => console.log(err));
   }
   loadResources();
-
 
   // const loadUsers = () => {
   //   $.ajax({
@@ -64,15 +62,17 @@ $(() => {
   //     }
   //   });
   // })
-});
 
-//fetches resource object and renders it
-const createResourceElement = function (resource) {
-  const { title, description, name, url } = resource;
 
-  //TO DO: add time created 
-  //TO DO: add escape funtion to comments
-  const renderedResource = `
+  //fetches resource object and renders it
+  const createResourceElement = function (resource) {
+    const { title, description, name, url } = resource;
+    // const likesCount = loadLikesCount(resource);
+    console.log('RESOURCE',resource)
+    // console.log('LIKES COUNT', likesCount)
+    //TO DO: add time created 
+    //TO DO: add escape funtion to comments
+    const renderedResource = `
         <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
@@ -89,5 +89,6 @@ const createResourceElement = function (resource) {
           </div>
         </div>
       `;
-  return renderedResource;
-};
+    return renderedResource;
+  };
+});
