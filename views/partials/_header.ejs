@@ -7,7 +7,7 @@
       <a class="navbar-brand" href="/">Resource Wall</a>
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
-          <form action='/addResource' method = 'GET'>
+          <form action='/resources/addResource' method = 'GET'>
             <button  class="nav-link"> Upload A Resource <span class="sr-only">(current)</span></button>
           </form>
           <form action='/categories' method = 'GET'>
@@ -19,7 +19,7 @@
 
       <!-- Search button can expand on click -->
       <!-- Hidden search bar to save space -->
-      <form class="form-inline my-2 my-lg-0" method='GET' action='/search' name="searchText">
+      <form class="form-inline my-2 my-lg-0" method='GET' action='/resources/search' name="searchText">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search' action='/searchResults'>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           <i class="fas fa-search"></i>
@@ -28,7 +28,7 @@
 
       <!-- Login and Register will show if no users are currently logged in -->
       <!-- On click, it will route them to the correct page -->
-      <form method='GET' action='/login' class="form-inline my-2 my-lg-0">
+      <form method='GET' action='/users/login' class="form-inline my-2 my-lg-0">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
       </form>
 

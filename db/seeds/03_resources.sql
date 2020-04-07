@@ -89,3 +89,13 @@ VALUES
     'Inspiration to eat veggies',
     'https://www.jennycraig.com.au/wp-content/uploads/wpfiles/2019/05/20190604-veggies.jpg'
         );
+
+
+INSERT INTO resources
+  (category_id, title, description, url)
+VALUES
+  (5,
+    'Karate',
+    'The top 10 karate classes in Toronto',
+    'https://www.blogto.com/sports_play/2014/11/the_top_10_karate_classes_in_toronto/'
+  );
