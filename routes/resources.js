@@ -28,18 +28,18 @@ const query = require('../lib/query.js')
 
 // exports.getLikesCount = getLikesCount;
 
-const addLikedResource = function (resource) {
-  return pool
-    .query(
-      `INSERT INTO likes(
-    user_id, resource_id)
-    VALUES (2,1);
-    `
-    )
-    .then((res) => res.rows)
-    .catch((err) => console.log(err));
-};
-exports.addLikedResource = addLikedResource;
+// const addLikedResource = function (resource) {
+//   return db
+//     .query(
+//       `INSERT INTO likes(
+//     user_id, resource_id)
+//     VALUES (2,1);
+//     `
+//     )
+//     .then((res) => res.rows)
+//     .catch((err) => console.log(err));
+// };
+// exports.addLikedResource = addLikedResource;
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
@@ -69,7 +69,7 @@ module.exports = (db) => {
   router.get('/addResource', (req, res) => {
     res.render('new_resource');
   });
-  
+
   router.get('/comments', (req, res) => {
     res.render('new_resource');
   });
@@ -134,31 +134,6 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
-
-  //LIKES GET ROUTE
-  router.get('/likes', (req, res) => {
-    db
-      .query(
-        `
-          SELECT likes.*, COUNT(resources.id)
-          FROM likes
-          JOIN resources ON resources.id = resource_id
-          JOIN users ON users.id = user_id
-          WHERE users.id = 2
-          GROUP BY likes.id;
-          `
-      )
-      .then((data) => {
-        const resources = data.rows;
-        res.json({ resources });
-        console.log(resources);
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-  });
-
-
 
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
@@ -227,16 +202,17 @@ module.exports = (db) => {
       });
   });
 
-  //LIKES
+  //LIKES GET ROUTE
   router.get('/likes', (req, res) => {
     db
-      .query(`
-          SELECT likes.*, resources. COUNT(resources.id)
-          FROM likes 
-          JOIN resources ON resources.id = resource_id 
-          JOIN users ON users.id = user_id
-          WHERE users.id = 2
-          GROUP BY likes.id;
+      .query(
+        `
+        SELECT resources.*, COUNT(likes.id)::integer as like_count
+        FROM resources
+        JOIN likes ON resources.id = resource_id
+        JOIN users ON users.id = user_id
+        WHERE users.id = 1
+        GROUP BY resources.id;
           `
       )
       .then((data) => {
@@ -248,6 +224,5 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
-
   return router;
 };

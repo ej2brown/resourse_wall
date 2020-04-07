@@ -18,40 +18,39 @@ $(() => {
       method: 'GET'
     })
       .done((res) => {
-        console.log(res);
         renderResources(res);
       })
       .catch((err) => console.log(err));
   };
   loadResources();
 
-  // //load all liked 
-  // const loadLikesCount = () => {
-  //   $.ajax({
-  //     url: '/resources/likes',
-  //     method: 'GET'
-  //   })
-  //     .done((res) => {
-  //       console.log('==LOAD LIKES COUNT===',res)
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-  // loadLikesCount();
+  //load all liked 
+  const loadLikesCount = () => {
+    $.ajax({
+      url: '/resources/likes',
+      method: 'GET'
+    })
+      .done((res) => {
+        renderResources(res);
+      })
+      .catch((err) => console.log(err));
+  }
+  loadLikesCount();
 
 
   // appends an formated array into the resource container
   const renderResources = function (result) {
+    console.log('RESULT', result)
     const resources = result.resources;
     const markupArray = [];
     // loops through resources
     for (const resource of resources) {
       // calls createResourceElement for each resource
-
       markupArray.push(createResourceElement(resource));
     }
     // appends value to the resources container reverse chronological order
-    $('.card').empty();
-    $('.card').html(markupArray.reverse().join(''));
+    // $('.card').empty();
+    $('.card').append(markupArray.reverse().join(''));
   };
 
   //inside $("") put where the button is
@@ -67,8 +66,8 @@ $(() => {
   // })
 
   //fetches resource object and renders it
-  const createResourceElement = function(resource) {
-    const { title, description, name, image, likes_count } = resource;
+  const createResourceElement = function (resource) {
+    const { title, description, name, image, like_count } = resource;
     //TO DO: add time created
     //TO DO: add escape funtion to comments
     const renderedResource = `
@@ -84,7 +83,7 @@ $(() => {
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
               <a href="#" class="btn btn-primary">Post</a>
-              <span>${likes_count}</span>
+              <span>${like_count}</span>
               <i class="far fa-heart"></i>
           </div>
         </div>
