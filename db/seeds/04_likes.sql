@@ -4,4 +4,4 @@ INSERT INTO likes(
 
 INSERT INTO likes(
 	user_id, resource_id)
-	VALUES (1, 11);
+	VALUES (1, 10);
