@@ -9,20 +9,55 @@ const express = require('express');
 const router = express.Router();
 const dbParams = require('../lib/db.js');
 const request = require('request-promise-native');
+const query = require('../lib/query.js')
+
+//FUNCTIONS
+// const getLikesCount = function (user_id) {
+//   return pool
+//     .query(
+//       `
+//       SELECT COUNT(*)
+//       FROM resources
+//       JOIN likes ON resources.id = resource_id
+//       WHERE user_id = 2;
+//     `
+//     )
+//     .then((res) => res.rows)
+//     .catch((err) => console.log(err));
+// };
+
+// exports.getLikesCount = getLikesCount;
+
+const addLikedResource = function (resource) {
+  return pool
+    .query(
+      `INSERT INTO likes(
+    user_id, resource_id)
+    VALUES (2,1);
+    `
+    )
+    .then((res) => res.rows)
+    .catch((err) => console.log(err));
+};
+exports.addLikedResource = addLikedResource;
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
     db
       .query(
         `
-      SELECT * FROM resources
-      JOIN categories ON categories.id = category_id
-      JOIN users ON users.id = user_id
-      WHERE users.id = 1;`
+      SELECT resources.*, COUNT(likes.id)::integer as like_count
+      FROM resources
+      LEFT JOIN likes On resources.id = likes.resource_id
+      JOIN categories ON categories.id = resources.category_id
+      JOIN users ON users.id = categories.user_id
+      WHERE users.id = 1
+      GROUP BY resources.id;`
       )
       .then((data) => {
         const resources = data.rows;
         // res.send('OK')
+        console.log('===resources===', resources)
         res.json({ resources });
       })
       .catch((err) => {
@@ -34,7 +69,10 @@ module.exports = (db) => {
   router.get('/addResource', (req, res) => {
     res.render('new_resource');
   });
-
+  
+  router.get('/comments', (req, res) => {
+    res.render('new_resource');
+  });
   // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
     const input = req.body;
@@ -97,7 +135,7 @@ module.exports = (db) => {
       });
   });
 
-  //LIKES
+  //LIKES GET ROUTE
   router.get('/likes', (req, res) => {
     db
       .query(
@@ -120,34 +158,7 @@ module.exports = (db) => {
       });
   });
 
-  const getLikesCount = function(user_id) {
-    return pool
-      .query(
-        `
-      SELECT COUNT(*)
-      FROM resources
-      JOIN likes ON resources.id = resource_id
-      WHERE user_id = 2;
-    `
-      )
-      .then((res) => res.rows)
-      .catch((err) => console.log(err));
-  };
 
-  exports.getLikesCount = getLikesCount;
-
-  const addLikedResource = function(resource) {
-    return pool
-      .query(
-        `INSERT INTO likes(
-    user_id, resource_id)
-    VALUES (2,1);
-    `
-      )
-      .then((res) => res.rows)
-      .catch((err) => console.log(err));
-  };
-  exports.addLikedResource = addLikedResource;
 
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
@@ -237,35 +248,6 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
-
-  // const getLikesCount = function(user_id) {
-  //   return pool
-  //     .query(
-  //       `
-  //     SELECT COUNT(*)
-  //     FROM resources
-  //     JOIN likes ON resources.id = resource_id
-  //     WHERE user_id = 2;
-  //   `
-  //     )
-  //     .then((res) => res.rows)
-  //     .catch((err) => console.log(err));
-  // };
-
-  // exports.getLikesCount = getLikesCount;
-
-  // const addLikedResource = function(resource) {
-  //   return pool
-  //     .query(
-  //       `INSERT INTO likes(
-  //   user_id, resource_id)
-  //   VALUES (2,1);
-  //   `
-  //     )
-  //     .then((res) => res.rows)
-  //     .catch((err) => console.log(err));
-  // };
-  // exports.addLikedResource = addLikedResource;
 
   return router;
 };
