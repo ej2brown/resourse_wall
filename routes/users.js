@@ -45,57 +45,53 @@ module.exports = (db) => {
     res.render('new_resource');
   });
 
-  // ADD RESOURCE POST ROUTE
-  router.post('/addResource', (req, res) => {
-    // add logic for IF logged in, otherwise display message 'please login to add resource'
+  // // ADD RESOURCE POST ROUTE
+  // router.post('/addResource', (req, res) => {
+  //   const input = req.body;
 
-    // 1. separate the create a new resource db query into a separate function eg, const createResource = (req, res, categoryId) => { /* copy the full db query here */ }
-    // 2. query db for category by name
-    // 3. in the .then() for that query, if the category exists, use the id on the category and create a new resource by calling createResource(req, res, categoryId)
-    // 4. if the category does not exist, make a new db insert call with the category name, and use RETURNING * at the end of your query to return the category in the then for this db call
-    // 5. in the .then() for your insert category call, create a new resource by calling createResource(req, res, categoryId)
-
-    const input = req.body;
-
-    db.query(`select * from categories where name = '${input.category}';`).then((data) => {
-      if (data.rows[0]) {
-        request(
-          `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
-        ).then((img) => {
-          const parsed = JSON.parse(img);
-          db
-            .query(
-              `INSERT INTO resources(title, category_id,description,image, url)
-            VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
-            )
-            .then(res.redirect('/'))
-            .catch((e) => res.send(e));
-        });
-      } else {
-        console.log('in else');
-        db
-          .query(
-            `INSERT INTO categories(user_id, name)
-                  VALUES(1,'${input.category}')
-                  RETURNING *;`
-          )
-          .then(
-            request(
-              `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
-            ).then((img) => {
-              const parsed = JSON.parse(img);
-              db
-                .query(
-                  `INSERT INTO resources(title, category_id,description,image, url)
-              VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
-                )
-                .then(res.redirect('/'))
-                .catch((e) => res.send(e));
-            })
-          );
-      }
-    });
-  });
+  //   db.query(`select * from categories where name = '${input.category}';`).then((data) => {
+  //     if (data.rows[0]) {
+  //       request(
+  //         `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
+  //       ).then((img) => {
+  //         const parsed = JSON.parse(img);
+  //         console.log(parsed);
+  //         db
+  //           .query(
+  //             `INSERT INTO resources(title, category_id,description,image, url)
+  //           VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
+  //           )
+  //           .then(res.redirect('/'))
+  //           .catch((e) => res.send(e));
+  //       });
+  //     } else {
+  //       console.log('in else');
+  //       db
+  //         .query(
+  //           `INSERT INTO categories(user_id, name)
+  //                 VALUES(1,'${input.category}')
+  //                 RETURNING *;`
+  //         )
+  //         .then(
+  //           request(
+  //             `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
+  //           ).then((img) => {
+  //             const parsed = JSON.parse(img);
+  //             console.log(parsed);
+  //             db
+  //               .query(
+  //                 `INSERT INTO resources(title, category_id,description,image, url)
+  //           VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
+  //               )
+  //               .then(res.redirect('/'))
+  //               .catch((e) => res.send(e));
+  //           })
+  //         )
+  //         .then(res.redirect('/'))
+  //         .catch((e) => res.send(e));
+  //     }
+  //   });
+  // });
 
   //HOME ROUTE
   router.get('/', (req, res) => {

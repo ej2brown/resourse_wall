@@ -19,3 +19,7 @@ INSERT INTO categories
 VALUES
   (1, 'memes');
 
+INSERT INTO categories
+  (user_id, name)
+VALUES
+  (2, 'martial arts');

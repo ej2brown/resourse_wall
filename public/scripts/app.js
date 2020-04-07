@@ -64,7 +64,7 @@ const createResourceElement = function(resource) {
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
-          <img style='height:200px; width: 200px' src='${image}' >
+          <img style='height:100px; width: 100px' src='${image}' >
           <form action="">
               <div class="form-group">
                   <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Add a comment"></textarea>
