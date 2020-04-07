@@ -69,9 +69,9 @@ $(() => {
   //fetches resource object and renders it
   const createResourceElement = function(resource) {
     const { title, description, name, url } = resource;
-    console.log('RESOURCE',resource)
-    const likesCount = getLikesCount(resource);
-    console.log('==GET LIKES COUNT==', likesCount)
+    // console.log('RESOURCE',resource)
+    // const likesCount = getLikesCount(resource);
+    // console.log('==GET LIKES COUNT==', likesCount)
     //TO DO: add time created 
     //TO DO: add escape funtion to comments
     const renderedResource = `

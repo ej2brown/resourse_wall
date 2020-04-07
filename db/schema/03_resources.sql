@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS resources CASCADE;
 CREATE TABLE resources ( 
     id SERIAL PRIMARY KEY NOT NULL,
     category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
