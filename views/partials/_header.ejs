@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand" href="/"><span class="logo-highlight">Resource Wall</span></a>
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <form action='/addResource' method='GET'>
+        <form action='/resources/addResource' method='GET'>
           <button class="nav-link"> Upload A Resource <span class="sr-only">(current)</span></button>
         </form>
         <form action='/categories' method='GET'>
@@ -21,9 +21,9 @@
 
       <!-- Functionality: if a user isn't logged in, display the form below -->
       <!-- If a user is signed in, show their avatar and username -->
-      <form class="form-inline my-2 my-lg-0" method='GET' action='/search' name="searchText">
+      <form class="form-inline my-2 my-lg-0" method='GET' action='/resources/search' name="searchText">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search'
-          action='/searchResults'>
+          action='/resources/search'>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           <i class="fas fa-search"></i>
         </button>
@@ -31,7 +31,7 @@
 
       <!-- Login and Register will show if no users are currently logged in -->
       <!-- On click, it will route them to the correct page -->
-      <form method='GET' action='/login' class="form-inline my-2 my-lg-0">
+      <form method='GET' action='/users/login' class="form-inline my-2 my-lg-0">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
       </form>
 
