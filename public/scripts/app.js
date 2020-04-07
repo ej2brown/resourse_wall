@@ -10,6 +10,8 @@
 // });
 
 $(() => {
+
+  //load all resources
   const loadResources = () => {
     $.ajax({
       url: '/resources',
@@ -23,29 +25,19 @@ $(() => {
   };
   loadResources();
 
-  const loadLikes = () => {
+  //load all liked 
+  const loadLikesCount = () => {
     $.ajax({
       url: '/resources/likes',
       method: 'GET'
     })
       .done((res) => {
-        console.log('RES LIKES=', res);
+        console.log('==LOAD LIKES COUNT===',res)
       })
       .catch((err) => console.log(err));
-  };
-  loadLikes();
+  }
+  loadLikesCount();
 
-  // const loadUsers = () => {
-  //   $.ajax({
-  //     url: "/usersReal",
-  //     method: "GET",
-  //   })
-  //     .done((users) => {
-  //       console.log('===users==',users)
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-  // loadUsers();
 
   // appends an formated array into the resource container
   const renderResources = function(result) {
@@ -83,6 +75,7 @@ $(() => {
     //TO DO: add time created
     //TO DO: add escape funtion to comments
     const renderedResource = `
+
         <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
