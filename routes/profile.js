@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
-    router.get("/profile", (req, res) => {
+
+    router.get("/", (req, res) => {
         db
             .query(`SELECT * FROM users WHERE users.id =1;`)
             .then((data) => {
-                const user = data.rows[0];
-                console.log('=====', user);
-                res.json({ user })
+                const user = data.rows;
+                console.log("BOOP", user)
+                res.render('profile', { user })
             })
             .catch((err) => {
                 //need to add logic to catch error if there are no results and display appropriate message
