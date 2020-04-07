@@ -13,9 +13,9 @@
 $(() => {
   const loadResources = () => {
     $.ajax({
-      url: "/resources",
-      method: "GET",
-    })
+        url: "/resources",
+        method: "GET",
+      })
       .done((res) => {
         console.log(res)
         renderResources(res)
@@ -27,9 +27,9 @@ $(() => {
 
   const loadUsers = () => {
     $.ajax({
-      url: "/profile",
-      method: "GET",
-    })
+        url: "/profile",
+        method: "GET",
+      })
       .done((users) => {
         for (user of users) {
           $("<div>").text(user.name).appendTo($("body"));
@@ -69,10 +69,16 @@ $("").submit(function (event) {
 //fetches resource object and renders it
 const createResourceElement = function (resource) {
   console.log(resource)
-  const { title, description, name, url } = resource;
+  const {
+    title,
+    description,
+    name,
+    url
+  } = resource;
   //TO DO: add time created
   //TO DO: add escape funtion to comments
   const renderedResource = `
+
         <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
@@ -88,6 +94,8 @@ const createResourceElement = function (resource) {
               <i class="far fa-heart"></i>
           </div>
         </div>
+
       `;
+
   return renderedResource;
 };
