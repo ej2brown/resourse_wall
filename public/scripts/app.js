@@ -23,19 +23,29 @@ $(() => {
   };
   loadResources();
 
-  const loadUsers = () => {
+  const loadLikes = () => {
     $.ajax({
-      url: '/profile',
+      url: '/resources/likes',
       method: 'GET'
     })
-      .done((users) => {
-        for (user of users) {
-          $('<div>').text(user.name).appendTo($('body'));
-        }
+      .done((res) => {
+        console.log('RES LIKES=', res);
       })
       .catch((err) => console.log(err));
   };
-  loadUsers();
+  loadLikes();
+
+  // const loadUsers = () => {
+  //   $.ajax({
+  //     url: "/usersReal",
+  //     method: "GET",
+  //   })
+  //     .done((users) => {
+  //       console.log('===users==',users)
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+  // loadUsers();
 
   // appends an formated array into the resource container
   const renderResources = function(result) {
@@ -51,15 +61,28 @@ $(() => {
     $('.card').empty();
     $('.card').html(markupArray.reverse().join(''));
   };
-});
 
-//fetches resource object and renders it
-const createResourceElement = function(resource) {
-  console.log(resource);
-  const { title, description, name, image } = resource;
-  //TO DO: add time created
-  //TO DO: add escape funtion to comments
-  const renderedResource = `
+  //inside $("") put where the button is
+  // $("").submit(function (event) {
+  //   $.ajax({
+  //     url: "",
+  //     method: "POST",
+  //     data: $(this).serialize(),
+  //     success: () => {
+  //       loadResources();
+  //     }
+  //   });
+  // })
+
+  //fetches resource object and renders it
+  const createResourceElement = function(resource) {
+    const { title, description, name, url } = resource;
+    // const likesCount = loadLikesCount(resource);
+    console.log('RESOURCE', resource);
+    // console.log('LIKES COUNT', likesCount)
+    //TO DO: add time created
+    //TO DO: add escape funtion to comments
+    const renderedResource = `
         <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
@@ -76,5 +99,6 @@ const createResourceElement = function(resource) {
           </div>
         </div>
       `;
-  return renderedResource;
-};
+    return renderedResource;
+  };
+});
