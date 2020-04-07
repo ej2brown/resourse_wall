@@ -2,9 +2,14 @@ $card-btn-color: #99B2DD;
 
 .card {
   width: 18rem;
+  height: 100%;
 }
 
 .card .btn {
   color: white;
   background-color: $card-btn-color;
+}
+
+.card img {
+  width: 100%;
 }

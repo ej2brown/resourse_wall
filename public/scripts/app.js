@@ -101,6 +101,7 @@ $(() => {
               <i class="far fa-heart"></i>
           </div>
         </div>
+
       `;
     return renderedResource;
   };
