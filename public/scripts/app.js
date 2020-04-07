@@ -9,43 +9,41 @@
 //   });;
 // });
 
-
 $(() => {
   const loadResources = () => {
     $.ajax({
-      url: "/resources",
-      method: "GET",
+      url: '/resources',
+      method: 'GET'
     })
       .done((res) => {
-        console.log(res)
-        renderResources(res)
+        console.log(res);
+        renderResources(res);
       })
       .catch((err) => console.log(err));
-  }
+  };
   loadResources();
-
 
   const loadUsers = () => {
     $.ajax({
-      url: "/profile",
-      method: "GET",
+      url: '/profile',
+      method: 'GET'
     })
       .done((users) => {
         for (user of users) {
-          $("<div>").text(user.name).appendTo($("body"));
+          $('<div>').text(user.name).appendTo($('body'));
         }
       })
       .catch((err) => console.log(err));
-  }
+  };
   loadUsers();
 
   // appends an formated array into the resource container
-  const renderResources = function (result) {
+  const renderResources = function(result) {
     const resources = result.resources;
     const markupArray = [];
     // loops through resources
     for (const resource of resources) {
-      // calls createResourceElement for each resource  
+      // calls createResourceElement for each resource
 
       markupArray.push(createResourceElement(resource));
     }
@@ -56,17 +54,17 @@ $(() => {
 });
 
 //fetches resource object and renders it
-const createResourceElement = function (resource) {
-  console.log(resource)
-  const { title, description, name, url } = resource;
-  //TO DO: add time created 
+const createResourceElement = function(resource) {
+  console.log(resource);
+  const { title, description, name, image } = resource;
+  //TO DO: add time created
   //TO DO: add escape funtion to comments
   const renderedResource = `
         <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
-          <img style='height:100px; width: 100px' src='${url}' >
+          <img style='height:200px; width: 200px' src='${image}' >
           <form action="">
               <div class="form-group">
                   <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Add a comment"></textarea>

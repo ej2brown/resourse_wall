@@ -7,6 +7,18 @@
 
 const express = require('express');
 const router = express.Router();
+// const request = require('request');
+const request = require('request-promise-native');
+
+// Helper functions
+const createResource = (req, res, categoryId) => {
+  db.query(
+    `INSERT INTO resources(title, category_id,description, url)
+       VALUES('${input.title}','${input.description}','${input.url}');`
+  );
+};
+
+//ROUTES
 
 module.exports = (db) => {
   //CATEGORIES GET route
@@ -37,31 +49,28 @@ module.exports = (db) => {
   router.post('/addResource', (req, res) => {
     // add logic for IF logged in, otherwise display message 'please login to add resource'
 
-    const input = req.body;
-
-    const createResource = (req, res, categoryId) => {
-      db.query(
-        `INSERT INTO resources(title, category_id,description, url)
-         VALUES('${input.title}','${input.description}','${input.url}');`
-
-      );
-    };
-
     // 1. separate the create a new resource db query into a separate function eg, const createResource = (req, res, categoryId) => { /* copy the full db query here */ }
     // 2. query db for category by name
     // 3. in the .then() for that query, if the category exists, use the id on the category and create a new resource by calling createResource(req, res, categoryId)
     // 4. if the category does not exist, make a new db insert call with the category name, and use RETURNING * at the end of your query to return the category in the then for this db call
     // 5. in the .then() for your insert category call, create a new resource by calling createResource(req, res, categoryId)
 
+    const input = req.body;
+
     db.query(`select * from categories where name = '${input.category}';`).then((data) => {
       if (data.rows[0]) {
-        db
-          .query(
-            `INSERT INTO resources(title, category_id,description, url)
-                  VALUES('${input.title}','${data.rows[0].id}','${input.description}','${input.url}');`
-          )
-          .then(res.redirect('/'))
-          .catch((e) => res.send(e));
+        request(
+          `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
+        ).then((img) => {
+          const parsed = JSON.parse(img);
+          db
+            .query(
+              `INSERT INTO resources(title, category_id,description,image, url)
+            VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
+            )
+            .then(res.redirect('/'))
+            .catch((e) => res.send(e));
+        });
       } else {
         console.log('in else');
         db
@@ -70,17 +79,22 @@ module.exports = (db) => {
                   VALUES(1,'${input.category}')
                   RETURNING *;`
           )
-          .then((data) => {
-            db.query(
-              `INSERT INTO resources(title, category_id,description, url)
-                  VALUES('${input.title}','${data.rows[0].id}','${input.description}','${input.url}');`
-            );
-          })
-          .then(res.redirect('/'))
-          .catch((e) => res.send(e));
+          .then(
+            request(
+              `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
+            ).then((img) => {
+              const parsed = JSON.parse(img);
+              db
+                .query(
+                  `INSERT INTO resources(title, category_id,description,image, url)
+              VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
+                )
+                .then(res.redirect('/'))
+                .catch((e) => res.send(e));
+            })
+          );
       }
     });
-
   });
 
   //HOME ROUTE
@@ -109,7 +123,7 @@ module.exports = (db) => {
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-  })
+  });
 
   return router;
 };
