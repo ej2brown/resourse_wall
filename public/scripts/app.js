@@ -33,18 +33,18 @@ $(() => {
   loadResources();
 
   //load all liked 
-  const loadLikesCount = () => {
+  const loadLikeResources = () => {
     $.ajax({
       url: '/resources/likes',
       method: 'GET'
     })
       .done((res) => {
         console.log('res',res)
-        renderResources(res);
+        renderLikes(res);
       })
       .catch((err) => console.log(err));
   }
-  loadLikesCount();
+  loadLikeResources();
 
 const loadRatings = () => {
   $.ajax({
@@ -92,14 +92,15 @@ const loadRatings = () => {
 
   // appends an formated array into the resource container
   const renderLikes = function (result) {
-    const Likes = result.Likes;
+    console.log(result)
+    const Likes = result.resources;
     const markupArray = [];
     // loops through Likes
     for (const like of Likes) {
       // calls createLikeElement for each like
-      markupArray.push(createLikeElement(like));
+      markupArray.push(createLikesElement(like));
     }
-    let posts = $('.like-container').html(markupArray);
+    let posts = $('.likes-container').html(markupArray);
     return posts;
   };
 
@@ -162,15 +163,15 @@ const loadRatings = () => {
 
   };
 
-  const createLikeElement = function (likes) {
+  const createLikesElement = function (likes) {
     const {
       title,
       description,
       name,
       image,
-      like_count
+      likes_count
     } = likes;
-    const renderedlikes = `
+    const renderedLikes = `
     <div class="card p-3">
     <img src='${image}'>
     <div class="card-body">
@@ -184,7 +185,7 @@ const loadRatings = () => {
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
               <a href="#" class="btn btn-primary">Post</a>
-              <span>${like_count} Likes</span>
+              <span>${likes_count} Likes</span>
               <i class="far fa-heart"></i>
               <div class="stars">
               <span class="star">0</span>

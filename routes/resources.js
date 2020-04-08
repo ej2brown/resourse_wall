@@ -17,7 +17,7 @@ module.exports = (db) => {
     db
       .query(
         `
-        SELECT resources.*, users.name, COUNT(likes.id)::integer as like_count
+        SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
         FROM resources
         LEFT JOIN likes On resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
@@ -179,7 +179,7 @@ module.exports = (db) => {
     db
       .query(
         `
-        SELECT resources.*, users.name, COUNT(likes.id)::integer as like_count
+        SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
         FROM resources
         JOIN likes ON resources.id = resource_id
 		    JOIN categories ON categories.id = category_id
