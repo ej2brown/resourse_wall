@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/header.css" type="text/css" />
   <link rel="stylesheet" href="/styles/resource-card.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/categories.css" type="text/css" />
 
   <!-- Google Fonts link -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
@@ -32,23 +33,21 @@
   <main class="container margin-top">
 
     <h1>Categories</h1>
-    <div class="d-flex flex-wrap flex-row justify-content-center">
 
-      <div class="card" style="width: 18rem;">
+      <div class="category-card d-flex flex-wrap flex-row align-items-center">
 
 
         <% categories.forEach((cat) => { %>
 
-        <div class="card" style="width: 18rem;">
-          <%= cat.name %>
-
-
+        <div class="cat-card">
+          <button type="button" class="btn btn-light">
+            <%= cat.name %>
+          </button>
         </div>
         <%}) %>
 
       </div>
 
-    </div>
 
 
     <!-- bootstrap card -->

@@ -19,31 +19,32 @@ $(() => {
       .then((res) => {
         renderResources(res);
       })
-      .then(() => {
-        $.ajax({
-          url: '/resources/likes',
-          method: 'GET'
-        })
-        .then((res) => {
-          renderResources(res);
-        })
-      })
+      // .then(() => {
+      //   $.ajax({
+      //     url: '/resources/likes',
+      //     method: 'GET'
+      //   })
+      //   .then((res) => {
+      //     renderResources(res);
+      //   })
+      // })
       .catch((err) => console.log(err));
   };
   loadResources();
 
-  // //load all liked 
-  // const loadLikesCount = () => {
-  //   $.ajax({
-  //     url: '/resources/likes',
-  //     method: 'GET'
-  //   })
-  //     .done((res) => {
-  //       renderResources(res);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }
-  // loadLikesCount();
+  //load all liked 
+  const loadLikesCount = () => {
+    $.ajax({
+      url: '/resources/likes',
+      method: 'GET'
+    })
+      .done((res) => {
+        console.log('res',res)
+        renderResources(res);
+      })
+      .catch((err) => console.log(err));
+  }
+  loadLikesCount();
 
 const loadRatings = () => {
   $.ajax({
@@ -85,10 +86,23 @@ const loadRatings = () => {
       // calls createResourceElement for each resource
       markupArray.push(createResourceElement(resource));
     }
-    // appends value to the resources container reverse chronological order
-    // $('.card').empty();
-    $('.card').append(markupArray.reverse().join(''));
+    let posts = $('.resource-container').html(markupArray);
+    return posts;
   };
+
+  // appends an formated array into the resource container
+  const renderLikes = function (result) {
+    const Likes = result.Likes;
+    const markupArray = [];
+    // loops through Likes
+    for (const like of Likes) {
+      // calls createLikeElement for each like
+      markupArray.push(createLikeElement(like));
+    }
+    let posts = $('.like-container').html(markupArray);
+    return posts;
+  };
+
 
   //inside $("") put where the button is
   // $("").submit(function (event) {
@@ -104,19 +118,26 @@ const loadRatings = () => {
 
   //fetches resource object and renders it
   const createResourceElement = function (resource) {
-    const { title, description, name, image, like_count } = resource;
-
+    console.log('in createResourceElement',resource)
+    const {
+      title,
+      description,
+      name,
+      image,
+      like_count
+    } = resource;
     //TO DO: add time created
     //TO DO: add escape funtion to comments
     const renderedResource = `
-        <div class="card-body">
-          <h5 class="card-title">${title}</h5>
-          <p class="card-text">${description}</p>
-          <p class="card-text">${name}</p>
-          <img style='height:100px; width: 100px' src='${image}'>
-          <form action="">
+    <div class="card p-3">
+    <img src='${image}'>
+    <div class="card-body">
+          <h5 class="card-title"> ${title} </h5>
+          <p class="card-text"> ${description} </p>
+          <p class="card-text"> ${name} </p>
+          <form method="POST" action="resources/comments" enctype="application/x-www-form-urlencoded" class="resource-comments">
               <div class="form-group">
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Add a comment"></textarea>
+                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input" method="POST"></textarea>
               </div>
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
@@ -133,6 +154,58 @@ const loadRatings = () => {
           </div>
         </div>
       `;
-    return renderedResource;
+
+    // appends the html to an article
+    let $post = $('<article>').addClass('post');
+    let resourceCard = $post.append(renderedResource);
+    return resourceCard;
+
   };
+
+  const createLikeElement = function (likes) {
+    const {
+      title,
+      description,
+      name,
+      image,
+      like_count
+    } = likes;
+    const renderedlikes = `
+    <div class="card p-3">
+    <img src='${image}'>
+    <div class="card-body">
+          <h5 class="card-title"> ${title} </h5>
+          <p class="card-text"> ${description} </p>
+          <p class="card-text"> ${name} </p>
+          <form method="POST" action="likes/comments" enctype="application/x-www-form-urlencoded" class="like-comments">
+              <div class="form-group">
+                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input" method="POST"></textarea>
+              </div>
+          </form>
+          <div class="card-buttons d-flex justify-content-between align-items-center">
+              <a href="#" class="btn btn-primary">Post</a>
+              <span>${like_count} Likes</span>
+              <i class="far fa-heart"></i>
+              <div class="stars">
+              <span class="star">0</span>
+              <span class="star">0</span>
+              <span class="star">0</span>
+              <span class="star">0</span>
+              <span class="star">0</span>
+              </div>
+          </div>
+        </div>
+      `;
+
+    // appends the html to an article
+    let $post = $('<article>').addClass('post');
+    let likesCard = $post.append(renderedLikes);
+    return likesCard;
+
+  };
+
+  //  prevent default submit
+  $(".resource-comments").submit((event) => {
+    event.preventDefault();
+  })
 });
