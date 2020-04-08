@@ -224,5 +224,23 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
+
+  // GET ROUTE FOR COMMENTS
+  router.post('/comments', (req, res) => {
+    const { user_id, resource_id, content } = req.body;
+
+    console.log('=====================')
+    console.log(req);
+    console.log('=====================')
+      db
+      .query(`
+        INSERT INTO comments(user_id, resource_id, content)
+        VALUES($1, $2, $3)`,
+        [user_id, resource_id, content]
+      )
+
+  })
   return router;
-};
+}
+
+
