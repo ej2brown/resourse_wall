@@ -84,8 +84,8 @@ $(() => {
     //TO DO: add escape funtion to comments
     const renderedResource = `
     <div class="card p-3">
-    <img style='height:100px; width: 100px' src='${image}' >
-        <div class="card-body">
+    <img src='${image}'>
+    <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
@@ -103,6 +103,7 @@ $(() => {
 
       `;
 
+    // appends the html to an article
     let $post = $('<article>').addClass('post');
     let resourceCard = $post.append(renderedResource);
     return resourceCard;
