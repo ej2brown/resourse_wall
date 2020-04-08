@@ -10,35 +10,7 @@ const router = express.Router();
 const request = require('request-promise-native');
 const query = require('../lib/query.js')
 
-//FUNCTIONS
-// const getLikesCount = function (user_id) {
-//   return pool
-//     .query(
-//       `
-//       SELECT COUNT(*)
-//       FROM resources
-//       JOIN likes ON resources.id = resource_id
-//       WHERE user_id = 2;
-//     `
-//     )
-//     .then((res) => res.rows)
-//     .catch((err) => console.log(err));
-// };
 
-// exports.getLikesCount = getLikesCount;
-
-// const addLikedResource = function (resource) {
-//   return db
-//     .query(
-//       `INSERT INTO likes(
-//     user_id, resource_id)
-//     VALUES (2,1);
-//     `
-//     )
-//     .then((res) => res.rows)
-//     .catch((err) => console.log(err));
-// };
-// exports.addLikedResource = addLikedResource;
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
