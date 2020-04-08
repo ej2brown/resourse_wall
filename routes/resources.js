@@ -221,8 +221,8 @@ module.exports = (db) => {
     db
       .query(`
           SELECT likes.*, resources. COUNT(resources.id)
-          FROM likes 
-          JOIN resources ON resources.id = resource_id 
+          FROM likes
+          JOIN resources ON resources.id = resource_id
           JOIN users ON users.id = user_id
           WHERE users.id = 2
           GROUP BY likes.id;
@@ -238,34 +238,22 @@ module.exports = (db) => {
       });
   });
 
-  // const getLikesCount = function(user_id) {
-  //   return pool
-  //     .query(
-  //       `
-  //     SELECT COUNT(*)
-  //     FROM resources
-  //     JOIN likes ON resources.id = resource_id
-  //     WHERE user_id = 2;
-  //   `
-  //     )
-  //     .then((res) => res.rows)
-  //     .catch((err) => console.log(err));
-  // };
+  // GET ROUTE FOR COMMENTS
+  router.post('/comments', (req, res) => {
+    const { user_id, resource_id, content } = req.body;
 
-  // exports.getLikesCount = getLikesCount;
+    console.log('=====================')
+    console.log(req);
+    console.log('=====================')
+      db
+      .query(`
+        INSERT INTO comments(user_id, resource_id, content)
+        VALUES($1, $2, $3)`,
+        [user_id, resource_id, content]
+      )
 
-  // const addLikedResource = function(resource) {
-  //   return pool
-  //     .query(
-  //       `INSERT INTO likes(
-  //   user_id, resource_id)
-  //   VALUES (2,1);
-  //   `
-  //     )
-  //     .then((res) => res.rows)
-  //     .catch((err) => console.log(err));
-  // };
-  // exports.addLikedResource = addLikedResource;
-
+  })
   return router;
-};
+}
+
+
