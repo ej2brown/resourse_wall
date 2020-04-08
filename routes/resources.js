@@ -19,7 +19,7 @@ module.exports = (db) => {
         `
         SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
         FROM resources
-        LEFT JOIN likes On resources.id = likes.resource_id
+        LEFT JOIN likes ON resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
         WHERE users.id = 1
