@@ -10,18 +10,18 @@ const router = express.Router();
 const request = require('request-promise-native');
 const query = require('../lib/query.js');
 
-const cookieSession = require('cookie-session');
+// const cookieSession = require('cookie-session');
 
-router.use(
-  cookieSession({
-    name: 'session123',
-    keys: [ 'key' ]
-  })
-);
+// router.use(
+//   cookieSession({
+//     name: 'session123',
+//     keys: [ 'key' ]
+//   })
+// );
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
-    console.log('=====', req.session.session123);
+    // console.log('=====', req.session.session123);
 
     // if (!req.session.session123) {
     //   console.log('in if');
