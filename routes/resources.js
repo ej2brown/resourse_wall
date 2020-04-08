@@ -7,7 +7,6 @@
 
 const express = require('express');
 const router = express.Router();
-const dbParams = require('../lib/db.js');
 const request = require('request-promise-native');
 const query = require('../lib/query.js');
 
@@ -19,36 +18,6 @@ router.use(
     keys: [ 'key' ]
   })
 );
-
-//FUNCTIONS
-// const getLikesCount = function (user_id) {
-//   return pool
-//     .query(
-//       `
-//       SELECT COUNT(*)
-//       FROM resources
-//       JOIN likes ON resources.id = resource_id
-//       WHERE user_id = 2;
-//     `
-//     )
-//     .then((res) => res.rows)
-//     .catch((err) => console.log(err));
-// };
-
-// exports.getLikesCount = getLikesCount;
-
-// const addLikedResource = function (resource) {
-//   return db
-//     .query(
-//       `INSERT INTO likes(
-//     user_id, resource_id)
-//     VALUES (2,1);
-//     `
-//     )
-//     .then((res) => res.rows)
-//     .catch((err) => console.log(err));
-// };
-// exports.addLikedResource = addLikedResource;
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
@@ -63,13 +32,13 @@ module.exports = (db) => {
     db
       .query(
         `
-      SELECT resources.*, COUNT(likes.id)::integer as like_count
-      FROM resources
-      LEFT JOIN likes On resources.id = likes.resource_id
-      JOIN categories ON categories.id = resources.category_id
-      JOIN users ON users.id = categories.user_id
-      WHERE users.id = 1
-      GROUP BY resources.id;`
+        SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
+        FROM resources
+        LEFT JOIN likes On resources.id = likes.resource_id
+        JOIN categories ON categories.id = resources.category_id
+        JOIN users ON users.id = categories.user_id
+        WHERE users.id = 1
+        GROUP BY resources.id, users.name;`
       )
       .then((data) => {
         const resources = data.rows;
@@ -82,14 +51,15 @@ module.exports = (db) => {
       });
   });
 
+  router.get('/comments', (req, res) => {
+    res.render('new_resource');
+  });
+
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
     res.render('new_resource');
   });
 
-  router.get('/comments', (req, res) => {
-    res.render('new_resource');
-  });
   // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
     const input = req.body;
@@ -152,59 +122,6 @@ module.exports = (db) => {
       });
   });
 
-  // ADD RESOURCE GET ROUTE
-  router.get('/addResource', (req, res) => {
-    res.render('new_resource');
-  });
-
-  // ADD RESOURCE POST ROUTE
-  router.post('/addResource', (req, res) => {
-    // add logic for IF logged in, otherwise display message 'please login to add resource'
-
-    const input = req.body;
-
-    const createResource = (req, res, categoryId) => {
-      db.query(
-        `INSERT INTO resources(title, category_id,description, url)
-         VALUES('${input.title}','${input.description}','${input.url}');`
-      );
-    };
-
-    // 1. separate the create a new resource db query into a separate function eg, const createResource = (req, res, categoryId) => { /* copy the full db query here */ }
-    // 2. query db for category by name
-    // 3. in the .then() for that query, if the category exists, use the id on the category and create a new resource by calling createResource(req, res, categoryId)
-    // 4. if the category does not exist, make a new db insert call with the category name, and use RETURNING * at the end of your query to return the category in the then for this db call
-    // 5. in the .then() for your insert category call, create a new resource by calling createResource(req, res, categoryId)
-
-    db.query(`select * from categories where name = '${input.category}';`).then((data) => {
-      if (data.rows[0]) {
-        db
-          .query(
-            `INSERT INTO resources(title, category_id,description, url)
-                  VALUES('${input.title}','${data.rows[0].id}','${input.description}','${input.url}');`
-          )
-          .then(res.redirect('/'))
-          .catch((e) => res.send(e));
-      } else {
-        // console.log('in else');
-        db
-          .query(
-            `INSERT INTO categories(user_id, name)
-                  VALUES(1,'${input.category}')
-                  RETURNING *;`
-          )
-          .then((data) => {
-            db.query(
-              `INSERT INTO resources(title, category_id,description, url)
-                  VALUES('${input.title}','${data.rows[0].id}','${input.description}','${input.url}');`
-            );
-          })
-          .then(res.redirect('/'))
-          .catch((e) => res.send(e));
-      }
-    });
-  });
-
   // SEARCH GET ROUTE
   router.get('/search', (req, res) => {
     const input = req.query.search;
@@ -224,22 +141,53 @@ module.exports = (db) => {
     db
       .query(
         `
-        SELECT resources.*, COUNT(likes.id)::integer as like_count
+        SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
         FROM resources
         JOIN likes ON resources.id = resource_id
-        JOIN users ON users.id = user_id
-        WHERE users.id = 1
-        GROUP BY resources.id;
+		    JOIN categories ON categories.id = category_id
+        JOIN users ON users.id = categories.user_id
+        WHERE likes.user_id = 1
+        GROUP BY resources.id, users.name;
           `
       )
       .then((data) => {
         const resources = data.rows;
         res.json({ resources });
-        // console.log(resources);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
+  });
+
+  router.get('/ratings', (req, res) => {
+    db
+      .query(
+        `SELECT resource_id, ROUND(AVG(star_rating), 1) as star_rating
+        FROM public.ratings
+        GROUP BY resource_id;`
+      )
+      .then((data) => {
+        const resources = data.rows;
+        res.json({ resources });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  // GET ROUTE FOR COMMENTS
+  router.post('/comments', (req, res) => {
+    const { user_id, resource_id, content } = req.body;
+
+    console.log('=====================');
+    console.log(req);
+    console.log('=====================');
+    db.query(
+      `
+        INSERT INTO comments(user_id, resource_id, content)
+        VALUES($1, $2, $3)`,
+      [ user_id, resource_id, content ]
+    );
   });
   return router;
 };

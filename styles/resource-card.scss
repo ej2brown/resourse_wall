@@ -1,10 +1,15 @@
+// Variables
 $card-btn-color: #99B2DD;
 
 .card {
-  width: 18rem;
-  height: 100%;
+  width: 20rem;
+  height: fit-content;
+  border-radius: 10px;
 }
 
+.card-body {
+  height: 100%;
+}
 .card .btn {
   color: white;
   background-color: $card-btn-color;
