@@ -74,7 +74,8 @@ $(() => {
       title,
       description,
       name,
-      image
+      image,
+      like_count
     } = resource;
     // const likesCount = loadLikesCount(resource);
     console.log('RESOURCE', resource);
