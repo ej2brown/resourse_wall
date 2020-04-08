@@ -24,7 +24,7 @@ INSERT INTO resources
 VALUES
   (4,
     'Adorable Pets Image',
-    'Wholesome &&U+1F63B)',    
+    'Wholesome',    
     'https://www.rebgv.org/content/dam/rebgv_org_content/images/strata%20pets.jpg',
     'https://www.rebgv.org/content/dam/rebgv_org_content/images/strata%20pets.jpg'
         );
