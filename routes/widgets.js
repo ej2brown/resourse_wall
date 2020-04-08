@@ -11,7 +11,7 @@ const router = express.Router();
 module.exports = (db) => {
   router.get('/', (req, res) => {
     let query = `SELECT * FROM widgets`;
-    console.log(query);
+    // console.log(query);
     db
       .query(query)
       .then((data) => {
@@ -25,7 +25,7 @@ module.exports = (db) => {
 
   router.get('/b', (req, res) => {
     let query = `SELECT * FROM widgets where name = 'Chains';`;
-    console.log(query);
+    // console.log(query);
     db
       .query(query)
       .then((data) => {
@@ -40,7 +40,7 @@ module.exports = (db) => {
   router.post('/search', (req, res) => {
     let query = `SELECT * FROM widgets
     WHERE NAME = '%;`;
-    console.log(query);
+    // console.log(query);
     db
       .query(query)
       .then((data) => {

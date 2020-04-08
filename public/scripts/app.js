@@ -10,7 +10,6 @@
 // });
 
 $(() => {
-
   //load all resources
   const loadResources = () => {
     $.ajax({
@@ -24,7 +23,7 @@ $(() => {
   };
   loadResources();
 
-  //load all liked 
+  //load all liked
   const loadLikesCount = () => {
     $.ajax({
       url: '/resources/likes',
@@ -34,13 +33,12 @@ $(() => {
         renderResources(res);
       })
       .catch((err) => console.log(err));
-  }
+  };
   loadLikesCount();
 
-
   // appends an formated array into the resource container
-  const renderResources = function (result) {
-    console.log('RESULT', result)
+  const renderResources = function(result) {
+    // console.log('RESULT', result)
     const resources = result.resources;
     const markupArray = [];
     // loops through resources
@@ -66,7 +64,7 @@ $(() => {
   // })
 
   //fetches resource object and renders it
-  const createResourceElement = function (resource) {
+  const createResourceElement = function(resource) {
     const { title, description, name, image, like_count } = resource;
     //TO DO: add time created
     //TO DO: add escape funtion to comments

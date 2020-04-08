@@ -9,7 +9,16 @@ const express = require('express');
 const router = express.Router();
 const dbParams = require('../lib/db.js');
 const request = require('request-promise-native');
-const query = require('../lib/query.js')
+const query = require('../lib/query.js');
+
+const cookieSession = require('cookie-session');
+
+router.use(
+  cookieSession({
+    name: 'session123',
+    keys: [ 'key' ]
+  })
+);
 
 //FUNCTIONS
 // const getLikesCount = function (user_id) {
@@ -43,6 +52,14 @@ const query = require('../lib/query.js')
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
+    console.log('=====', req.session.session123);
+
+    // if (!req.session.session123) {
+    //   console.log('in if');
+    //   res.render('login');
+    //   return;
+    // }
+
     db
       .query(
         `
@@ -57,7 +74,7 @@ module.exports = (db) => {
       .then((data) => {
         const resources = data.rows;
         // res.send('OK')
-        console.log('===resources===', resources)
+        // console.log('===resources===', resources)
         res.json({ resources });
       })
       .catch((err) => {
@@ -83,7 +100,7 @@ module.exports = (db) => {
           `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
         ).then((img) => {
           const parsed = JSON.parse(img);
-          console.log('======', parsed);
+          // console.log('======', parsed);
           db
             .query(
               `INSERT INTO resources(title, category_id,description,image, url)
@@ -93,7 +110,7 @@ module.exports = (db) => {
             .catch((e) => res.send(e));
         });
       } else {
-        console.log('in else');
+        // console.log('in else');
         db
           .query(
             `INSERT INTO categories(user_id, name)
@@ -105,7 +122,7 @@ module.exports = (db) => {
               `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
             ).then((img) => {
               const parsed = JSON.parse(img);
-              console.log(parsed);
+              // console.log(parsed);
               db
                 .query(
                   `INSERT INTO resources(title, category_id,description,image, url)
@@ -169,7 +186,7 @@ module.exports = (db) => {
           .then(res.redirect('/'))
           .catch((e) => res.send(e));
       } else {
-        console.log('in else');
+        // console.log('in else');
         db
           .query(
             `INSERT INTO categories(user_id, name)
@@ -218,7 +235,7 @@ module.exports = (db) => {
       .then((data) => {
         const resources = data.rows;
         res.json({ resources });
-        console.log(resources);
+        // console.log(resources);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
