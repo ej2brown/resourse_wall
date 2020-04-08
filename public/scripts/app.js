@@ -10,37 +10,74 @@
 // });
 
 $(() => {
-
   //load all resources
   const loadResources = () => {
     $.ajax({
       url: '/resources',
       method: 'GET'
     })
-      .done((res) => {
+      .then((res) => {
         renderResources(res);
+      })
+      .then(() => {
+        $.ajax({
+          url: '/resources/likes',
+          method: 'GET'
+        })
+        .then((res) => {
+          renderResources(res);
+        })
       })
       .catch((err) => console.log(err));
   };
   loadResources();
 
-  //load all liked 
-  const loadLikesCount = () => {
-    $.ajax({
-      url: '/resources/likes',
-      method: 'GET'
-    })
-      .done((res) => {
-        renderResources(res);
-      })
-      .catch((err) => console.log(err));
-  }
-  loadLikesCount();
+  // //load all liked 
+  // const loadLikesCount = () => {
+  //   $.ajax({
+  //     url: '/resources/likes',
+  //     method: 'GET'
+  //   })
+  //     .done((res) => {
+  //       renderResources(res);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
+  // loadLikesCount();
 
+const loadRatings = () => {
+  $.ajax({
+    url: "/resources/ratings",
+    method: "GET"
+  }).then((res) => {
+    return res;
+  })
+    .catch((err) => console.log(err));
+  }
+  loadRatings();
+
+  $('.stars').on('click', function (e) {
+    const star_rating = $(e.target).length; //try value?
+    console.log(star_rating)
+    alert(`You gave this resourse ${star_rating} star(s)!`)
+    $('.stars').children().css("background-color", "red");
+    postRating();
+  })
+
+  const postRating = function (rate, resource_id) {
+    const data = {};
+    data[resource_id] = rate;
+    $.ajax({
+      url: "/resources/ratings",
+      method: "POST",
+      data: data
+    }).then((res) => {
+      console.log('finished ratings post request')
+    })
+  }
 
   // appends an formated array into the resource container
   const renderResources = function (result) {
-    console.log('RESULT', result)
     const resources = result.resources;
     const markupArray = [];
     // loops through resources
@@ -68,6 +105,7 @@ $(() => {
   //fetches resource object and renders it
   const createResourceElement = function (resource) {
     const { title, description, name, image, like_count } = resource;
+
     //TO DO: add time created
     //TO DO: add escape funtion to comments
     const renderedResource = `
@@ -85,6 +123,13 @@ $(() => {
               <a href="#" class="btn btn-primary">Post</a>
               <span>${like_count}</span>
               <i class="far fa-heart"></i>
+              <div class="stars">
+              <div class="star">0</div>
+              <div class="star">0</div>
+              <div class="star">0</div>
+              <div class="star">0</div>
+              <div class="star">0</div>
+              </div>
           </div>
         </div>
       `;
