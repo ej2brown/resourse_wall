@@ -121,14 +121,14 @@ const loadRatings = () => {
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
               <a href="#" class="btn btn-primary">Post</a>
-              <span>${like_count}</span>
+              <span>${like_count} Likes</span>
               <i class="far fa-heart"></i>
               <div class="stars">
-              <div class="star">0</div>
-              <div class="star">0</div>
-              <div class="star">0</div>
-              <div class="star">0</div>
-              <div class="star">0</div>
+              <span class="star">0</span>
+              <span class="star">0</span>
+              <span class="star">0</span>
+              <span class="star">0</span>
+              <span class="star">0</span>
               </div>
           </div>
         </div>
