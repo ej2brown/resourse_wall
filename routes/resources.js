@@ -87,23 +87,21 @@ module.exports = (db) => {
                   VALUES(1,'${input.category}')
                   RETURNING *;`
           )
-          .then(
-            request(
-              `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
-            ).then((img) => {
-              const parsed = JSON.parse(img);
-              // console.log(parsed);
-              db
-                .query(
-                  `INSERT INTO resources(title, category_id,description,image, url)
-            VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
-                )
-                .then(res.redirect('/'))
-                .catch((e) => res.send(e));
-            })
-          )
-          .then(res.redirect('/'))
-          .catch((e) => res.send(e));
+          .then((data) => {
+            const newCatId = data.rows[0].id;
+            return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`)
+              .then((img) => {
+                const parsed = JSON.parse(img);
+                db
+                  .query(
+                    `INSERT INTO resources(title, category_id,description,image, url)
+            VALUES('${input.title}','${newCatId}','${input.description}','${parsed.image}','${input.url}');`
+                  )
+                  .then(() => res.redirect('/'))
+                  .catch((e) => res.send(e));
+              })
+              .catch((e) => res.send(e));
+          });
       }
     });
   });
