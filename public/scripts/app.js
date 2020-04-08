@@ -18,7 +18,6 @@ $(() => {
         method: 'GET'
       })
       .done((res) => {
-        console.log(res);
         renderResources(res);
       })
       .catch((err) => console.log(err));
@@ -33,6 +32,7 @@ $(() => {
       })
       .done((res) => {
         console.log('==LOAD LIKES COUNT===', res)
+        renderResources(res);
       })
       .catch((err) => console.log(err));
   }
@@ -46,7 +46,6 @@ $(() => {
     // loops through resources
     for (const resource of resources) {
       // calls createResourceElement for each resource
-
       markupArray.push(createResourceElement(resource));
     }
     // appends value to the resources container reverse chronological order
@@ -98,9 +97,12 @@ $(() => {
                   <i class="far fa-heart"></i>
               </div>
           </form>
+          <div class="card-buttons d-flex justify-content-between align-items-center">
+              <a href="#" class="btn btn-primary">Post</a>
+              <span>${like_count}</span>
+              <i class="far fa-heart"></i>
+          </div>
         </div>
-        </div>
-
       `;
 
     // appends the html to an article
