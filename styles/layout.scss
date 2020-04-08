@@ -3,35 +3,56 @@
 body {
   background-color: #eee;
 }
+
 body h1 {
   color: #395eca;
   font-weight: bold;
 }
+
 .container {
   width: 90%;
   margin: auto;
 }
+
+.index-container {
+  width: 95%;
+  margin: auto;
+}
+
 .resources-container {
   margin-top: 80px;
 }
+
 .margin-top {
   margin-top: 80px;
 }
+
+/* LOGIN PAGE STYLES */
 .test {
   width: 45%;
 }
+
 .test .btn {
   background-color: #395eca;
   color: #fff;
 }
+
 .login-page {
   margin-right: 60px;
 }
+
 .side-test {
   width: 50%;
   height: calc(100vh - 100px);
   background-color: #395eca;
 }
+
 .side-test img {
   width: 100%;
 }
+
+
+footer{
+  height: 70px;
+}
+
