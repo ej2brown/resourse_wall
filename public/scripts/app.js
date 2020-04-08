@@ -30,7 +30,7 @@ $(() => {
   };
   loadResources();
 
-  //load all liked 
+  //load all liked
   const loadLikeResources = () => {
     $.ajax({
       url: '/resources/likes',
@@ -75,9 +75,9 @@ $(() => {
   }
   // buildArray()
 
-
+//star rating
   $('.stars').on('click', function (e) {
-    const star_rating = $(e.target).name; //try value?
+    const star_rating = $(e.target).name; 
     const resource_id = $('.stars').attr("data-id");
     alert(`You gave this resource ${star_rating} star(s)!`)
     // $('.stars').children().css("background-color", "red");
@@ -88,21 +88,19 @@ $(() => {
     const data = {};
     data[resource_id] = star_rating;
     $.ajax({
-      url: "/resources/ratings",
-      method: "POST",
+      url: '/resources/ratings',
+      method: 'POST',
       data: data
     }).then((res) => {
-      console.log('finished ratings post request')
-    })
-  }
+      console.log('finished ratings post request');
+    });
+  };
 
   // appends an formated array into the resource container
-  const renderResources = function (result) {
+  const renderResources = function(result) {
     const resources = result.resources;
     const markupArray = [];
-    // loops through resources
     for (const resource of resources) {
-      // calls createResourceElement for each resource
       markupArray.push(createResourceElement(resource));
     }
     let posts = $('.resource-container').html(markupArray);
@@ -113,9 +111,7 @@ $(() => {
   const renderLikes = function (result) {
     const Likes = result.resources;
     const markupArray = [];
-    // loops through Likes
     for (const like of Likes) {
-      // calls createLikeElement for each like
       markupArray.push(createLikesElement(like));
     }
     let posts = $('.likes-container').html(markupArray);
@@ -136,18 +132,11 @@ $(() => {
   })
 
   //fetches resource object and renders it
+  //TO DO: add time created
+  //TO DO: add escape funtion to comments
   const createResourceElement = function (resource) {
-    console.log('in createResourceElement', resource)
-    const {
-      resource_id,
-      title,
-      description,
-      name,
-      image,
-      like_count
-    } = resource;
-    //TO DO: add time created
-    //TO DO: add escape funtion to comments
+    const {resource_id, title, description, name, image, likes_count, rating} = resource;
+    console.log(resource)
     const renderedResource = `
     <div class="card p-3">
     <img src='${image}'>
@@ -162,9 +151,10 @@ $(() => {
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
               <a href="#" class="btn btn-primary">Post</a>
-              <span>${like_count} Likes</span>
+              <span>${likes_count} Likes</span>
               <i class="far fa-heart"></i>
-              <div class="stars"> 
+              <div class="ratings">
+              <span>${rating} Stars</span>
               <span class="star data-id="${resource_id}" name='1'>0</span>
               <span class="star">0</span>
               <span class="star">0</span>
@@ -179,17 +169,10 @@ $(() => {
     let $post = $('<article>').addClass('post');
     let resourceCard = $post.append(renderedResource);
     return resourceCard;
-
   };
 
-  const createLikesElement = function (likes) {
-    const {
-      title,
-      description,
-      name,
-      image,
-      likes_count
-    } = likes;
+  const createLikesElement = function(likes) {
+    const { title, description, name, image, likes_count } = likes;
     const renderedLikes = `
     <div class="card p-3">
     <img src='${image}'>
@@ -221,11 +204,10 @@ $(() => {
     let $post = $('<article>').addClass('post');
     let likesCard = $post.append(renderedLikes);
     return likesCard;
-
   };
 
   //  prevent default submit
-  $(".resource-comments").submit((event) => {
+  $('.resource-comments').submit((event) => {
     event.preventDefault();
-  })
+  });
 });

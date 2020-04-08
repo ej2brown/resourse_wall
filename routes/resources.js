@@ -8,27 +8,30 @@
 const express = require('express');
 const router = express.Router();
 const request = require('request-promise-native');
-const query = require('../lib/query.js')
-
-
+const query = require('../lib/query.js');
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
+    // if (!req.session.session123) {
+    //   console.log('in if');
+    //   res.render('login');
+    //   return;
+    // }
     db
       .query(
         `
-        SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
+        SELECT resources.*, users.name, COUNT(likes.like_status) as likes_count
         FROM resources
         LEFT JOIN likes ON resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
-        WHERE users.id = 1
-        GROUP BY resources.id, users.name;`
+        GROUP BY resources.id, users.name
+		    ORDER BY resources.id;`
       )
       .then((data) => {
         const resources = data.rows;
         // res.send('OK')
-        console.log('===resources===', resources)
+        // console.log('===resources===', resources)
         res.json({ resources });
       })
       .catch((err) => {
@@ -39,7 +42,7 @@ module.exports = (db) => {
   router.get('/comments', (req, res) => {
     res.render('new_resource');
   });
-  
+
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
     res.render('new_resource');
@@ -55,7 +58,7 @@ module.exports = (db) => {
           `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
         ).then((img) => {
           const parsed = JSON.parse(img);
-          console.log('======', parsed);
+          // console.log('======', parsed);
           db
             .query(
               `INSERT INTO resources(title, category_id,description,image, url)
@@ -65,30 +68,28 @@ module.exports = (db) => {
             .catch((e) => res.send(e));
         });
       } else {
-        console.log('in else');
+        // console.log('in else');
         db
           .query(
             `INSERT INTO categories(user_id, name)
                   VALUES(1,'${input.category}')
                   RETURNING *;`
           )
-          .then(
-            request(
-              `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`
-            ).then((img) => {
-              const parsed = JSON.parse(img);
-              console.log(parsed);
-              db
-                .query(
-                  `INSERT INTO resources(title, category_id,description,image, url)
-            VALUES('${input.title}','${data.rows[0].id}','${input.description}','${parsed.image}','${input.url}');`
-                )
-                .then(res.redirect('/'))
-                .catch((e) => res.send(e));
-            })
-          )
-          .then(res.redirect('/'))
-          .catch((e) => res.send(e));
+          .then((data) => {
+            const newCatId = data.rows[0].id;
+            return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`)
+              .then((img) => {
+                const parsed = JSON.parse(img);
+                db
+                  .query(
+                    `INSERT INTO resources(title, category_id,description,image, url)
+            VALUES('${input.title}','${newCatId}','${input.description}','${parsed.image}','${input.url}');`
+                  )
+                  .then(() => res.redirect('/'))
+                  .catch((e) => res.send(e));
+              })
+              .catch((e) => res.send(e));
+          });
       }
     });
   });
@@ -106,59 +107,6 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
-
-//   // ADD RESOURCE GET ROUTE
-//   router.get('/addResource', (req, res) => {
-//     res.render('new_resource');
-//   });
-
-//   // ADD RESOURCE POST ROUTE
-//   router.post('/addResource', (req, res) => {
-//     // add logic for IF logged in, otherwise display message 'please login to add resource'
-// console.log('in addresource')
-//     const input = req.body;
-
-//     const createResource = (req, res, categoryId) => {
-//       db.query(
-//         `INSERT INTO resources(title, category_id,description, url)
-//          VALUES('${input.title}','${input.description}','${input.url}');`
-//       );
-//     };
-
-//     // 1. separate the create a new resource db query into a separate function eg, const createResource = (req, res, categoryId) => { /* copy the full db query here */ }
-//     // 2. query db for category by name
-//     // 3. in the .then() for that query, if the category exists, use the id on the category and create a new resource by calling createResource(req, res, categoryId)
-//     // 4. if the category does not exist, make a new db insert call with the category name, and use RETURNING * at the end of your query to return the category in the then for this db call
-//     // 5. in the .then() for your insert category call, create a new resource by calling createResource(req, res, categoryId)
-
-//     db.query(`select * from categories where name = '${input.category}';`).then((data) => {
-//       if (data.rows[0]) {
-//         db
-//           .query(
-//             `INSERT INTO resources(title, category_id,description, url)
-//                   VALUES('${input.title}','${data.rows[0].id}','${input.description}','${input.url}');`
-//           )
-//           .then(res.redirect('/'))
-//           .catch((e) => res.send(e));
-//       } else {
-//         console.log('in else');
-//         db
-//           .query(
-//             `INSERT INTO categories(user_id, name)
-//                   VALUES(1,'${input.category}')
-//                   RETURNING *;`
-//           )
-//           .then((data) => {
-//             db.query(
-//               `INSERT INTO resources(title, category_id,description, url)
-//                   VALUES('${input.title}','${data.rows[0].id}','${input.description}','${input.url}');`
-//             );
-//           })
-//           .then(res.redirect('/'))
-//           .catch((e) => res.send(e));
-//       }
-//     });
-//   });
 
   // SEARCH GET ROUTE
   router.get('/search', (req, res) => {
@@ -211,24 +159,21 @@ module.exports = (db) => {
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-  })
+  });
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
     const { user_id, resource_id, content } = req.body;
 
-    console.log('=====================')
+    console.log('=====================');
     console.log(req);
-    console.log('=====================')
-      db
-      .query(`
+    console.log('=====================');
+    db.query(
+      `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3)`,
-        [user_id, resource_id, content]
-      )
-
-  })
+      [ user_id, resource_id, content ]
+    );
+  });
   return router;
-}
-
-
+};
