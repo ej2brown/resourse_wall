@@ -21,9 +21,30 @@ router.use(
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
-    db
-      .query(
-        `
+    if (!req.session.email) {
+      db
+        .query(
+          `
+          SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
+          FROM resources
+          LEFT JOIN likes On resources.id = likes.resource_id
+          JOIN categories ON categories.id = resources.category_id
+          JOIN users ON users.id = categories.user_id
+          GROUP BY resources.id, users.name;`
+        )
+        .then((data) => {
+          const resources = data.rows;
+          res.json({ resources });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+    }
+
+    if (req.session.email) {
+      db
+        .query(
+          `
         SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
         FROM resources
         LEFT JOIN likes On resources.id = likes.resource_id
@@ -31,14 +52,17 @@ module.exports = (db) => {
         JOIN users ON users.id = categories.user_id
         WHERE users.email = '${req.session.email}'
         GROUP BY resources.id, users.name;`
-      )
-      .then((data) => {
-        const resources = data.rows;
-        res.json({ resources });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
+        )
+        .then((data) => {
+          const resources = data.rows;
+          // res.send('OK')
+          // console.log('===resources===', resources)
+          res.json({ resources });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+    }
   });
 
   router.get('/comments', (req, res) => {
@@ -154,7 +178,7 @@ module.exports = (db) => {
         JOIN likes ON resources.id = resource_id
 		    JOIN categories ON categories.id = category_id
         JOIN users ON users.id = categories.user_id
-        WHERE likes.user_id = 1
+        WHERE users.email = '${req.session.email}'
         GROUP BY resources.id, users.name;
           `
       )
@@ -185,17 +209,27 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
-    const { user_id, resource_id, content } = req.body;
-
-    // console.log('=====================');
-    console.log(req);
-    // console.log('=====================');
-    db.query(
-      `
+    // const { user_id, resource_id, user_input } = req.body;
+    const content = req.body['user-input'];
+    console.log('=====================');
+    console.log(req.body);
+    console.log('=====================');
+    db
+      .query(
+        `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3)`,
-      [ user_id, resource_id, content ]
-    );
+        [ 1, 1, content ]
+      )
+      .then((data) => {
+        console.log('inserted comment');
+        // res.sendStatus(200)
+        // res.end()
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
   });
+
   return router;
 };
