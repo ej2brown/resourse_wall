@@ -73,6 +73,7 @@ module.exports = (db) => {
   router.get('/addResource', (req, res) => {
     if (!req.session.email) {
       res.render('login');
+      return;
     }
 
     res.render('new_resource');
