@@ -9,6 +9,7 @@ $card-btn-color: #99B2DD;
 
 .card-body {
   height: 100%;
+  padding: 16;
 }
 .card .btn {
   color: white;
@@ -17,4 +18,39 @@ $card-btn-color: #99B2DD;
 
 .card img {
   width: 100%;
+  border-top-right-radius: inherit;
+  border-top-left-radius: inherit;
+
 }
+
+.card-buttons {
+  margin-top: 15px;
+}
+
+// STAR RATING
+// .star {
+//   margin: 5px;
+//   color: gray;
+// }
+.icon::before {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.star::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f005';
+}
+
+.star:hover {
+  color: goldenrod;
+}
+
+
+
+
+
