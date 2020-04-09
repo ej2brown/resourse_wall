@@ -143,7 +143,7 @@ module.exports = (db) => {
     }
     Promise.all(queryArr)
       .then((data) => {
-        const user = data[3].rows[0];
+        const user = data[data.length - 1].rows[0];
         res.render('profile', { user });
         return;
       })
