@@ -5,9 +5,9 @@ $(() => {
   //load all resources
   const loadResources = () => {
     $.ajax({
-        url: '/resources',
-        method: 'GET'
-      })
+      url: '/resources',
+      method: 'GET'
+    })
       .then((res) => {
         renderResources(res);
         resources = res.resources;
@@ -78,9 +78,9 @@ $(() => {
   //load all liked
   const loadLikeResources = () => {
     $.ajax({
-        url: '/resources/likes',
-        method: 'GET'
-      })
+      url: '/resources/likes',
+      method: 'GET'
+    })
       .done((res) => {
         renderLikes(res);
         return loadRatings();
@@ -91,13 +91,13 @@ $(() => {
 
   const loadRatings = () => {
     $.ajax({
-        url: "/resources/ratings",
-        method: "GET"
-      }).then((res) => {
-        ratings = res.resources;
-        buildArray()
-        return res;
-      })
+      url: "/resources/ratings",
+      method: "GET"
+    }).then((res) => {
+      ratings = res.resources;
+      buildArray()
+      return res;
+    })
       .catch((err) => console.log(err));
   }
   // loadRatings()
@@ -209,33 +209,33 @@ $(() => {
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
-          </header>
-          <form class="resource-comments">
-              <div class="form-group">
-                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input"></textarea>
-                  <button class="btn btn-primary" type="submit">Post</button>
-              </div>
-              <button type ="button" data-toggle="collapse" data-target="#comments">Comments</button>
-              <div id="comments">
-                <p>test</p>
-              </div>
-
-          </form>
-          <div class="card-buttons d-flex justify-content-between align-items-center">
-          <div>
-          <span>${likes_count} Likes</span>
-          <i class="far fa-heart"></i>
+        </header>
+        <form class="resource-comments">
+          <div class="form-group">
+              <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input"></textarea>
+              <button class="btn btn-primary" type="submit">Post</button>
           </div>
-              <div class="ratings">
+          <button type ="button" data-toggle="collapse" data-target="#comments-${id}">Comments</button>
+          <div id="comments-${id}">
+              <p>test</p>
+          </div>
+        </form>
+          <div class="card-buttons d-flex justify-content-between align-items-center">
+            <div>
+              <span>${likes_count} Likes</span>
+              <i class="far fa-heart id="hearts-${id}"></i>
+            </div>
+            <div class="ratings" id ="stars-${id}">
               <span>${rating} Stars</span>
-              <span class="star data-id="${id}" name='1'></span>
-              <span class="star"></span>
-              <span class="star"></span>
-              <span class="star"></span>
-              <span class="star"></span>
-              </div>
+                <span class="star" value = "1"></span>
+                <span class="star" value = "2"></span>
+                <span class="star" value = "3"></span>
+                <span class="star" value = "4"></span>
+                <span class="star" value = "5"></span>
+            </div>
           </div>
         </div>
+      </div>
       `;
 
     // appends the html to an article
