@@ -109,6 +109,22 @@ module.exports = (db) => {
                   .catch((e) => res.send(e));
               });
           });
+          // .then((data) => {
+          //   console.log('====', data);
+          //   const newCatId = data.rows[0].id;
+          //   return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`)
+          //     .then((img) => {
+          //       const parsed = JSON.parse(img);
+          //       db
+          //         .query(
+          //           `INSERT INTO resources(title, category_id,description,image, url)
+          //   VALUES('${input.title}','${newCatId}','${input.description}','${parsed.image}','${input.url}');`
+          //         )
+          //         .then(() => res.redirect('/'))
+          //         .catch((e) => res.send(e));
+          //     })
+          //     .catch((e) => res.send(e));
+          // });
         }
       });
   });
