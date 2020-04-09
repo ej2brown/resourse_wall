@@ -25,12 +25,14 @@ module.exports = (db) => {
       db
         .query(
           `
-          SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
-          FROM resources
-          LEFT JOIN likes On resources.id = likes.resource_id
-          JOIN categories ON categories.id = resources.category_id
-          JOIN users ON users.id = categories.user_id
-          GROUP BY resources.id, users.name;`
+          SELECT resources.*, users.name, COUNT(likes.resource_id) as likes_count, ROUND(AVG(ratings.star_rating),1) as star_rating
+        FROM resources
+        LEFT JOIN likes On resources.id = likes.resource_id
+        JOIN categories ON categories.id = resources.category_id
+        JOIN users ON users.id = categories.user_id
+	LEFT JOIN ratings ON resources.id = ratings.resource_id     
+        GROUP BY resources.id, users.name
+		ORDER BY resources.id;`
         )
         .then((data) => {
           const resources = data.rows;
@@ -66,7 +68,21 @@ module.exports = (db) => {
   });
 
   router.get('/comments', (req, res) => {
-    res.render('new_resource');
+    // res.render('new_resource');
+    db
+    .query(
+      `SELECT *
+        FROM comments;`
+        ) 
+        .then((data) => {
+          const comments = data.rows;
+          console.log('comments', comments)
+          res.json({ comments });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+      
   });
 
   // ADD RESOURCE GET ROUTE
@@ -195,20 +211,29 @@ module.exports = (db) => {
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
     // const { user_id, resource_id, user_input } = req.body;
-    const content = req.body['user-input'];
+    // const content = req.body['user-input'];
     console.log('=====================');
     console.log(req.body);
+    const obj = req.body
+    let resource_id = 0;
+    for(key in obj) {
+       resource_id = key;
+    }
+    // const resource_id = req.body[Object.keys(req.body)]
+    const content = req.body[resource_id]
     console.log('=====================');
+    console.log('id',resource_id)
+    console.log('content',content)
     db
       .query(
         `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3)`,
-        [ 1, 1, content ]
+        [ 1, resource_id, content ]
       )
-      .then((data) => {
+      .then(() => {
         console.log('inserted comment');
-        // res.sendStatus(200)
+        res.sendStatus(200)
         // res.end()
       })
       .catch((err) => {
