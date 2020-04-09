@@ -1,0 +1,27 @@
+.profile-container form {
+  padding: 4.3rem;
+  border-radius: 25px;
+  background: #F8F8F8;
+  background-color: white;
+  box-shadow: 2px 2px 10px lightgrey;
+  z-index: 1;
+}
+
+.profile-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-content .form-group {
+  width: 100%;
+
+}
+
+.profile-content button {
+  width: fit-content;
+  background-color: #395eca;
+  color: #fff;
+}
+

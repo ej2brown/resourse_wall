@@ -1,17 +1,19 @@
 // Variables
 $card-btn-color: #99B2DD;
 
-.card {
-  width: 20rem;
-  height: fit-content;
-  border-radius: 10px;
+.card:hover {
+  border: 1px solid darkgray;
+  box-shadow: 3px 3px 10px darkgray;
 }
 
 .card-body {
   height: 100%;
   padding: 16;
 }
+
+
 .card .btn {
+  margin-top: 15px;
   color: white;
   background-color: $card-btn-color;
 }
@@ -28,10 +30,6 @@ $card-btn-color: #99B2DD;
 }
 
 // STAR RATING
-// .star {
-//   margin: 5px;
-//   color: gray;
-// }
 .icon::before {
   display: inline-block;
   font-style: normal;
@@ -51,6 +49,26 @@ $card-btn-color: #99B2DD;
 }
 
 
+// CARD COLUMNS RESPONSIVE DESIGN
+// mobile size isn't working
+@media only screen and (min-width: 320px) {
+  .card-columns {
+    column-count: 2;
+    display: inline-block;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .card-columns {
+    column-count: 3;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .card-columns {
+    column-count: 4;
+  }
+}
 
 
 

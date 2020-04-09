@@ -32,12 +32,11 @@
   <script type="text/javascript" src="/scripts/app.js"></script>
 <body>
   <%- include('partials/_header') %>
-  <main class="profile-container d-flex flex-row">
-
+  <main class="container margin-top profile-container">
 
     <form action='/users/profile' method='POST'>
-
-        <div class="profile-content d-flex flex-column">
+      <h1>Profile</h1>
+        <div class="profile-content">
           <div class="form-group">
             <label for="formGroupExampleInput2">Name: <%= user.name %></label>
             <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input" name ='name'>
@@ -60,7 +59,11 @@
           </div>
       </div>
     </form>
+
+
   </main>
+
+
 
     <!-- Bootstrap JS -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
