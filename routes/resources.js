@@ -163,17 +163,29 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
-    const { user_id, resource_id, content } = req.body;
-
+    // const { user_id, resource_id, user_input } = req.body;
+  const content = req.body['user-input'];
     console.log('=====================');
-    console.log(req);
+    console.log(req.body);
     console.log('=====================');
     db.query(
       `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3)`,
-      [ user_id, resource_id, content ]
-    );
-  });
+      [1, 1, content]
+    )
+      .then((data) => {
+        console.log('inserted comment');
+        // res.sendStatus(200)
+        // res.end()
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+    
+  })
+
+
+
   return router;
 };
