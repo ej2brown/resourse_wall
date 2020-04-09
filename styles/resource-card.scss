@@ -1,10 +1,17 @@
 // Variables
 $card-btn-color: #99B2DD;
 
+.card:hover {
+  border: 1px solid darkgray;
+  box-shadow: 3px 3px 10px darkgray;
+}
+
 .card-body {
   height: 100%;
   padding: 16;
 }
+
+
 .card .btn {
   margin-top: 15px;
   color: white;
