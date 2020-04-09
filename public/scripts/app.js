@@ -274,11 +274,11 @@ $(() => {
           </form>
           <form>
 
-              <span class="icon star"></span>
-              <span class="icon star"></span>
-              <span class="icon star"></span>
-              <span class="icon star"></span>
-              <span class="icon star"></span>
+              <span class="icon star1"></span>
+              <span class="icon star2"></span>
+              <span class="icon star3"></span>
+              <span class="icon star4"></span>
+              <span class="icon star5"></span>
               </div>
 
           </form>
@@ -289,6 +289,11 @@ $(() => {
     let likesCard = $post.append(renderedLikes);
     return likesCard;
   };
+
+  $('span').click(() => {
+    alert('test')
+    $('.star1').addClass('.star-rating')
+  })
 
   //  prevent default submit
   $('.resource-comments').submit((event) => {

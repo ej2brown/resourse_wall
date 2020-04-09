@@ -29,7 +29,7 @@ $card-btn-color: #99B2DD;
   margin-top: 15px;
 }
 
-// STAR RATING
+//STAR RATING
 .icon::before {
   display: inline-block;
   font-style: normal;
@@ -44,7 +44,11 @@ $card-btn-color: #99B2DD;
   content: '\f005';
 }
 
-.star:hover {
+// .star:hover {
+//   color: goldenrod;
+// }
+
+.star-rating {
   color: goldenrod;
 }
 
