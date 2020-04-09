@@ -145,7 +145,8 @@ const createResourceElement = function (resource) {
     name,
     image,
     likes_count,
-    rating
+    rating,
+    url
   } = resource;
   const renderedResource = `
     <div class="card p-3">

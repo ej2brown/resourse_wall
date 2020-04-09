@@ -213,20 +213,12 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
-    // const { user_id, resource_id, user_input } = req.body;
-    // const content = req.body['user-input'];
-    console.log('=====================');
-    console.log(req.body);
     const obj = req.body
     let resource_id = 0;
     for(key in obj) {
        resource_id = key;
     }
-    // const resource_id = req.body[Object.keys(req.body)]
     const content = req.body[resource_id]
-    console.log('=====================');
-    console.log('id',resource_id)
-    console.log('content',content)
     db
       .query(
         `
@@ -237,7 +229,6 @@ module.exports = (db) => {
       .then(() => {
         console.log('inserted comment');
         res.sendStatus(200)
-        // res.end()
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
