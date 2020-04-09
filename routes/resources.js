@@ -34,8 +34,6 @@ module.exports = (db) => {
       )
       .then((data) => {
         const resources = data.rows;
-        // res.send('OK')
-        // console.log('===resources===', resources)
         res.json({ resources });
       })
       .catch((err) => {
@@ -63,6 +61,9 @@ module.exports = (db) => {
     }
 
     const input = req.body;
+    var urlForAPI = req.body.url.replace('http://', '').replace('https://', '').split(/[/?#]/)[0];
+
+    console.log('====', urlForAPI);
 
     db
       .query(
@@ -71,7 +72,9 @@ module.exports = (db) => {
       )
       .then((data) => {
         if (data.rows[0]) {
-          request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=${input.url}`).then((img) => {
+          request(
+            `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://${urlForAPI}`
+          ).then((img) => {
             const parsed = JSON.parse(img);
             // console.log('======', parsed);
             console.log(data.rows[0]);
@@ -84,7 +87,6 @@ module.exports = (db) => {
               .catch((e) => res.send(e));
           });
         } else {
-          console.log('in else');
           db.query(`select * from users where email = '${req.session.email}'`).then((user) => {
             db
               .query(
@@ -93,9 +95,10 @@ module.exports = (db) => {
                     RETURNING *;`
               )
               .then((data) => {
-                console.log('above newcatid', data.rows[0]);
                 const newCatId = data.rows[0].id;
-                return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=${input.url}`)
+                return request(
+                  `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://=${urlForAPI}`
+                )
                   .then((img) => {
                     const parsed = JSON.parse(img);
                     db
@@ -109,22 +112,6 @@ module.exports = (db) => {
                   .catch((e) => res.send(e));
               });
           });
-          // .then((data) => {
-          //   console.log('====', data);
-          //   const newCatId = data.rows[0].id;
-          //   return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`)
-          //     .then((img) => {
-          //       const parsed = JSON.parse(img);
-          //       db
-          //         .query(
-          //           `INSERT INTO resources(title, category_id,description,image, url)
-          //   VALUES('${input.title}','${newCatId}','${input.description}','${parsed.image}','${input.url}');`
-          //         )
-          //         .then(() => res.redirect('/'))
-          //         .catch((e) => res.send(e));
-          //     })
-          //     .catch((e) => res.send(e));
-          // });
         }
       });
   });
