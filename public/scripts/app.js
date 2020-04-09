@@ -17,15 +17,14 @@ const loadResources = () => {
       resources = res.resources;
       loadRatings((r) => {
         ratings = r;
-        console.log(r);
         buildArray();
         renderResources(res)
+
         const $comments = $('.resource-comments')
         $comments.submit((event) => {
           event.preventDefault(); //  prevent default submit
           // console.log($comments.serialize())
           const resource_id = event.target.attributes[1].value;
-          // console.log('event test',event.target.attributes[1].value)
           // const resource_id = $('#comment').attr("data-id");
           const data = {};
           data[resource_id] = $(`[data-id="${resource_id}"]`).val();
@@ -66,15 +65,6 @@ const loadResources = () => {
           })
             .catch((err) => console.log(err));
         });
-      })
-
-      const $comments = $(".heart")
-      $comments.on("click", (event) => {
-        console.log('HERE')
-        alert("You gave this resource a heart!")
-        event.preventDefault();
-        const star_rating = $(event.target).name;
-        const resource_id = event.target.attributes[1].value;
       })
 
       // // star rating
@@ -210,7 +200,6 @@ const renderLikes = function (result) {
 //TO DO: add escape funtion to comments
 //TO DO: get ratings to not be unefined
 const createResourceElement = function (resource) {
-
   // console.log('==>',resource.)
   // debugger
   const {
@@ -312,7 +301,7 @@ const createLikesElement = function (likes) {
   return likesCard;
 };
 
-//  prevent default submit
-$('.resource-comments').submit((event) => {
-  event.preventDefault();
-});
+// //  prevent default submit
+// $('.resource-comments').submit((event) => {
+//   event.preventDefault();
+// });
