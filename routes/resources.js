@@ -21,18 +21,18 @@ router.use(
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
-    if (!req.session.email) {
+    if (!req.session.id) {
       db
         .query(
           `
-          SELECT resources.*, users.name, COUNT(likes.resource_id) as likes_count, ROUND(AVG(ratings.star_rating),1) as star_rating
+        SELECT resources.*, users.name, COUNT(likes.resource_id) as likes_count, ROUND(AVG(ratings.star_rating),1) as star_rating
         FROM resources
         LEFT JOIN likes On resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
-	LEFT JOIN ratings ON resources.id = ratings.resource_id     
+	      LEFT JOIN ratings ON resources.id = ratings.resource_id     
         GROUP BY resources.id, users.name
-		ORDER BY resources.id;`
+		    ORDER BY resources.id;`
         )
         .then((data) => {
           const resources = data.rows;
@@ -43,7 +43,7 @@ module.exports = (db) => {
         });
     }
 
-    if (req.session.email) {
+    if (req.session.id) {
       db
         .query(
           `
@@ -52,7 +52,7 @@ module.exports = (db) => {
         LEFT JOIN likes On resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
-        WHERE users.email = '${req.session.email}'
+        WHERE users.id = '${req.session.id}'
         GROUP BY resources.id, users.name;`
         )
         .then((data) => {
@@ -87,15 +87,16 @@ module.exports = (db) => {
 
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
-    if (!req.session.email) {
+    if (!req.session.id) {
       res.render('login');
+      return;
     }
     res.render('new_resource');
   });
 
   // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
-    if (!req.session.email) {
+    if (!req.session.id) {
       res.render('login');
     }
 
@@ -106,8 +107,8 @@ module.exports = (db) => {
 
     db
       .query(
-        `select *,categories.id from categories join users on users.id = categories.user_id where categories.name = '${input.category}' and users.email='${req
-          .session.email}';`
+        `select *,categories.id from categories join users on users.id = categories.user_id where categories.name = '${input.category}' and users.id='${req
+          .session.id}';`
       )
       .then((data) => {
         if (data.rows[0]) {
@@ -126,7 +127,7 @@ module.exports = (db) => {
               .catch((e) => res.send(e));
           });
         } else {
-          db.query(`select * from users where email = '${req.session.email}'`).then((user) => {
+          db.query(`select * from users where id = '${req.session.id}'`).then((user) => {
             db
               .query(
                 `INSERT INTO categories(user_id, name)
@@ -136,7 +137,7 @@ module.exports = (db) => {
               .then((data) => {
                 const newCatId = data.rows[0].id;
                 return request(
-                  `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://=${urlForAPI}`
+                  `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://${urlForAPI}`
                 )
                   .then((img) => {
                     const parsed = JSON.parse(img);
@@ -159,7 +160,9 @@ module.exports = (db) => {
   router.get('/search', (req, res) => {
     const input = req.query.search;
     db
-      .query(`SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%';`)
+      .query(
+        `SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%' or categories.name LIKE '%${input}%';`
+      )
       .then((data) => {
         const resources = data.rows;
         res.render('search_results', { resources });
@@ -179,7 +182,7 @@ module.exports = (db) => {
         JOIN likes ON resources.id = resource_id
 		    JOIN categories ON categories.id = category_id
         JOIN users ON users.id = categories.user_id
-        WHERE users.email = '${req.session.email}'
+        WHERE users.id = '${req.session.id}'
         GROUP BY resources.id, users.name;
           `
       )

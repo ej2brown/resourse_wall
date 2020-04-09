@@ -15,13 +15,16 @@
         <form action='/categories' method='GET'>
           <button class="nav-link"> Categories <span class="sr-only">(current)</span></button>
         </form>
+        <form action='/users/profile' method='GET'>
+          <button class="nav-link"> My Profile <span class="sr-only">(current)</span></button>
+        </form>
 
 
       </ul>
 
       <!-- Functionality: if a user isn't logged in, display the form below -->
       <form class="form-inline my-2 my-lg-0" method='GET' action='/resources/search' name="searchText">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search'
+        <input class="form-control mr-sm-2" type="search" placeholder="Search title/category" aria-label="Search" name='search'
         action='/resources/search'>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           <i class="fas fa-search"></i>

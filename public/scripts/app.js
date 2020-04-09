@@ -1,240 +1,228 @@
+
+
 $(() => {
-  let resources = [];
-  let ratings = [];
-
-  //load all resources
-  const loadResources = () => {
-    $.ajax({
-      url: '/resources',
-      method: 'GET'
-    })
-      .then((res) => {
-        resources = res.resources;
-        loadRatings((r) => {
-          ratings = r;
-          console.log(r);
-          buildArray();
-          renderResources(res)
-          const $comments = $('.resource-comments')
-          $comments.submit((event) => {
-            console.log($comments[0])
-            console.log($comments.serialize())
-            console.log(event)
-            // const id = $("#id")
-            const resource_id = event.target.attributes[1].value;
-            // console.log('event test',event.target.attributes[1].value)
-            // console.log('id',id)
-            event.preventDefault(); //  prevent default submit
-            // for (let 1 = 0; 
-            // const resource_id = $('#comment').attr("data-id");
-            const data = {};
-            data[resource_id] = $(`[data-id="${resource_id}"]`).val();
-            console.log('====', data)
-            alert('HELLO')
-            $.ajax({
-              url: "/resources/comments",
-              method: "POST",
-              data: $.param(data),
-              success: (data) => {
-
-
-                const loadComments = () => {
-                  console.log('BOOP')
-                  $.ajax({
-                    url: '/resources/comments',
-                    method: 'GET'
-                  })
-                    .then((res) => {
-                      let resource_id = 0;
-                      let user_id = '';
-                      let content = '';
-                      let comments = res.comments;
-                      for (comment of comments) {
-                       
-                        user_id = comment.user_id;
-                        content = comment.content;
-                        resource_id = comment.resource_id;
-                        comment = `"<p>${user_id} says: ${content}</p>"`
-                        // debugger
-                        let commentResourceCard = `#view-comments-${resource_id}`
-                        $(commentResourceCard).append(comment)
-                        // $("<p>${user_id} says: ${content}</p>").appendTo("#view-comments-1"); //${resource_id}
-                        console.log('sent')
-                      }
-                    })
-                }
-                loadComments() 
-
-              }
-            }).then(() => {
-              // loadResources()
-
-
-            })
-              .catch((err) => console.log(err));
-          });
-        })
-
-        //post a comment
-        
-        // // star rating
-        // $('.stars-form').on('click', function (e) {
-        //   const star_rating = $(e.target).name;
-        //   const resource_id = $('.stars-form').attr("data-id");
-        //   alert(`You gave this resource ${star_rating} star(s)!`)
-        //   // $('.stars').children().css("background-color", "red");
-        //   postRating(star_rating, resource_id);
-        // })
-
-        // 5-stars icon
-        // const $star_rating = $('.stars-form .fa');
-
-        // const SetRatingStar = function () {
-        //   return $star_rating.each(function () {
-        //     if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating-form'))) {
-        //       return $(this).removeClass('fa-star-o').addClass('fa-star');
-        //     } else {
-        //       return $(this).removeClass('fa-star').addClass('fa-star-o');
-        //     }
-        //   });
-        // };
-        // SetRatingStar();
-
-        // $star_rating.on('click', function () {
-        //   const star_rating = $(e.target).name;
-        //   const resource_id = $('.stars-form').attr("data-id");
-        //   alert(`You gave this resource ${star_rating} star(s)!`)
-        //   postRating(star_rating, resource_id);
-        //   $star_rating.siblings('input.rating-value').val($(this).data('rating-form'));
-        //   return SetRatingStar();
-        // });
-
-
-        return loadLikeResources();
-      })
-      .then((res) => {
-        // buildArray()
-      })
-      .catch((err) => console.log(err));
-  };
   loadResources();
+})
 
 
-  //load all liked
-  const loadLikeResources = () => {
-    $.ajax({
-      url: '/resources/likes',
-      method: 'GET'
-    })
-      .done((res) => {
-        renderLikes(res);
-        return //loadRatings();
+let resources = [];
+let ratings = [];
+
+const loadResources = () => {
+  $.ajax({
+    url: '/resources',
+    method: 'GET'
+  })
+    .then((res) => {
+      resources = res.resources;
+      loadRatings((r) => {
+        ratings = r;
+        console.log(r);
+        buildArray();
+        renderResources(res)
+        const $comments = $('.resource-comments')
+        $comments.submit((event) => {
+          event.preventDefault(); //  prevent default submit
+          // console.log($comments.serialize())
+          const resource_id = event.target.attributes[1].value;
+          // console.log('event test',event.target.attributes[1].value)
+          // const resource_id = $('#comment').attr("data-id");
+          const data = {};
+          data[resource_id] = $(`[data-id="${resource_id}"]`).val();
+          // alert('HELLO')
+
+          $.ajax({
+            url: "/resources/comments",
+            method: "POST",
+            data: $.param(data),
+            success: (data) => {
+              const loadComments = () => {
+                $.ajax({
+                  url: '/resources/comments',
+                  method: 'GET'
+                })
+                  .then((res) => {
+                    let resource_id = 0;
+                    let user_id = '';
+                    let content = '';
+                    let comments = res.comments;
+                    for (comment of comments) {
+                      user_id = comment.user_id;
+                      content = comment.content;
+                      resource_id = comment.resource_id;
+                      comment = `"<p>${user_id} says: ${content}</p>"`
+                      // debugger
+                      let commentResourceCard = `#view-comments-${resource_id}`
+                      $(commentResourceCard).append(comment)
+                      // $("<p>${user_id} says: ${content}</p>").appendTo("#view-comments-1"); //${resource_id}
+                      console.log('sent')
+                    }
+                  })
+              }
+              loadComments()
+            }
+          }).then(() => {
+
+          })
+            .catch((err) => console.log(err));
+        });
       })
-      .catch((err) => console.log(err));
-  }
-  // loadLikeResources()
 
+      const $comments = $(".heart")
+      $comments.on("click", (event) => {
+        console.log('HERE')
+        alert("You gave this resource a heart!")
+        event.preventDefault();
+        const star_rating = $(event.target).name;
+        const resource_id = event.target.attributes[1].value;
+      })
 
-  const loadRatings = (cb) => {
-    $.ajax({
-      url: "/resources/ratings",
-      method: "GET"
-    }).then((res) => {
-      ratings = res.resources;
-      cb(res.resources);
-      return res;
+      // // star rating
+      // $('.stars-form').on('click', function (e) {
+      //   const star_rating = $(e.target).name;
+      //   const resource_id = $('.stars-form').attr("data-id");
+      //   alert(`You gave this resource ${star_rating} star(s)!`)
+      //   // $('.stars').children().css("background-color", "red");
+      //   postRating(star_rating, resource_id);
+      // })
+
+      // 5-stars icon
+      // const $star_rating = $('.stars-form .fa');
+
+      // const SetRatingStar = function () {
+      //   return $star_rating.each(function () {
+      //     if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating-form'))) {
+      //       return $(this).removeClass('fa-star-o').addClass('fa-star');
+      //     } else {
+      //       return $(this).removeClass('fa-star').addClass('fa-star-o');
+      //     }
+      //   });
+      // };
+      // SetRatingStar();
+
+      // $star_rating.on('click', function () {
+      //   const star_rating = $(e.target).name;
+      //   const resource_id = $('.stars-form').attr("data-id");
+      //   alert(`You gave this resource ${star_rating} star(s)!`)
+      //   postRating(star_rating, resource_id);
+      //   $star_rating.siblings('input.rating-value').val($(this).data('rating-form'));
+      //   return SetRatingStar();
+      // });
+      return loadLikeResources();
     })
-      .catch((err) => console.log(err));
-  }
-  // loadRatings()
+    .then((res) => {
+    })
+    .catch((err) => console.log(err));
+};
 
-  //adds star ratings to the resource object
-  const buildArray = () => {
-    // loadRatings()
-    console.log(resources)
-    console.log(ratings)
 
-    for (const resource of resources) {
-      for (const rating of ratings) {
-        if (rating.resource_id === resource.id) {
-          resource.rating = rating.star_rating;
-          console.log('FOUND')
-          //TO DO display avg rating in resource
 
-          // $("<div>").text(rating.star_rating).appendTo($('.ratings').attr("data-id")) //;(`.${resource.id}`))
-          // $('.ratings').attr("data-id").html(rating.star_rating);
-          // let HTMLRating = $post.append(rating.star_rating)
-          // let HTMLRating = $post.append(posts);
-        }
+//load all liked
+const loadLikeResources = () => {
+  $.ajax({
+    url: '/resources/likes',
+    method: 'GET'
+  })
+    .done((res) => {
+      renderLikes(res);
+      return
+    })
+    .catch((err) => console.log(err));
+}
+
+
+const loadRatings = (cb) => {
+  $.ajax({
+    url: "/resources/ratings",
+    method: "GET"
+  }).then((res) => {
+    ratings = res.resources;
+    cb(res.resources);
+    return res;
+  })
+    .catch((err) => console.log(err));
+}
+
+//adds star ratings to the resource object
+const buildArray = () => {
+  for (const resource of resources) {
+    for (const rating of ratings) {
+      if (rating.resource_id === resource.id) {
+        resource.rating = rating.star_rating;
+        //TO DO display avg rating in resource
+
+        // $("<div>").text(rating.star_rating).appendTo($('.ratings').attr("data-id")) //;(`.${resource.id}`))
+        // $('.ratings').attr("data-id").html(rating.star_rating);
+        // let HTMLRating = $post.append(rating.star_rating)
+        // let HTMLRating = $post.append(posts);
       }
     }
   }
-  // buildArray()
+}
 
-  // //star rating
-  // $('.stars').on('click', function (e) {
-  //   const star_rating = $(e.target).name;
-  //   const resource_id = $('.stars').attr("data-id");
-  //   alert(`You gave this resource ${star_rating} star(s)!`)
-  //   // $('.stars').children().css("background-color", "red");
-  //   postRating(star_rating, resource_id);
-  // })
+// //star rating
+// $('.stars').on('click', function (e) {
+//   const star_rating = $(e.target).name;
+//   const resource_id = $('.stars').attr("data-id");
+//   alert(`You gave this resource ${star_rating} star(s)!`)
+//   // $('.stars').children().css("background-color", "red");
+//   postRating(star_rating, resource_id);
+// })
 
-  // const postRating = function (star_rating, resource_id) {
-  //   const data = {};
-  //   data[resource_id] = star_rating;
-  //   $.ajax({
-  //     url: '/resources/ratings',
-  //     method: 'POST',
-  //     data: data
-  //   }).then((res) => {
-  //     console.log('finished ratings post request');
-  //   });
-  // };
+// const postRating = function (star_rating, resource_id) {
+//   const data = {};
+//   data[resource_id] = star_rating;
+//   $.ajax({
+//     url: '/resources/ratings',
+//     method: 'POST',
+//     data: data
+//   }).then((res) => {
+//     console.log('finished ratings post request');
+//   });
+// };
 
-  // appends an formated array into the resource container
-  const renderResources = function (result) {
-    const resources = result.resources;
-    const markupArray = [];
-    for (const resource of resources) {
-      console.log(resource);
-      markupArray.push(createResourceElement(resource));
-    }
-    let posts = $('.resource-container').html(markupArray);
-    return posts;
-  };
+// appends an formated array into the resource container
+const renderResources = function (result) {
+  const resources = result.resources;
+  const markupArray = [];
+  for (const resource of resources) {
+    markupArray.push(createResourceElement(resource));
+  }
+  let posts = $('.resource-container').html(markupArray);
+  return posts;
+};
 
-  // appends an formated array into the resource container
-  const renderLikes = function (result) {
-    const Likes = result.resources;
-    const markupArray = [];
-    for (const like of Likes) {
-      markupArray.push(createLikesElement(like));
-    }
-    let posts = $('.likes-container').html(markupArray);
-    return posts;
-  };
-
+// appends an formated array into the resource container
+const renderLikes = function (result) {
+  const Likes = result.resources;
+  const markupArray = [];
+  for (const like of Likes) {
+    markupArray.push(createLikesElement(like));
+  }
+  let posts = $('.likes-container').html(markupArray);
+  return posts;
+};
 
 
-  //fetches resource object and renders it
-  //TO DO: add time created
-  //TO DO: add escape funtion to comments
-  //TO DO: get ratings to not be unefined
-  const createResourceElement = function (resource) {
-    
-    // console.log('==>',resource.)
-    // debugger
-    const {
-      id,
-      title,
-      description,
-      name,
-      image,
-      likes_count,
-      rating
-    } = resource;
-    const renderedResource = `
+
+//fetches resource object and renders it
+//TO DO: add time created
+//TO DO: add escape funtion to comments
+//TO DO: get ratings to not be unefined
+const createResourceElement = function (resource) {
+
+  // console.log('==>',resource.)
+  // debugger
+  const {
+    id,
+    title,
+    description,
+    name,
+    image,
+    likes_count,
+    rating
+  } = resource;
+  const renderedResource = `
     <div class="card p-3">
       <img src='${image}'>
       <div class="card-body">
@@ -255,9 +243,9 @@ $(() => {
           </div>
         </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
-            <div>
+            <div id="heart">
               <span data-id="${id}">${likes_count} Likes</span>
-              <i class="far fa-heart id="hearts-${id}"></i>
+              <i class="far fa-heart" id="hearts-${id}"></i>
             </div>
             <div class="ratings" id ="stars-${id}">
               <span data-id="${id}">${rating} Stars</span>
@@ -272,21 +260,21 @@ $(() => {
       </div>
       `;
 
-    // appends the html to an article
-    let $post = $('<article>').addClass('post');
-    let resourceCard = $post.append(renderedResource);
-    return resourceCard;
-  };
+  // appends the html to an article
+  let $post = $('<article>').addClass('post');
+  let resourceCard = $post.append(renderedResource);
+  return resourceCard;
+};
 
-  const createLikesElement = function (likes) {
-    const {
-      title,
-      description,
-      name,
-      image,
-      likes_count
-    } = likes;
-    const renderedLikes = `
+const createLikesElement = function (likes) {
+  const {
+    title,
+    description,
+    name,
+    image,
+    likes_count
+  } = likes;
+  const renderedLikes = `
     <div class="card">
     <img src='${image}'>
     <div class="card-body">
@@ -318,16 +306,13 @@ $(() => {
           </form>
           </div>
       `;
-    // appends the html to an article
-    let $post = $('<article>').addClass('post');
-    let likesCard = $post.append(renderedLikes);
-    return likesCard;
-  };
+  // appends the html to an article
+  let $post = $('<article>').addClass('post');
+  let likesCard = $post.append(renderedLikes);
+  return likesCard;
+};
 
-  //  prevent default submit
-  $('.resource-comments').submit((event) => {
-    event.preventDefault();
-  });
-
-
+//  prevent default submit
+$('.resource-comments').submit((event) => {
+  event.preventDefault();
 });

@@ -57,7 +57,8 @@ module.exports = (db) => {
           return;
         } else {
           //Set cookie
-          req.session.email = email;
+          req.session.id = user.rows[0].id;
+
           res.render('index');
         }
       })
@@ -98,11 +99,12 @@ module.exports = (db) => {
     db
       .query(
         `INSERT INTO users(name,email,username,password)
-          VALUES('${req.body.name}','${req.body.email}','${req.body.username}','${req.body.password}');`
+          VALUES('${req.body.name}','${req.body.email}','${req.body.username}','${req.body.password}')
+          RETURNING *;`
       )
-      .then(() => {
+      .then((data) => {
         //set cookie
-        req.session.email = req.body.email;
+        req.session.id = data.rows[0].id;
         res.render('index');
       })
       .catch((e) => e);
@@ -110,10 +112,15 @@ module.exports = (db) => {
 
   //PROFILE route GET
   router.get('/profile', (req, res) => {
+    if (!req.session.id) {
+      res.render('login');
+      return;
+    }
+
     db
-      .query(`SELECT * FROM users WHERE users.email = '${req.session.email}';`)
+      .query(`SELECT * FROM users WHERE users.id = '${req.session.id}';`)
       .then((data) => {
-        const user = data.rows;
+        const user = data.rows[0];
         // console.log('BOOP', user);
         res.render('profile', { user });
       })
@@ -126,18 +133,19 @@ module.exports = (db) => {
   //PROFILE route POST
   router.post('/profile', (req, res) => {
     //TO DO: form for edit then return to profile page
-    const option = req.body.edit;
-    const field = '';
-    if (req.body[edit] === name) field = name;
-    if (req.body[edit] === username) field = username;
-    if (req.body[edit] === email) field = email;
-    db
-      .query(`UPDATE users SET $1 = $2 WHERE users.id = 1;`, [ field, option ])
+    const queryArr = [];
+    for (let field in req.body) {
+      if (req.body[field]) {
+        queryArr.push(
+          db.query(`UPDATE users SET ${field} = '${req.body[field]}' WHERE users.id = '${req.session.id}' returning *;`)
+        );
+      }
+    }
+    Promise.all(queryArr)
       .then((data) => {
-        const user = data.rows[0];
-        // console.log('=====', user);
-        return res.redirect('/profile', { user }); //assuming edit.ejs
-        /*note: ejs file would need user.name, user.username, user.email and profile pic */
+        const user = data[3].rows[0];
+        res.render('profile', { user });
+        return;
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
