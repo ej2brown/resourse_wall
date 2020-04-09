@@ -74,7 +74,6 @@ module.exports = (db) => {
     if (!req.session.email) {
       res.render('login');
     }
-
     res.render('new_resource');
   });
 
@@ -137,20 +136,6 @@ module.exports = (db) => {
               });
           });
         }
-      });
-  });
-
-  // SEARCH GET ROUTE
-  router.get('/search', (req, res) => {
-    const input = req.query.search;
-    db
-      .query(`SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%';`)
-      .then((data) => {
-        const resources = data.rows;
-        res.render('search_results', { resources });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
       });
   });
 
