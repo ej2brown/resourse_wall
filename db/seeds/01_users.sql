@@ -9,7 +9,7 @@ INSERT INTO users (name, email, username, password)
 VALUES ('Chris', 'chris@c.com', 'chris3', 'password');
 
 INSERT INTO users (name, email, username, password)
-VALUES ('Danielle', 'danielle@c.com', 'danielle4', 'password');
+VALUES ('Danielle', 'danielle@d.com', 'danielle4', 'password');
 
 INSERT INTO users (name, email, username, password)
-VALUES ('Edward', 'edward@b.com', 'Edward5', 'password');
+VALUES ('Edward', 'edward@e.com', 'Edward5', 'password');
