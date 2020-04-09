@@ -69,7 +69,9 @@ $(() => {
 
         return loadLikeResources();
       })
-
+      .then((res) => {
+        buildArray()
+      })
       .catch((err) => console.log(err));
   };
   loadResources();
@@ -122,6 +124,16 @@ $(() => {
       }
     }
   }
+  // buildArray()
+
+//star rating
+  $('.stars').on('click', function (e) {
+    const star_rating = $(e.target).name;
+    const resource_id = $('.stars').attr("data-id");
+    alert(`You gave this resource ${star_rating} star(s)!`)
+    // $('.stars').children().css("background-color", "red");
+    postRating(star_rating, resource_id);
+  })
 
   const postRating = function (star_rating, resource_id) {
     const data = {};
@@ -190,32 +202,28 @@ const createResourceElement = function(resource) {
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
-        </header>
-          <form class="resource-comments" id="anything">
-            <div class="form-group">
-                <textarea class="form-control" id="comment" rows="3" 
-                placeholder="Add a comment" name="user-input"></textarea>
-            </div>
-            <div id="toggle-comments"> </div>
-            <div class="card-buttons d-flex justify-content-between align-items-center">
-              <button class="btn btn-primary post-comment" data-id="${id}" type="submit">Post</button>
-            </div>
+          <form method="POST" action="resources/comments" enctype="application/x-www-form-urlencoded" class="resource-comments">
+              <div class="form-group">
+                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input" method="POST"></textarea>
+                  <button class="btn btn-primary" type="submit">Post</button>
+              </div>
           </form>
-          <form class"likes-form">
-            <span>${likes_count} Likes</span>
-            <i class="far fa-heart"></i>
-          </form>
-          <span>${rating} Star Rating</span>
-          <form class="ratings-form" data-id="${id}" id="ratings">
-            <span class="star">0</span>
-            <span class="star">0</span>
-            <span class="star">0</span> 
-            <span class="star">0</span>
-            <span class="star">0</span>
-          </form>
-      </div>
-    </div>
-  `;
+          <div class="card-buttons d-flex justify-content-between align-items-center">
+          <div>
+          <span>${likes_count} Likes</span>
+          <i class="far fa-heart"></i>
+          </div>
+              <div class="ratings">
+              <span>${rating} Stars</span>
+              <span class="star data-id="${id}" name='1'></span>
+              <span class="star"></span>
+              <span class="star"></span>
+              <span class="star"></span>
+              <span class="star"></span>
+              </div>
+          </div>
+        </div>
+      `;
 
   // appends the html to an article
   let $post = $('<article>').addClass('post');
@@ -223,10 +231,10 @@ const createResourceElement = function(resource) {
   return resourceCard;
 };
 
-const createLikesElement = function (likes) {
-  const { title, description, name, image, likes_count } = likes;
-  const renderedLikes = `
-    <div class="card p-3">
+  const createLikesElement = function(likes) {
+    const { title, description, name, image, likes_count } = likes;
+    const renderedLikes = `
+    <div class="card">
     <img src='${image}'>
     <div class="card-body">
           <h5 class="card-title"> ${title} </h5>
@@ -236,25 +244,34 @@ const createLikesElement = function (likes) {
               <div class="form-group">
                   <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input" method="POST"></textarea>
               </div>
+              <button class="btn btn-primary" type="submit">Post</button>
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
-              <a href="#" class="btn btn-primary">Post</a>
-              <span>${likes_count} Likes</span>
-              <i class="far fa-heart"></i>
-              <div class="stars">
-              <span class="star">0</span>
-              <span class="star">0</span>
-              <span class="star">0</span>
-              <span class="star">0</span>
-              <span class="star">0</span>
+          <div class = "likes">
+          <span>${likes_count} Likes</span>
+          <i class="far fa-heart"></i>
+          </div>
+          <div class="stars">
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              <span class="icon star"></span>
               </div>
           </div>
         </div>
       `;
 
-  // appends the html to an article
-  let $post = $('<article>').addClass('post');
-  let likesCard = $post.append(renderedLikes);
-  return likesCard;
-};
+    // appends the html to an article
+    let $post = $('<article>').addClass('post');
+    let likesCard = $post.append(renderedLikes);
+    return likesCard;
+  };
+
+  //  prevent default submit
+  $('.resource-comments').submit((event) => {
+    event.preventDefault();
+  });
+
+
 });

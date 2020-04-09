@@ -33,18 +33,18 @@
   <div class="container">
     <div class="d-flex flex-wrap flex-row justify-content-between margin-top">
 
-      <div class="card" style="width: 18rem;">
-          <% resources.forEach((res) => { %>
+      <div class="card">
+        <% resources.forEach((res) => { %>
 
-            <div class="card" style="width: 18rem;">
+        <div class="card">
+          <img src='<%= res.url   %>'>
 
-          <p> Title: <%= res.title %>  </p>
-          <p> Description: <%= res.description %>  </p>
-          <p> Category: <%= res.name %>  </p>
-          <img style='height:50px; width: 50px' src='<%= res.url   %>' >
+          <p> Title: <%= res.title %> </p>
+          <p> Description: <%= res.description %> </p>
+          <p> Category: <%= res.name %> </p>
 
-            </div>
-          <%}) %>
+        </div>
+        <%}) %>
 
       </div>
     </div>
