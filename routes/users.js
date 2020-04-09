@@ -58,11 +58,18 @@ module.exports = (db) => {
         } else {
           //Set cookie
           req.session.email = email;
-          // console.log('======', req.session.email);
+          console.log('======', req.session.email);
           res.render('index');
         }
       })
       .catch((e) => res.send(e));
+  });
+
+  // POST /logout
+  router.get('/logout', (req, res) => {
+    // delete current session cookie
+    req.session = null;
+    res.redirect(`/`);
   });
 
   //REGISTER route GET

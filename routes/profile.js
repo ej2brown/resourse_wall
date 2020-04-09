@@ -19,8 +19,6 @@
 //     return router;
 // };
 
-
-
 // //     router.post("/profile", (req, res) => {
 // //         //TO DO: form for edit then return to profile page
 // //         const option = req.body.edit
@@ -32,7 +30,7 @@
 // //             .query(`UPDATE users SET $1 = $2 WHERE users.id = 1;`, [field, option])
 // //             .then((data) => {
 // //                 const user = data.rows[0];
-// //                 console.log('=====', user);
+// //
 // //                 return res.redirect('/profile', { user }); //assuming edit.ejs
 // //                 /*note: ejs file would need user.name, user.username, user.email and profile pic */
 // //             })
