@@ -103,7 +103,6 @@ module.exports = (db) => {
           RETURNING *;`
       )
       .then((data) => {
-        console.log(data);
         //set cookie
         req.session.id = data.rows[0].id;
         res.render('index');
@@ -142,10 +141,9 @@ module.exports = (db) => {
         );
       }
     }
-
     Promise.all(queryArr)
       .then((data) => {
-        const user = data[0].rows[0];
+        const user = data[3].rows[0];
         res.render('profile', { user });
         return;
       })

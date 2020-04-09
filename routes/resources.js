@@ -81,7 +81,7 @@ module.exports = (db) => {
 
   // ADD RESOURCE POST ROUTE
   router.post('/addResource', (req, res) => {
-    if (!req.session.email) {
+    if (!req.session.id) {
       res.render('login');
     }
 
@@ -92,8 +92,8 @@ module.exports = (db) => {
 
     db
       .query(
-        `select *,categories.id from categories join users on users.id = categories.user_id where categories.name = '${input.category}' and users.email='${req
-          .session.email}';`
+        `select *,categories.id from categories join users on users.id = categories.user_id where categories.name = '${input.category}' and users.id='${req
+          .session.id}';`
       )
       .then((data) => {
         if (data.rows[0]) {
@@ -112,7 +112,7 @@ module.exports = (db) => {
               .catch((e) => res.send(e));
           });
         } else {
-          db.query(`select * from users where email = '${req.session.email}'`).then((user) => {
+          db.query(`select * from users where id = '${req.session.id}'`).then((user) => {
             db
               .query(
                 `INSERT INTO categories(user_id, name)
@@ -122,7 +122,7 @@ module.exports = (db) => {
               .then((data) => {
                 const newCatId = data.rows[0].id;
                 return request(
-                  `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://=${urlForAPI}`
+                  `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://${urlForAPI}`
                 )
                   .then((img) => {
                     const parsed = JSON.parse(img);
@@ -179,7 +179,7 @@ module.exports = (db) => {
         JOIN likes ON resources.id = resource_id
 		    JOIN categories ON categories.id = category_id
         JOIN users ON users.id = categories.user_id
-        WHERE users.email = '${req.session.email}'
+        WHERE users.id = '${req.session.id}'
         GROUP BY resources.id, users.name;
           `
       )
