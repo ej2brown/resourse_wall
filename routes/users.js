@@ -9,14 +9,14 @@ const express = require('express');
 const router = express.Router();
 const request = require('request-promise-native');
 // const bcrypt = require('bcrypt');
-// const cookieSession = require('cookie-session');
+const cookieSession = require('cookie-session');
 
-// router.use(
-//   cookieSession({
-//     name: 'session123',
-//     keys: [ 'key' ]
-//   })
-// );
+router.use(
+  cookieSession({
+    name: 'session123',
+    keys: [ 'key' ]
+  })
+);
 
 // Helper functions
 const createResource = (req, res, categoryId) => {
@@ -58,11 +58,18 @@ module.exports = (db) => {
         } else {
           //Set cookie
           req.session.email = email;
-          // console.log('======', req.session.email);
+          console.log('======', req.session.email);
           res.render('index');
         }
       })
       .catch((e) => res.send(e));
+  });
+
+  // POST /logout
+  router.get('/logout', (req, res) => {
+    // delete current session cookie
+    req.session = null;
+    res.redirect(`/`);
   });
 
   //REGISTER route GET
