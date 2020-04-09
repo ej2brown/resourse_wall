@@ -58,14 +58,13 @@ module.exports = (db) => {
         } else {
           //Set cookie
           req.session.email = email;
-          console.log('======', req.session.email);
           res.render('index');
         }
       })
       .catch((e) => res.send(e));
   });
 
-  // POST /logout
+  // GET /logout
   router.get('/logout', (req, res) => {
     // delete current session cookie
     req.session = null;
@@ -89,7 +88,7 @@ module.exports = (db) => {
     db.query(`SELECT * FROM users;`).then((data) => {
       for (user of data.rows) {
         if (user.email === req.body.email) {
-          res.send('Email already exists');
+          res.send('An account with that email already exists');
           return;
         }
       }
@@ -102,8 +101,9 @@ module.exports = (db) => {
           VALUES('${req.body.name}','${req.body.email}','${req.body.username}','${req.body.password}');`
       )
       .then(() => {
-        // req.session.email = email;
-        res.redirect('/');
+        //set cookie
+        req.session.email = req.body.email;
+        res.render('index');
       })
       .catch((e) => e);
   });
@@ -111,7 +111,7 @@ module.exports = (db) => {
   //PROFILE route GET
   router.get('/profile', (req, res) => {
     db
-      .query(`SELECT * FROM users WHERE users.id =1;`)
+      .query(`SELECT * FROM users WHERE users.email = '${req.session.email}';`)
       .then((data) => {
         const user = data.rows;
         // console.log('BOOP', user);

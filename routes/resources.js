@@ -15,12 +15,11 @@ const cookieSession = require('cookie-session');
 router.use(
   cookieSession({
     name: 'session123',
-    keys: ['key']
+    keys: [ 'key' ]
   })
 );
 
 module.exports = (db) => {
-
   router.get('/', (req, res) => {
     if (!req.session.email) {
       db
@@ -64,7 +63,7 @@ module.exports = (db) => {
           res.status(500).json({ error: err.message });
         });
     }
-  })
+  });
 
   router.get('/comments', (req, res) => {
     res.render('new_resource');
@@ -86,6 +85,9 @@ module.exports = (db) => {
     }
 
     const input = req.body;
+    var urlForAPI = req.body.url.replace('http://', '').replace('https://', '').split(/[/?#]/)[0];
+
+    console.log('====', urlForAPI);
 
     db
       .query(
@@ -94,7 +96,9 @@ module.exports = (db) => {
       )
       .then((data) => {
         if (data.rows[0]) {
-          request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=${input.url}`).then((img) => {
+          request(
+            `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://${urlForAPI}`
+          ).then((img) => {
             const parsed = JSON.parse(img);
             // console.log('======', parsed);
             console.log(data.rows[0]);
@@ -107,7 +111,6 @@ module.exports = (db) => {
               .catch((e) => res.send(e));
           });
         } else {
-          console.log('in else');
           db.query(`select * from users where email = '${req.session.email}'`).then((user) => {
             db
               .query(
@@ -116,9 +119,10 @@ module.exports = (db) => {
                     RETURNING *;`
               )
               .then((data) => {
-                console.log('above newcatid', data.rows[0]);
                 const newCatId = data.rows[0].id;
-                return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=${input.url}`)
+                return request(
+                  `https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=http://=${urlForAPI}`
+                )
                   .then((img) => {
                     const parsed = JSON.parse(img);
                     db
@@ -132,22 +136,6 @@ module.exports = (db) => {
                   .catch((e) => res.send(e));
               });
           });
-          // .then((data) => {
-          //   console.log('====', data);
-          //   const newCatId = data.rows[0].id;
-          //   return request(`https://api.linkpreview.net/?key=3bd09bc66604502d6b96be1b65dca12c&q=https://${input.url}`)
-          //     .then((img) => {
-          //       const parsed = JSON.parse(img);
-          //       db
-          //         .query(
-          //           `INSERT INTO resources(title, category_id,description,image, url)
-          //   VALUES('${input.title}','${newCatId}','${input.description}','${parsed.image}','${input.url}');`
-          //         )
-          //         .then(() => res.redirect('/'))
-          //         .catch((e) => res.send(e));
-          //     })
-          //     .catch((e) => res.send(e));
-          // });
         }
       });
   });
@@ -226,12 +214,13 @@ module.exports = (db) => {
     console.log('=====================');
     console.log(req.body);
     console.log('=====================');
-    db.query(
-      `
+    db
+      .query(
+        `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3)`,
-      [1, 1, content]
-    )
+        [ 1, 1, content ]
+      )
       .then((data) => {
         console.log('inserted comment');
         // res.sendStatus(200)
@@ -240,8 +229,7 @@ module.exports = (db) => {
       .catch((err) => {
         res.status(500).json({ error: err.message });
       });
-
-  })
+  });
 
   return router;
 };
