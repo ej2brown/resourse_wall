@@ -145,21 +145,9 @@ module.exports = (db) => {
   router.get('/search', (req, res) => {
     const input = req.query.search;
     db
-      .query(`SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%';`)
-      .then((data) => {
-        const resources = data.rows;
-        res.render('search_results', { resources });
-      })
-      .catch((err) => {
-        res.status(500).json({ error: err.message });
-      });
-  });
-
-  // SEARCH GET ROUTE
-  router.get('/search', (req, res) => {
-    const input = req.query.search;
-    db
-      .query(`SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%';`)
+      .query(
+        `SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%' or categories.name LIKE '%${input}%';`
+      )
       .then((data) => {
         const resources = data.rows;
         res.render('search_results', { resources });
