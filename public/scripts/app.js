@@ -199,7 +199,8 @@ $(() => {
       name,
       image,
       likes_count,
-      rating
+      rating,
+      url
     } = resource;
     const renderedResource = `
     <div class="card">
@@ -209,6 +210,7 @@ $(() => {
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
+          <a href="${url}" target="_blank">Go to resource</a>
           </header>
           <form class="resource-comments">
               <div class="form-group">
@@ -294,6 +296,7 @@ $(() => {
   $('.resource-comments').submit((event) => {
     event.preventDefault();
   });
+
 
 
 });
