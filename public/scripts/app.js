@@ -1,4 +1,3 @@
-
 $(() => {
   let resources = [];
   let ratings = [];
@@ -6,9 +5,9 @@ $(() => {
   //load all resources
   const loadResources = () => {
     $.ajax({
-      url: '/resources',
-      method: 'GET'
-    })
+        url: '/resources',
+        method: 'GET'
+      })
       .then((res) => {
         renderResources(res);
         resources = res.resources;
@@ -69,7 +68,9 @@ $(() => {
 
         return loadLikeResources();
       })
-
+      .then((res) => {
+        buildArray()
+      })
       .catch((err) => console.log(err));
   };
   loadResources();
@@ -77,9 +78,9 @@ $(() => {
   //load all liked
   const loadLikeResources = () => {
     $.ajax({
-      url: '/resources/likes',
-      method: 'GET'
-    })
+        url: '/resources/likes',
+        method: 'GET'
+      })
       .done((res) => {
         renderLikes(res);
         return loadRatings();
@@ -90,13 +91,13 @@ $(() => {
 
   const loadRatings = () => {
     $.ajax({
-      url: "/resources/ratings",
-      method: "GET"
-    }).then((res) => {
-      ratings = res.resources;
-      buildArray()
-      return res;
-    })
+        url: "/resources/ratings",
+        method: "GET"
+      }).then((res) => {
+        ratings = res.resources;
+        buildArray()
+        return res;
+      })
       .catch((err) => console.log(err));
   }
   // loadRatings()
@@ -122,6 +123,16 @@ $(() => {
       }
     }
   }
+  // buildArray()
+
+  //star rating
+  $('.stars').on('click', function (e) {
+    const star_rating = $(e.target).name;
+    const resource_id = $('.stars').attr("data-id");
+    alert(`You gave this resource ${star_rating} star(s)!`)
+    // $('.stars').children().css("background-color", "red");
+    postRating(star_rating, resource_id);
+  })
 
   const postRating = function (star_rating, resource_id) {
     const data = {};
@@ -176,13 +187,21 @@ $(() => {
     }).catch((err) => console.log(err));
   });
 
-//fetches resource object and renders it
-//TO DO: add time created
-//TO DO: add escape funtion to comments
-//TO DO: get ratings to not be unefined
-const createResourceElement = function(resource) {
-  const { id, title, description, name, image, likes_count, rating } = resource;
-  const renderedResource = `
+  //fetches resource object and renders it
+  //TO DO: add time created
+  //TO DO: add escape funtion to comments
+  //TO DO: get ratings to not be unefined
+  const createResourceElement = function (resource) {
+    const {
+      id,
+      title,
+      description,
+      name,
+      image,
+      likes_count,
+      rating
+    } = resource;
+    const renderedResource = `
     <div class="card p-3">
       <img src='${image}'>
       <div class="card-body">
@@ -190,71 +209,91 @@ const createResourceElement = function(resource) {
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
-        </header>
-          <form class="resource-comments" id="anything">
-            <div class="form-group">
-                <textarea class="form-control" id="comment" rows="3" 
-                placeholder="Add a comment" name="user-input"></textarea>
-            </div>
-            <div id="toggle-comments"> </div>
-            <div class="card-buttons d-flex justify-content-between align-items-center">
-              <button class="btn btn-primary post-comment" data-id="${id}" type="submit">Post</button>
-            </div>
-          </form>
-          <form class"likes-form">
-            <span>${likes_count} Likes</span>
-            <i class="far fa-heart"></i>
-          </form>
-          <span>${rating} Star Rating</span>
-          <form class="ratings-form" data-id="${id}" id="ratings">
-            <span class="star">0</span>
-            <span class="star">0</span>
-            <span class="star">0</span> 
-            <span class="star">0</span>
-            <span class="star">0</span>
-          </form>
-      </div>
-    </div>
-  `;
-
-  // appends the html to an article
-  let $post = $('<article>').addClass('post');
-  let resourceCard = $post.append(renderedResource);
-  return resourceCard;
-};
-
-const createLikesElement = function (likes) {
-  const { title, description, name, image, likes_count } = likes;
-  const renderedLikes = `
-    <div class="card p-3">
-    <img src='${image}'>
-    <div class="card-body">
-          <h5 class="card-title"> ${title} </h5>
-          <p class="card-text"> ${description} </p>
-          <p class="card-text"> ${name} </p>
-          <form method="POST" action="resources/comments" enctype="application/x-www-form-urlencoded" class="like-comments">
+          </header>
+          <form class="resource-comments">
               <div class="form-group">
-                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input" method="POST"></textarea>
+                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input"></textarea>
+                  <button class="btn btn-primary" type="submit">Post</button>
               </div>
+              <button type ="button" data-toggle="collapse" data-target="#comments">Comments</button>
+              <div id="comments">
+                <p>test</p>
+              </div>
+
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
-              <a href="#" class="btn btn-primary">Post</a>
-              <span>${likes_count} Likes</span>
-              <i class="far fa-heart"></i>
-              <div class="stars">
-              <span class="star">0</span>
-              <span class="star">0</span>
-              <span class="star">0</span>
-              <span class="star">0</span>
-              <span class="star">0</span>
+          <div>
+          <span>${likes_count} Likes</span>
+          <i class="far fa-heart"></i>
+          </div>
+              <div class="ratings">
+              <span>${rating} Stars</span>
+              <span class="star data-id="${id}" name='1'></span>
+              <span class="star"></span>
+              <span class="star"></span>
+              <span class="star"></span>
+              <span class="star"></span>
               </div>
           </div>
         </div>
       `;
 
-  // appends the html to an article
-  let $post = $('<article>').addClass('post');
-  let likesCard = $post.append(renderedLikes);
-  return likesCard;
-};
+    // appends the html to an article
+    let $post = $('<article>').addClass('post');
+    let resourceCard = $post.append(renderedResource);
+    return resourceCard;
+  };
+
+  const createLikesElement = function (likes) {
+    const {
+      title,
+      description,
+      name,
+      image,
+      likes_count
+    } = likes;
+    const renderedLikes = `
+    <div class="card">
+    <img src='${image}'>
+    <div class="card-body">
+    <header>
+          <h5 class="card-title"> ${title} </h5>
+          <p class="card-text"> ${description} </p>
+          <p class="card-text"> ${name} </p>
+          </header>
+          <form class="like-comments">
+              <div class="form-group">
+                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input"></textarea>
+              </div>
+              <button class="btn btn-primary" type="submit">Post</button>
+          </form>
+          <div class="card-buttons d-flex justify-content-between align-items-center">
+          <form>
+          <span>${likes_count} Likes</span>
+          <i class="far fa-heart"></i>
+          </form>
+          <form>
+
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              <span class="icon star"></span>
+              </div>
+
+          </form>
+          </div>
+      `;
+    // appends the html to an article
+    let $post = $('<article>').addClass('post');
+    let likesCard = $post.append(renderedLikes);
+    return likesCard;
+  };
+
+  //  prevent default submit
+  $('.resource-comments').submit((event) => {
+    event.preventDefault();
+  });
+
+
 });
