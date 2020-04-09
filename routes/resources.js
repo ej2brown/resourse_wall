@@ -10,19 +10,23 @@ const router = express.Router();
 const request = require('request-promise-native');
 const query = require('../lib/query.js');
 
+const cookieSession = require('cookie-session');
+
+router.use(
+  cookieSession({
+    name: 'session123',
+    keys: [ 'key' ]
+  })
+);
+
 module.exports = (db) => {
   router.get('/', (req, res) => {
-    // if (!req.session.session123) {
-    //   console.log('in if');
-    //   res.render('login');
-    //   return;
-    // }
     db
       .query(
         `
-        SELECT resources.*, users.name, COUNT(likes.like_status) as likes_count
+        SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
         FROM resources
-        LEFT JOIN likes ON resources.id = likes.resource_id
+        LEFT JOIN likes On resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
         WHERE users.email = '${req.session.email}'
