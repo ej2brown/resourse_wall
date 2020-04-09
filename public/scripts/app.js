@@ -67,45 +67,12 @@ const loadResources = () => {
         });
       })
 
-      // // star rating
-      // $('.stars-form').on('click', function (e) {
-      //   const star_rating = $(e.target).name;
-      //   const resource_id = $('.stars-form').attr("data-id");
-      //   alert(`You gave this resource ${star_rating} star(s)!`)
-      //   // $('.stars').children().css("background-color", "red");
-      //   postRating(star_rating, resource_id);
-      // })
-
-      // 5-stars icon
-      // const $star_rating = $('.stars-form .fa');
-
-      // const SetRatingStar = function () {
-      //   return $star_rating.each(function () {
-      //     if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating-form'))) {
-      //       return $(this).removeClass('fa-star-o').addClass('fa-star');
-      //     } else {
-      //       return $(this).removeClass('fa-star').addClass('fa-star-o');
-      //     }
-      //   });
-      // };
-      // SetRatingStar();
-
-      // $star_rating.on('click', function () {
-      //   const star_rating = $(e.target).name;
-      //   const resource_id = $('.stars-form').attr("data-id");
-      //   alert(`You gave this resource ${star_rating} star(s)!`)
-      //   postRating(star_rating, resource_id);
-      //   $star_rating.siblings('input.rating-value').val($(this).data('rating-form'));
-      //   return SetRatingStar();
-      // });
       return loadLikeResources();
     })
     .then((res) => {
     })
     .catch((err) => console.log(err));
 };
-
-
 
 //load all liked
 const loadLikeResources = () => {
@@ -119,7 +86,6 @@ const loadLikeResources = () => {
     })
     .catch((err) => console.log(err));
 }
-
 
 const loadRatings = (cb) => {
   $.ajax({
@@ -139,37 +105,10 @@ const buildArray = () => {
     for (const rating of ratings) {
       if (rating.resource_id === resource.id) {
         resource.rating = rating.star_rating;
-        //TO DO display avg rating in resource
-
-        // $("<div>").text(rating.star_rating).appendTo($('.ratings').attr("data-id")) //;(`.${resource.id}`))
-        // $('.ratings').attr("data-id").html(rating.star_rating);
-        // let HTMLRating = $post.append(rating.star_rating)
-        // let HTMLRating = $post.append(posts);
       }
     }
   }
 }
-
-// //star rating
-// $('.stars').on('click', function (e) {
-//   const star_rating = $(e.target).name;
-//   const resource_id = $('.stars').attr("data-id");
-//   alert(`You gave this resource ${star_rating} star(s)!`)
-//   // $('.stars').children().css("background-color", "red");
-//   postRating(star_rating, resource_id);
-// })
-
-// const postRating = function (star_rating, resource_id) {
-//   const data = {};
-//   data[resource_id] = star_rating;
-//   $.ajax({
-//     url: '/resources/ratings',
-//     method: 'POST',
-//     data: data
-//   }).then((res) => {
-//     console.log('finished ratings post request');
-//   });
-// };
 
 // appends an formated array into the resource container
 const renderResources = function (result) {
@@ -198,10 +137,7 @@ const renderLikes = function (result) {
 //fetches resource object and renders it
 //TO DO: add time created
 //TO DO: add escape funtion to comments
-//TO DO: get ratings to not be unefined
 const createResourceElement = function (resource) {
-  // console.log('==>',resource.)
-  // debugger
   const {
     id,
     title,
@@ -234,9 +170,9 @@ const createResourceElement = function (resource) {
           <div class="card-buttons d-flex justify-content-between align-items-center">
             <div id="heart">
               <span data-id="${id}">${likes_count} Likes</span>
-              <i class="far fa-heart" id="hearts-${id}"></i>
+              <i class="far fa-heart" id="${id}"></i>
             </div>
-            <div class="ratings" id ="stars-${id}">
+            <div class="ratings" id ="${id}">
               <span data-id="${id}">${rating} Stars</span>
                 <span class="star" value = "1"></span>
                 <span class="star" value = "2"></span>
@@ -284,14 +220,12 @@ const createLikesElement = function (likes) {
           <i class="far fa-heart"></i>
           </form>
           <form>
-
               <span class="icon star"></span>
               <span class="icon star"></span>
               <span class="icon star"></span>
               <span class="icon star"></span>
               <span class="icon star"></span>
               </div>
-
           </form>
           </div>
       `;
