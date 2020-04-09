@@ -21,7 +21,7 @@ router.use(
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
-    if (!req.session.email) {
+    if (!req.session.id) {
       db
         .query(
           `
@@ -41,7 +41,7 @@ module.exports = (db) => {
         });
     }
 
-    if (req.session.email) {
+    if (req.session.id) {
       db
         .query(
           `
@@ -50,7 +50,7 @@ module.exports = (db) => {
         LEFT JOIN likes On resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
-        WHERE users.email = '${req.session.email}'
+        WHERE users.id = '${req.session.id}'
         GROUP BY resources.id, users.name;`
         )
         .then((data) => {
@@ -71,7 +71,7 @@ module.exports = (db) => {
 
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
-    if (!req.session.email) {
+    if (!req.session.id) {
       res.render('login');
       return;
     }
