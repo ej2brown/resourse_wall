@@ -22,7 +22,25 @@ router.use(
 module.exports = (db) => {
 
   router.get('/', (req, res) => {
-    
+    if (!req.session.email) {
+      db
+        .query(
+          `
+          SELECT resources.*, users.name, COUNT(likes.id)::integer as likes_count
+          FROM resources
+          LEFT JOIN likes On resources.id = likes.resource_id
+          JOIN categories ON categories.id = resources.category_id
+          JOIN users ON users.id = categories.user_id
+          GROUP BY resources.id, users.name;`
+        )
+        .then((data) => {
+          const resources = data.rows;
+          res.json({ resources });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+    }
 
     if (req.session.email) {
       db
