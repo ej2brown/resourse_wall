@@ -10,6 +10,8 @@
 // });
 
 $(() => {
+  let resources = [];
+  let ratings = [];
   //load all resources
   const loadResources = () => {
     $.ajax({
@@ -18,16 +20,12 @@ $(() => {
     })
       .then((res) => {
         renderResources(res);
+        resources = res.resources;
+        return loadLikeResources();
       })
-      // .then(() => {
-      //   $.ajax({
-      //     url: '/resources/likes',
-      //     method: 'GET'
-      //   })
-      //   .then((res) => {
-      //     renderResources(res);
-      //   })
-      // })
+      .then((res) => { 
+        buildArray()
+      })
       .catch((err) => console.log(err));
   };
   loadResources();
@@ -39,36 +37,56 @@ $(() => {
       method: 'GET'
     })
       .done((res) => {
-        console.log('res', res);
         renderLikes(res);
+        return loadRatings();
       })
       .catch((err) => console.log(err));
-  };
-  loadLikeResources();
+  }
+  loadLikeResources()
 
   const loadRatings = () => {
     $.ajax({
-      url: '/resources/ratings',
-      method: 'GET'
+      url: "/resources/ratings",
+      method: "GET"
+    }).then((res) => {
+      ratings = res;
+      return res;
     })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.log(err));
-  };
-  loadRatings();
+    .catch((err) => console.log(err));
+  }
+  loadRatings()
 
-  $('.stars').on('click', function(e) {
-    const star_rating = $(e.target).length; //try value?
-    console.log(star_rating);
-    alert(`You gave this resourse ${star_rating} star(s)!`);
-    $('.stars').children().css('background-color', 'red');
-    postRating();
-  });
 
-  const postRating = function(rate, resource_id) {
+  const buildArray = () => {
+
+    // loadRatings()
+    console.log(ratings)
+    console.log(resources)
+
+    for (const resource of resources) {
+      for (const rating of ratings.resources) {
+        if (rating.resource_id === resource.id) {
+          console.log('FOUND')
+          resource['rating'] = rating.star_rating;
+          console.log(resource)
+        }
+      }
+    }
+  }
+  // buildArray()
+
+//star rating
+  $('.stars').on('click', function (e) {
+    const star_rating = $(e.target).name; 
+    const resource_id = $('.stars').attr("data-id");
+    alert(`You gave this resource ${star_rating} star(s)!`)
+    // $('.stars').children().css("background-color", "red");
+    postRating(star_rating, resource_id);
+  })
+
+  const postRating = function (star_rating, resource_id) {
     const data = {};
-    data[resource_id] = rate;
+    data[resource_id] = star_rating;
     $.ajax({
       url: '/resources/ratings',
       method: 'POST',
@@ -82,9 +100,7 @@ $(() => {
   const renderResources = function(result) {
     const resources = result.resources;
     const markupArray = [];
-    // loops through resources
     for (const resource of resources) {
-      // calls createResourceElement for each resource
       markupArray.push(createResourceElement(resource));
     }
     let posts = $('.resource-container').html(markupArray);
@@ -92,37 +108,35 @@ $(() => {
   };
 
   // appends an formated array into the resource container
-  const renderLikes = function(result) {
-    console.log(result);
+  const renderLikes = function (result) {
     const Likes = result.resources;
     const markupArray = [];
-    // loops through Likes
     for (const like of Likes) {
-      // calls createLikeElement for each like
       markupArray.push(createLikesElement(like));
     }
     let posts = $('.likes-container').html(markupArray);
     return posts;
   };
 
-  //inside $("") put where the button is
-  // $("").submit(function (event) {
-  //   $.ajax({
-  //     url: "",
-  //     method: "POST",
-  //     data: $(this).serialize(),
-  //     success: () => {
-  //       loadResources();
-  //     }
-  //   });
-  // })
+
+  // inside $("") put where the button is
+  $("").submit(function (event) {
+    $.ajax({
+      url: "/resources",
+      method: "POST",
+      data: $(this).serialize(),
+      success: () => {
+        loadResources();
+      }
+    });
+  })
 
   //fetches resource object and renders it
-  const createResourceElement = function(resource) {
-    console.log('in createResourceElement', resource);
-    const { title, description, name, image, like_count } = resource;
-    //TO DO: add time created
-    //TO DO: add escape funtion to comments
+  //TO DO: add time created
+  //TO DO: add escape funtion to comments
+  const createResourceElement = function (resource) {
+    const {resource_id, title, description, name, image, likes_count, rating} = resource;
+    console.log(resource)
     const renderedResource = `
     <div class="card p-3">
     <img src='${image}'>
@@ -137,10 +151,11 @@ $(() => {
           </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
               <a href="#" class="btn btn-primary">Post</a>
-              <span>${like_count} Likes</span>
+              <span>${likes_count} Likes</span>
               <i class="far fa-heart"></i>
-              <div class="stars">
-              <span class="star">0</span>
+              <div class="ratings">
+              <span>${rating} Stars</span>
+              <span class="star data-id="${resource_id}" name='1'>0</span>
               <span class="star">0</span>
               <span class="star">0</span>
               <span class="star">0</span>
