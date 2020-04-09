@@ -1,17 +1,8 @@
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/"
-//   }).done((users) => {
-//     for(user of users) {
-//       $("<div>").text(user.name).appendTo($("body"));
-//     }
-//   });;
-// });
 
 $(() => {
   let resources = [];
   let ratings = [];
+
   //load all resources
   const loadResources = () => {
     $.ajax({
@@ -30,16 +21,17 @@ $(() => {
           const resource_id = $('#ratings').attr("data-id");
           console.log('resource_id', resource_id)
           alert('HELLO')
+          console.log(event.target.form.elements)
           $.ajax({
             url: "/resources/comments",
             method: "POST",
             data: $(this).serialize(),
             success: () => {
+              console.log(this)
               loadResources();
             }
           }).catch((err) => console.log(err));
         });
-
 
 
         // star rating
@@ -63,6 +55,7 @@ $(() => {
             }
           });
         };
+        SetRatingStar();
 
         $star_rating.on('click', function () {
           const star_rating = $(e.target).name;
@@ -73,9 +66,6 @@ $(() => {
           return SetRatingStar();
         });
 
-        SetRatingStar();
-        $(document).ready(function () {
-        });
 
         return loadLikeResources();
       })
@@ -132,7 +122,6 @@ $(() => {
       }
     }
   }
-
 
   const postRating = function (star_rating, resource_id) {
     const data = {};
@@ -191,15 +180,17 @@ $(() => {
 //TO DO: add time created
 //TO DO: add escape funtion to comments
 //TO DO: get ratings to not be unefined
-const createResourceElement = function (resource) {
+const createResourceElement = function(resource) {
   const { id, title, description, name, image, likes_count, rating } = resource;
   const renderedResource = `
     <div class="card p-3">
-    <img src='${image}'>
-    <div class="card-body">
+      <img src='${image}'>
+      <div class="card-body">
+        <header>
           <h5 class="card-title"> ${title} </h5>
           <p class="card-text"> ${description} </p>
           <p class="card-text"> ${name} </p>
+        </header>
           <form class="resource-comments" id="anything">
             <div class="form-group">
                 <textarea class="form-control" id="comment" rows="3" 
@@ -207,13 +198,14 @@ const createResourceElement = function (resource) {
             </div>
             <div id="toggle-comments"> </div>
             <div class="card-buttons d-flex justify-content-between align-items-center">
-            <button class="btn btn-primary post-comment" data-id="${id}" type="submit">Post</button>
+              <button class="btn btn-primary post-comment" data-id="${id}" type="submit">Post</button>
+            </div>
           </form>
           <form class"likes-form">
             <span>${likes_count} Likes</span>
             <i class="far fa-heart"></i>
           </form>
-          <span>${rating} Likes</span>
+          <span>${rating} Star Rating</span>
           <form class="ratings-form" data-id="${id}" id="ratings">
             <span class="star">0</span>
             <span class="star">0</span>
@@ -221,10 +213,9 @@ const createResourceElement = function (resource) {
             <span class="star">0</span>
             <span class="star">0</span>
           </form>
-          </div>
-          </div>
-        </div>
-      `;
+      </div>
+    </div>
+  `;
 
   // appends the html to an article
   let $post = $('<article>').addClass('post');
