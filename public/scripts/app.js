@@ -202,7 +202,7 @@ $(() => {
       rating
     } = resource;
     const renderedResource = `
-    <div class="card p-3">
+    <div class="card">
       <img src='${image}'>
       <div class="card-body">
         <header>
