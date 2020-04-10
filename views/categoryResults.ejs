@@ -35,12 +35,11 @@
 
       <div class="card-columns">
         <% categories.forEach((res) => { %>
+          <div class="card p-3">
+            <img src='<%=res.image%>'>
 
-        <div class="card">
-          <img src='<%=res.image%>'>
-
-          <p> Title: <%= res.title %> </p>
-          <p> Description: <%= res.description %> </p>
+          <p class="category-title"> <%= res.title %> </p>
+          <p class="desc"> <%= res.description %> </p>
           <p> Category: <%= res.name %> </p>
           <a href="<%=res.url%>">Go to Resource</a>
 
