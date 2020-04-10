@@ -2,8 +2,9 @@
 <html lang="en">
 
 <head>
-  <title>Categories</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
 
   <!-- Bootstrap CSS-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -14,53 +15,40 @@
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/header.css" type="text/css" />
   <link rel="stylesheet" href="/styles/resource-card.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/categories.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/search_results.css" type="text/css" />
 
   <!-- Google Fonts link -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-
   <!-- Font Awesome Styles -->
   <script src="https://kit.fontawesome.com/c594e81ef7.js" crossorigin="anonymous"></script>
 
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
   <script type="text/javascript" src="/scripts/app.js"></script>
+
 </head>
 
 <body>
   <%- include('partials/_header') %>
 
+  <div class="container">
+    <div class=" margin-top">
 
-  <main class="container margin-top">
+      <div class="card-columns">
+        <% categories.forEach((res) => { %>
 
-    <h1>Categories</h1>
+        <div class="card">
+          <img src='<%=res.image%>'>
 
-      <div class="category-card d-flex flex-wrap flex-row align-items-center">
+          <p> Title: <%= res.title %> </p>
+          <p> Description: <%= res.description %> </p>
+          <p> Category: <%= res.name %> </p>
 
-
-        <% categories.forEach((cat) => { %>
-
-        <div class="cat-card">
-          <form action="/categories/<%-cat.name%>">
-          <button type="submit" class="btn btn-light">
-            <%= cat.name %>
-          </button>
-        </form>
         </div>
         <%}) %>
 
       </div>
-
-
-
-    <!-- bootstrap card -->
-
-
-
-  </main>
-
-
-
-
+    </div>
+  </div>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -72,6 +60,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
+</body>
 </body>
 
 </html>
