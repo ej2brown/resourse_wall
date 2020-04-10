@@ -38,6 +38,8 @@ $(() => {
           method: 'GET'
         })
       }
+    }).then((res) => {
+      loadResources();
     })
   })
 })

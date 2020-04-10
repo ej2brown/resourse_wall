@@ -213,6 +213,7 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
+    const user_id = req.session.id;
     const obj = req.body
     let resource_id = 0;
     for(key in obj) {
@@ -224,7 +225,7 @@ module.exports = (db) => {
         `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3)`,
-        [ 1, resource_id, content ]
+        [user_id, resource_id, content]
       )
       .then(() => {
         console.log('inserted comment');
