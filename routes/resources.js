@@ -235,5 +235,23 @@ module.exports = (db) => {
       });
   });
 
+  router.post('/addLikes', (req, res) => {
+    const resource_id = Object.values(req.body);
+    const user_id = req.session.id;
+    console.log(resource_id, user_id)
+    db
+      .query(
+        `INSERT INTO likes(user_id, resource_id)
+        VALUES (${user_id}, ${resource_id});`
+      )
+      .then(() => {
+        console.log('added like');
+        res.sendStatus(200)
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   return router;
 };
