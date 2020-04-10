@@ -26,32 +26,36 @@
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
 
-  <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+      <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
   <script type="text/javascript" src="/scripts/app.js"></script>
-  <script type="text/javascript" src="/scripts/buttons.js"></script>
 
 
 </head>
 
 <body>
   <%- include('partials/_header') %>
-  <ul class="nav margin-top justify-content-center">
-    <li class="nav-item">
-      <a class="nav-link active" href="#">My Resources</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Likes</a>
-    </li>
+  
+  <ul class="nav margin-top justify-content-center nav-pills" id="myTab">
+    <li class="active"><a data-toggle="pill" href="#resources">My Resources </a></li>
+    <li><a data-toggle="pill" href="#likes"> Likes</a></li>
   </ul>
   <!-- <h1 class="index-container">sMy Resource</h1> -->
 
   <!-- PLACE IMAGES OUTSIDE THE CARD BODY -->
   <main class="index-container margin-top">
-    <section class="resource-container card-columns">
-    </section>
-    <section class='likes-container card-columns'></section>
+    <div class="tab-content">
+
+      <div id="resources" class="tab-pane fade in active">
+        <section class="resource-container card-columns"></section>
+      </div>
+
+      <div id="likes" class="tab-pane fade">
+        <section class='likes-container card-columns'></section>
+      </div>
+
+    </div>
   </main>
-  <footer></footer>
+<footer></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">

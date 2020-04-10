@@ -1,3 +1,27 @@
+$(() => {
+  $("body").on("click", ".like", (event) => {
+    console.log('click')
+    alert("You gave this resource a heart!");
+    console.log(event)
+    const resource_id = event.target.attributes[1].value;
+    const data = resource_id;
+    $.ajax({
+      url: "/resources/addLikes",
+      method: "POST",
+      data: $.param(data),
+      success: (data) => {
+        $.ajax({
+          url: '/resources/likes',
+          method: 'GET'
+        })
+      }
+      // }).then(() => { loadResources(); })
+    })
+  })
+})
+
+
+
 // // const timeOut = $(() => {
 // $(() => {
 //   console.log('click')

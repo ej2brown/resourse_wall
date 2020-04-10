@@ -2,10 +2,10 @@
 
 $(() => {
   loadResources();
+  
   $("body").on("click", ".heart", (event) => {
     const resource_id = event.target.attributes[1].value;
     const data = resource_id;
-    console.log(data)
     alert("You gave this resource a heart!");
     $.ajax({
       url: "/resources/addLikes",
@@ -106,7 +106,6 @@ const loadResources = () => {
             .catch((err) => console.log(err));
         });
       })
-
       return loadLikeResources();
     })
     .then((res) => {
@@ -145,7 +144,7 @@ const buildArray = () => {
     for (const rating of ratings) {
       if (rating.resource_id === resource.id) {
         resource.rating = rating.star_rating;
-      }
+      } //else {resource.rating === 0 }
     }
   }
 }
@@ -208,7 +207,7 @@ const createResourceElement = function (resource) {
           <div class="card-buttons d-flex justify-content-between align-items-center">
             <div class="heart">
               <span data-id="${id}">${likes_count} Likes</span>
-              <i class="far fa-heart" id="${id}"></i>
+              <i class="far fa-heart heart-${id}" id="${id}"></i>
             </div>
             <div class="ratings" id ="${id}">
               <span data-id="${id}">${rating} Stars</span>
@@ -232,7 +231,8 @@ const createResourceElement = function (resource) {
 };
 
 const createLikesElement = function (likes) {
-  const {
+  console.log(likes)
+  let {
     id,
     title,
     description,
@@ -242,6 +242,7 @@ const createLikesElement = function (likes) {
     rating,
     url
   } = likes;
+  if (rating === undefined) { rating = 0}
   const renderedLikes = `
   <div class="card p-3">
   <img src='${image}'>
@@ -269,13 +270,13 @@ const createLikesElement = function (likes) {
         </div>
         <div class="ratings" id ="${id}">
           <span data-id="${id}">${rating} Stars</span>
-            <div class="rating">
-              <span class="star" value = "5"></span>
-              <span class="star" value = "4"></span>
-              <span class="star" value = "3"></span>
-              <span class="star" value = "2"></span>
-              <span class="star" value = "1"></span>
-            </div>
+          <div class="rating">
+          <span class="star" value = "5">☆</span>
+          <span class="star" value = "4">☆</span>
+          <span class="star" value = "3">☆</span>
+          <span class="star" value = "2">☆</span>
+          <span class="star" value = "1">☆</span>
+        </div>
         </div>
       </div>
     </div>
@@ -287,10 +288,6 @@ const createLikesElement = function (likes) {
   return likesCard;
 };
 
-$('span').click(() => {
-  alert('test')
-  $('.star1').addClass('.star-rating')
-})
 
 //  prevent default submit
 $('.resource-comments').submit((event) => {

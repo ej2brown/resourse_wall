@@ -165,7 +165,7 @@ module.exports = (db) => {
     const input = req.query.search;
     db
       .query(
-        `SELECT * FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%' or categories.name LIKE '%${input}%';`
+        `SELECT *, resources.id as resource_id FROM resources join categories on categories.id = category_id WHERE title LIKE '%${input}%' or categories.name LIKE '%${input}%';`
       )
       .then((data) => {
         const resources = data.rows;
@@ -178,6 +178,7 @@ module.exports = (db) => {
 
   //LIKES GET ROUTE
   router.get('/likes', (req, res) => {
+    const user_exists = req.session.id;
     db
       .query(
         `
@@ -186,7 +187,6 @@ module.exports = (db) => {
         JOIN likes ON resources.id = resource_id
 		    JOIN categories ON categories.id = category_id
         JOIN users ON users.id = categories.user_id
-        WHERE users.id = '${req.session.id}'
         GROUP BY resources.id, users.name;
           `
       )
