@@ -30,27 +30,27 @@ $card-btn-color: #99B2DD;
 }
 
 //STAR RATING
-.icon::before {
-  display: inline-block;
-  font-style: normal;
-  font-variant: normal;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-}
+// .icon::before {
+//   display: inline-block;
+//   font-style: normal;
+//   font-variant: normal;
+//   text-rendering: auto;
+//   -webkit-font-smoothing: antialiased;
+// }
 
-.star::before {
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  content: '\f005';
-}
+// .star::before {
+//   font-family: 'Font Awesome 5 Free';
+//   font-weight: 900;
+//   content: '\f005';
+// }
+
+// .star:hover {
+//   color: goldenrod;
+// // }
 
 // .star:hover {
 //   color: goldenrod;
 // }
-
-.star:hover {
-  color: goldenrod;
-}
 
 
 // CARD COLUMNS RESPONSIVE DESIGN
@@ -76,5 +76,20 @@ $card-btn-color: #99B2DD;
 
 }
 
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+  font-size: 1.2rem;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: goldenrod;
 
-
+}

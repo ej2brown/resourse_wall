@@ -212,11 +212,13 @@ const createResourceElement = function (resource) {
             </div>
             <div class="ratings" id ="${id}">
               <span data-id="${id}">${rating} Stars</span>
-                <span class="star" value = "1"></span>
-                <span class="star" value = "2"></span>
-                <span class="star" value = "3"></span>
-                <span class="star" value = "4"></span>
-                <span class="star" value = "5"></span>
+              <div class="rating">
+                <span class="star" value = "5">☆</span>
+                <span class="star" value = "4">☆</span>
+                <span class="star" value = "3">☆</span>
+                <span class="star" value = "2">☆</span>
+                <span class="star" value = "1">☆</span>
+              </div>
             </div>
           </div>
         </div>
@@ -239,7 +241,7 @@ const createLikesElement = function (likes) {
     likes_count,
     rating,
     url
-  } = resource;
+  } = likes;
   const renderedLikes = `
   <div class="card p-3">
   <img src='${image}'>
@@ -267,11 +269,13 @@ const createLikesElement = function (likes) {
         </div>
         <div class="ratings" id ="${id}">
           <span data-id="${id}">${rating} Stars</span>
-            <span class="star" value = "1"></span>
-            <span class="star" value = "2"></span>
-            <span class="star" value = "3"></span>
-            <span class="star" value = "4"></span>
-            <span class="star" value = "5"></span>
+            <div class="rating">
+              <span class="star" value = "5"></span>
+              <span class="star" value = "4"></span>
+              <span class="star" value = "3"></span>
+              <span class="star" value = "2"></span>
+              <span class="star" value = "1"></span>
+            </div>
         </div>
       </div>
     </div>
