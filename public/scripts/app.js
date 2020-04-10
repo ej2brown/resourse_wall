@@ -192,7 +192,7 @@ const createResourceElement = function (resource) {
           <h5 class="card-title"> ${escape(title)} </h5>
           <p class="card-text"> ${escape(description)} </p>
           <p class="card-text"> ${escape(name)} </p>
-          <a href="${escape(url)}" target="_blank">Go to resource</a>
+          <a href="http://${url}" target="_blank">Go to resource</a>
         </header>
         <form class="resource-comments" id="${id}">
           <div class="form-group">
@@ -251,7 +251,7 @@ const createLikesElement = function (likes) {
       <h5 class="card-title"> ${escape(title)} </h5>
       <p class="card-text"> ${escape(description)} </p>
       <p class="card-text"> ${escape(name)} </p>
-      <a href="${escape(url)}" target="_blank">Go to resource</a>
+      <a href="${url}" target="_blank">Go to resource</a>
     </header>
     <form class="resource-comments" id="${id}">
       <div class="form-group">
