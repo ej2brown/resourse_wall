@@ -71,8 +71,10 @@ module.exports = (db) => {
     // res.render('new_resource');
     db
     .query(
-      `SELECT *
-        FROM comments;`
+      `SELECT comments.*, users.name
+      FROM comments
+      JOIN users ON users.id = user_id
+      GROUP BY comments.id, users.name;`
         ) 
         .then((data) => {
           const comments = data.rows;
@@ -224,7 +226,7 @@ module.exports = (db) => {
       .query(
         `
         INSERT INTO comments(user_id, resource_id, content)
-        VALUES($1, $2, $3)`,
+        VALUES($1, $2, $3);`,
         [user_id, resource_id, content]
       )
       .then(() => {

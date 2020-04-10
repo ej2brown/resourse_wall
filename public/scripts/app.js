@@ -42,25 +42,24 @@ const loadResources = () => {
                 })
                   .then((res) => {
                     let resource_id = 0;
-                    let user_id = '';
+                    let name = '';
                     let content = '';
                     let comments = res.comments;
+                    console.log(comments)
                     for (comment of comments) {
-                      user_id = comment.user_id;
+                      name = comment.name;
                       content = comment.content;
                       resource_id = comment.resource_id;
-                      comment = `"<p>${user_id} says: ${content}</p>"`
+                      comment = `"<p>${name} says: ${content}</p>"`
                       let commentResourceCard = `#view-comments-${resource_id}`
                       $(commentResourceCard).append(comment)
-                      // $("<p>${user_id} says: ${content}</p>").appendTo("#view-comments-1"); //${resource_id}
+                      // $("<p>${name} says: ${content}</p>").appendTo("#view-comments-1"); //${resource_id}
                       console.log('sent')
                     }
                   })
               }
               loadComments()
             }
-          }).then(() => {
-
           })
             .catch((err) => console.log(err));
         });
