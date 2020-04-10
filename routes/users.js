@@ -42,12 +42,15 @@ module.exports = (db) => {
   });
 
   //LOGIN route GET
+
   router.get('/login', (req, res) => {
-    res.render('login');
+    const user_exists = req.session.id;
+    res.render('login', { user_exists });
   });
 
   //LOGIN route POST
   router.post('/login', (req, res) => {
+    const user_exists = !req.session.id;
     const { email, password } = req.body;
     db
       .query(`SELECT * FROM users WHERE email='${email}' and password='${password}';`)
@@ -59,7 +62,8 @@ module.exports = (db) => {
           //Set cookie
           req.session.id = user.rows[0].id;
 
-          res.render('index');
+          // res.render('index', { user_exists });
+          res.redirect('/');
         }
       })
       .catch((e) => res.send(e));
@@ -69,12 +73,14 @@ module.exports = (db) => {
   router.get('/logout', (req, res) => {
     // delete current session cookie
     req.session = null;
-    res.redirect(`/`);
+    // res.render(`index`, { user_exists });
+    res.redirect('/');
   });
 
   //REGISTER route GET
   router.get('/register', (req, res) => {
-    res.render('register');
+    const user_exists = req.session.id;
+    res.render('register', { user_exists });
   });
 
   // POST /register
@@ -105,15 +111,16 @@ module.exports = (db) => {
       .then((data) => {
         //set cookie
         req.session.id = data.rows[0].id;
-        res.render('index');
+        res.redirect('/');
       })
       .catch((e) => e);
   });
 
   //PROFILE route GET
   router.get('/profile', (req, res) => {
+    const user_exists = req.session.id;
     if (!req.session.id) {
-      res.render('login');
+      res.redirect('login');
       return;
     }
 
@@ -122,7 +129,7 @@ module.exports = (db) => {
       .then((data) => {
         const user = data.rows[0];
         // console.log('BOOP', user);
-        res.render('profile', { user });
+        res.render('profile', { user, user_exists });
       })
       .catch((err) => {
         //need to add logic to catch error if there are no results and display appropriate message
@@ -143,8 +150,8 @@ module.exports = (db) => {
     }
     Promise.all(queryArr)
       .then((data) => {
-        const user = data[3].rows[0];
-        res.render('profile', { user });
+        const user = data[data.length - 1].rows[0];
+        res.redirect('/users/profile');
         return;
       })
       .catch((err) => {

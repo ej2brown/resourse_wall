@@ -29,17 +29,24 @@
       </form>
       <!-- Login and Register will show if no users are currently logged in -->
       <!-- On click, it will route them to the correct page -->
-      <form method='GET' action='/users/login' class="form-inline my-2 my-lg-0">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-      </form>
 
-      <form method='GET' action='/users/register' class="form-inline my-2 my-lg-0">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Register</button>
-      </form>
+      <% if(user_exists){ %>
+        <form id = 'logout_btn' method='GET' action='/users/logout' class="form-inline my-2 my-lg-0">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+        </form>
+      <% } else{ %>
+        <form method='GET' action='/users/login' class="form-inline my-2 my-lg-0">
+          <button id = 'login_btn' class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+        </form>
 
-      <form method='GET' action='/users/logout' class="form-inline my-2 my-lg-0">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
-      </form>
+        <form id = 'register_btn' method='GET' action='/users/register' class="form-inline my-2 my-lg-0">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Register</button>
+        </form>
+     <% } %>
+
+
+
+
 
     </div>
   </nav>
