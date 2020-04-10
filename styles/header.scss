@@ -2,6 +2,15 @@ nav {
   height: 100px;
 }
 
+.navbar {
+  padding: 0;
+  border-bottom: 1px solid lightgray;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
 .logo-highlight {
   color: #395eca;
 }
@@ -17,10 +26,36 @@ nav {
   color: #7c7c7c;
 }
 
+.btn:hover {
+  background-color: lightgray;
+  border-radius: 17px;
+  padding: 10px;
+}
+
 .nav-link {
   border: none;
   background: inherit;
   color: #000;
 }
 
+.nav-link:hover {
+  background-color: lightgray;
+  border-radius: 17px;
+  padding: 10px;
+}
 
+
+.show {
+  background-color: inherit;
+  z-index: 1;
+  margin: 0;
+  padding: 0 20px;
+}
+
+
+
+@media only screen and (min-width: 986px) {
+  .navbar {
+    padding: 20px;
+  }
+}

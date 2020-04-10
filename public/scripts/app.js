@@ -104,7 +104,7 @@ const buildArray = () => {
     for (const rating of ratings) {
       if (rating.resource_id === resource.id) {
         resource.rating = rating.star_rating;
-      } 
+      }
     }
   }
 }
@@ -157,7 +157,7 @@ const createResourceElement = function (resource) {
         </header>
         <form class="resource-comments" id="${id}">
           <div class="form-group">
-              <textarea class="form-control" id="comment" data-id="${id}" rows="3" 
+              <textarea class="form-control" id="comment" data-id="${id}" rows="3"
               placeholder="Add a comment" name="user-input"></textarea>
               <button class="btn btn-primary" type="submit">Post</button>
           </div>
@@ -227,13 +227,21 @@ const createLikesElement = function (likes) {
           </form>
           </div>
       `;
-  // appends the html to an article
-  let $post = $('<article>').addClass('post');
-  let likesCard = $post.append(renderedLikes);
-  return likesCard;
-};
+    // appends the html to an article
+    let $post = $('<article>').addClass('post');
+    let likesCard = $post.append(renderedLikes);
+    return likesCard;
+  };
 
-// //  prevent default submit
-// $('.resource-comments').submit((event) => {
-//   event.preventDefault();
-// });
+  $('span').click(() => {
+    alert('test')
+    $('.star1').addClass('.star-rating')
+  })
+
+  //  prevent default submit
+  $('.resource-comments').submit((event) => {
+    event.preventDefault();
+  });
+
+
+
