@@ -178,6 +178,7 @@ module.exports = (db) => {
 
   //LIKES GET ROUTE
   router.get('/likes', (req, res) => {
+    const user_exists = req.session.id;
     db
       .query(
         `
