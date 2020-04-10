@@ -1,4 +1,4 @@
-body {
+rybody {
   background-color: #eee;
 }
 
@@ -20,7 +20,6 @@ body h1 {
 /* .resources-container {
   margin-top: 80px;
 } */
-
 
 .margin-top {
   margin-top: 80px;
@@ -54,6 +53,16 @@ footer {
   height: 70px;
 }
 
+// category results page
+.category-title {
+  padding-top: 6px;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.desc {
+  color: #838282;
+}
 
 .resource-links {
   padding: 20px;

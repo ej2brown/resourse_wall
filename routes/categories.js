@@ -27,5 +27,21 @@ module.exports = (db) => {
       });
   });
 
+  router.get('/:category', (req, res) => {
+    const user_exists = req.session.id;
+    const category = req.params.category;
+
+    db
+      .query(`SELECT * from categories join resources on categories.id = category_id where name='${category}';`)
+      .then((data) => {
+        const categories = data.rows;
+        console.log(categories);
+        res.render('categoryResults', { categories, user_exists });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   return router;
 };
