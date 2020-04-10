@@ -21,6 +21,8 @@ router.use(
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
+    const user_exists = req.session.id;
+
     if (!req.session.id) {
       db
         .query(
@@ -30,13 +32,13 @@ module.exports = (db) => {
         LEFT JOIN likes On resources.id = likes.resource_id
         JOIN categories ON categories.id = resources.category_id
         JOIN users ON users.id = categories.user_id
-	      LEFT JOIN ratings ON resources.id = ratings.resource_id     
+	      LEFT JOIN ratings ON resources.id = ratings.resource_id
         GROUP BY resources.id, users.name
 		    ORDER BY resources.id;`
         )
         .then((data) => {
           const resources = data.rows;
-          res.json({ resources });
+          res.json({ resources, user_exists });
         })
         .catch((err) => {
           res.status(500).json({ error: err.message });
@@ -59,7 +61,7 @@ module.exports = (db) => {
           const resources = data.rows;
           // res.send('OK')
           // console.log('===resources===', resources)
-          res.json({ resources });
+          res.json({ resources, user_exists });
         })
         .catch((err) => {
           res.status(500).json({ error: err.message });
@@ -69,29 +71,30 @@ module.exports = (db) => {
 
   router.get('/comments', (req, res) => {
     // res.render('new_resource');
+    const user_exists = req.session.id;
     db
-    .query(
-      `SELECT *
+      .query(
+        `SELECT *
         FROM comments;`
-        ) 
-        .then((data) => {
-          const comments = data.rows;
-          console.log('comments', comments)
-          res.json({ comments });
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
-      
+      )
+      .then((data) => {
+        const comments = data.rows;
+        console.log('comments', comments);
+        res.json({ comments, user_exists });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
   });
 
   // ADD RESOURCE GET ROUTE
   router.get('/addResource', (req, res) => {
+    const user_exists = req.session.id;
     if (!req.session.id) {
-      res.render('login');
+      res.redirect('/users/login');
       return;
     }
-    res.render('new_resource');
+    res.render('new_resource', { user_exists });
   });
 
   // ADD RESOURCE POST ROUTE
@@ -102,8 +105,6 @@ module.exports = (db) => {
 
     const input = req.body;
     var urlForAPI = req.body.url.replace('http://', '').replace('https://', '').split(/[/?#]/)[0];
-
-    console.log('====', urlForAPI);
 
     db
       .query(
@@ -158,6 +159,7 @@ module.exports = (db) => {
 
   // SEARCH GET ROUTE
   router.get('/search', (req, res) => {
+    const user_exists = req.session.id;
     const input = req.query.search;
     db
       .query(
@@ -165,7 +167,7 @@ module.exports = (db) => {
       )
       .then((data) => {
         const resources = data.rows;
-        res.render('search_results', { resources });
+        res.render('search_results', { resources, user_exists });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -188,7 +190,7 @@ module.exports = (db) => {
       )
       .then((data) => {
         const resources = data.rows;
-        res.json({ resources });
+        res.json({ resources, user_exists });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -213,12 +215,12 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
-    const obj = req.body
+    const obj = req.body;
     let resource_id = 0;
-    for(key in obj) {
-       resource_id = key;
+    for (key in obj) {
+      resource_id = key;
     }
-    const content = req.body[resource_id]
+    const content = req.body[resource_id];
     db
       .query(
         `
@@ -228,7 +230,7 @@ module.exports = (db) => {
       )
       .then(() => {
         console.log('inserted comment');
-        res.sendStatus(200)
+        res.sendStatus(200);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -238,7 +240,7 @@ module.exports = (db) => {
   router.post('/addLikes', (req, res) => {
     const resource_id = Object.values(req.body);
     const user_id = req.session.id;
-    console.log(resource_id, user_id)
+    console.log(resource_id, user_id);
     db
       .query(
         `INSERT INTO likes(user_id, resource_id)
@@ -246,7 +248,7 @@ module.exports = (db) => {
       )
       .then(() => {
         console.log('added like');
-        res.sendStatus(200)
+        res.sendStatus(200);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -254,11 +256,11 @@ module.exports = (db) => {
   });
 
   router.post('/addRatings', (req, res) => {
-    console.log('in addResources')
-    const resource_id = Object.keys(req.body)
-    const star_rating= Object.values(req.body);
+    console.log('in addResources');
+    const resource_id = Object.keys(req.body);
+    const star_rating = Object.values(req.body);
     const user_id = req.session.id;
-    console.log(resource_id, star_rating)
+    console.log(resource_id, star_rating);
     db
       .query(
         `INSERT INTO ratings(user_id, resource_id, star_rating)
@@ -266,7 +268,7 @@ module.exports = (db) => {
       )
       .then(() => {
         console.log('added ratings');
-        res.sendStatus(200)
+        res.sendStatus(200);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
