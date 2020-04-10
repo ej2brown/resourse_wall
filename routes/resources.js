@@ -215,13 +215,9 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
+    const resource_id = Object.keys(req.body);
+    const content = Object.values(req.body);
     const user_id = req.session.id;
-    const obj = req.body
-    let resource_id = 0;
-    for(key in obj) {
-       resource_id = key;
-    }
-    const content = req.body[resource_id]
     db
       .query(
         `
@@ -241,7 +237,6 @@ module.exports = (db) => {
   router.post('/addLikes', (req, res) => {
     const resource_id = Object.values(req.body);
     const user_id = req.session.id;
-    console.log(resource_id, user_id)
     db
       .query(
         `INSERT INTO likes(user_id, resource_id)
@@ -257,11 +252,9 @@ module.exports = (db) => {
   });
 
   router.post('/addRatings', (req, res) => {
-    console.log('in addResources')
     const resource_id = Object.keys(req.body)
     const star_rating= Object.values(req.body);
     const user_id = req.session.id;
-    console.log(resource_id, star_rating)
     db
       .query(
         `INSERT INTO ratings(user_id, resource_id, star_rating)

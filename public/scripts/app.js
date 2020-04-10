@@ -4,6 +4,11 @@ $(() => {
   loadResources();
 })
 
+const escape = function(str) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
 
 let resources = [];
 let ratings = [];
@@ -45,7 +50,6 @@ const loadResources = () => {
                     let name = '';
                     let content = '';
                     let comments = res.comments;
-                    console.log(comments)
                     for (comment of comments) {
                       name = comment.name;
                       content = comment.content;
@@ -149,10 +153,10 @@ const createResourceElement = function (resource) {
       <img src='${image}'>
       <div class="card-body">
         <header>
-          <h5 class="card-title"> ${title} </h5>
-          <p class="card-text"> ${description} </p>
-          <p class="card-text"> ${name} </p>
-          <a href="${url}" target="_blank">Go to resource</a>
+          <h5 class="card-title"> ${escape(title)} </h5>
+          <p class="card-text"> ${escape(description)} </p>
+          <p class="card-text"> ${escape(name)} </p>
+          <a href="${escape(url)}" target="_blank">Go to resource</a>
         </header>
         <form class="resource-comments" id="${id}">
           <div class="form-group">
@@ -201,13 +205,14 @@ const createLikesElement = function (likes) {
     <img src='${image}'>
     <div class="card-body">
     <header>
-          <h5 class="card-title"> ${title} </h5>
-          <p class="card-text"> ${description} </p>
-          <p class="card-text"> ${name} </p>
+          <h5 class="card-title"> ${escape(title)} </h5>
+          <p class="card-text"> ${escape(description)} </p>
+          <p class="card-text"> ${escape(name)} </p>
           </header>
           <form class="like-comments">
               <div class="form-group">
-                  <textarea class="form-control" id="comment" rows="3" placeholder="Add a comment" name="user-input"></textarea>
+                  <textarea class="form-control" id="comment" rows="3" 
+                  placeholder="Add a comment" name="user-input"></textarea>
               </div>
               <button class="btn btn-primary" type="submit">Post</button>
           </form>
