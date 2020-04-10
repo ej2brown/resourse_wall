@@ -23,11 +23,13 @@ $(() => {
 
   //rating a post
   $('body').on('click', '.ratings', function (event) {
+    const data = {};
     const star_rating = event.target.attributes[1].value;
     const resource_id = event.currentTarget.id;
+    data[resource_id] = star_rating;
     alert(`You gave this resource ${star_rating} star(s)!`);
     $.ajax({
-      url: "/resources/addRating",
+      url: "/resources/addRatings",
       method: "POST",
       data: $.param(data),
       success: (data) => {
