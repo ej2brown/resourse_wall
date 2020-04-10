@@ -83,7 +83,7 @@ VALUES
 INSERT INTO resources
   (category_id, title, description, image, url)
 VALUES
-  (1,
+  (6,
     'Veggies Image',
     'Inspiration to eat veggies',
     'https://www.jennycraig.com.au/wp-content/uploads/wpfiles/2019/05/20190604-veggies.jpg',

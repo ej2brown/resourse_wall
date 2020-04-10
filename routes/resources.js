@@ -74,13 +74,15 @@ module.exports = (db) => {
     const user_exists = req.session.id;
     db
       .query(
-        `SELECT *
-        FROM comments;`
+        `SELECT comments.*, users.name
+      FROM comments
+      JOIN users ON users.id = user_id
+      GROUP BY comments.id, users.name;`
       )
       .then((data) => {
         const comments = data.rows;
         console.log('comments', comments);
-        res.json({ comments, user_exists });
+        res.json({ comments });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
@@ -215,18 +217,15 @@ module.exports = (db) => {
 
   // GET ROUTE FOR COMMENTS
   router.post('/comments', (req, res) => {
-    const obj = req.body;
-    let resource_id = 0;
-    for (key in obj) {
-      resource_id = key;
-    }
-    const content = req.body[resource_id];
+    const resource_id = Object.keys(req.body);
+    const content = Object.values(req.body);
+    const user_id = req.session.id;
     db
       .query(
         `
         INSERT INTO comments(user_id, resource_id, content)
-        VALUES($1, $2, $3)`,
-        [ 1, resource_id, content ]
+        VALUES($1, $2, $3);`,
+        [ user_id, resource_id[0], content[0] ]
       )
       .then(() => {
         console.log('inserted comment');
@@ -240,7 +239,6 @@ module.exports = (db) => {
   router.post('/addLikes', (req, res) => {
     const resource_id = Object.values(req.body);
     const user_id = req.session.id;
-    console.log(resource_id, user_id);
     db
       .query(
         `INSERT INTO likes(user_id, resource_id)
@@ -256,11 +254,9 @@ module.exports = (db) => {
   });
 
   router.post('/addRatings', (req, res) => {
-    console.log('in addResources');
     const resource_id = Object.keys(req.body);
     const star_rating = Object.values(req.body);
     const user_id = req.session.id;
-    console.log(resource_id, star_rating);
     db
       .query(
         `INSERT INTO ratings(user_id, resource_id, star_rating)
