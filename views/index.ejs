@@ -36,7 +36,7 @@
     });
   });
   $(window).on("popstate", function() {
-    var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
+    let anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
     $("a[href='" + anchor + "']").tab("show");
   });
 </script>
@@ -46,8 +46,8 @@
   <%- include('partials/_header') %>
   
   <ul class="nav margin-top justify-content-center nav-tabs" id="myTab">
-    <li class="active resource-links"><a data-toggle="tab" href="#resources">My Resources </a></li>
-    <li class="resource-links"><a data-toggle="tab" href="#likes"> Likes</a></li>
+    <li class="active resource-links tab"><a data-toggle="tab" href="#resources">My Resources </a></li>
+    <li class="resource-links tab"><a data-toggle="tab" href="#likes"> Likes</a></li>
   </ul>
   <!-- <h1 class="index-container">sMy Resource</h1> -->
 
@@ -55,7 +55,7 @@
   <main class="index-container margin-top">
     <div class="tab-content">
 
-      <div id="resources" class="tab-pane fade in active">
+      <div id="resources" class="tab-pane fade in active show">
         <section class="resource-container card-columns"></section>
       </div>
 
