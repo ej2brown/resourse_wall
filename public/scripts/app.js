@@ -50,7 +50,6 @@ const loadResources = () => {
                       content = comment.content;
                       resource_id = comment.resource_id;
                       comment = `"<p>${user_id} says: ${content}</p>"`
-                      // debugger
                       let commentResourceCard = `#view-comments-${resource_id}`
                       $(commentResourceCard).append(comment)
                       // $("<p>${user_id} says: ${content}</p>").appendTo("#view-comments-1"); //${resource_id}
@@ -105,7 +104,7 @@ const buildArray = () => {
     for (const rating of ratings) {
       if (rating.resource_id === resource.id) {
         resource.rating = rating.star_rating;
-      }
+      } 
     }
   }
 }
@@ -131,8 +130,6 @@ const renderLikes = function (result) {
   let posts = $('.likes-container').html(markupArray);
   return posts;
 };
-
-
 
 //fetches resource object and renders it
 //TO DO: add time created
@@ -166,11 +163,10 @@ const createResourceElement = function (resource) {
           </div>
           <button type ="button" data-toggle="collapse" data-target="#view-comments-${id}">Comments</button>
           <div id="view-comments-${id}">
-              <p>test</p>
           </div>
         </form>
           <div class="card-buttons d-flex justify-content-between align-items-center">
-            <div id="heart">
+            <div class="heart">
               <span data-id="${id}">${likes_count} Likes</span>
               <i class="far fa-heart" id="${id}"></i>
             </div>

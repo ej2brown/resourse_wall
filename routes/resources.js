@@ -235,5 +235,43 @@ module.exports = (db) => {
       });
   });
 
+  router.post('/addLikes', (req, res) => {
+    const resource_id = Object.values(req.body);
+    const user_id = req.session.id;
+    console.log(resource_id, user_id)
+    db
+      .query(
+        `INSERT INTO likes(user_id, resource_id)
+        VALUES (${user_id}, ${resource_id});`
+      )
+      .then(() => {
+        console.log('added like');
+        res.sendStatus(200)
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.post('/addRatings', (req, res) => {
+    console.log('in addResources')
+    const resource_id = Object.keys(req.body)
+    const star_rating= Object.values(req.body);
+    const user_id = req.session.id;
+    console.log(resource_id, star_rating)
+    db
+      .query(
+        `INSERT INTO ratings(user_id, resource_id, star_rating)
+        VALUES (${user_id}, ${resource_id}, ${star_rating});`
+      )
+      .then(() => {
+        console.log('added ratings');
+        res.sendStatus(200)
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   return router;
 };
