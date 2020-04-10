@@ -2,7 +2,8 @@
 
 $(() => {
   loadResources();
-  $(".card").on("click", ".heart", (event) => {
+  
+  $("body").on("click", ".heart", (event) => {
     const resource_id = event.target.attributes[1].value;
     const data = resource_id;
     alert("You gave this resource a heart!");
@@ -143,7 +144,7 @@ const buildArray = () => {
     for (const rating of ratings) {
       if (rating.resource_id === resource.id) {
         resource.rating = rating.star_rating;
-      } else {resource.rating === 0 }
+      } //else {resource.rating === 0 }
     }
   }
 }
