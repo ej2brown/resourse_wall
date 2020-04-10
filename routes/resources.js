@@ -223,7 +223,7 @@ module.exports = (db) => {
         `
         INSERT INTO comments(user_id, resource_id, content)
         VALUES($1, $2, $3);`,
-        [user_id, resource_id, content]
+        [user_id, resource_id[0], content[0]]
       )
       .then(() => {
         console.log('inserted comment');
@@ -268,6 +268,9 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
+
+
+  
 
   return router;
 };
