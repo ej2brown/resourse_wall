@@ -37,26 +37,11 @@
     $(document.body).on("click", "a[data-toggle='tab']", function(event) {
         location.hash = this.getAttribute("href");
     });
-});
-$(window).on("popstate", function() {
+  });
+  $(window).on("popstate", function() {
     var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
     $("a[href='" + anchor + "']").tab("show");
-});
-
-  $('#myTab a').click(function(e) {
-    e.preventDefault();
-    $(this).tab('show');
   });
-  
-  // store the currently selected tab in the hash value
-  $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
-    var id = $(e.target).attr("href").substr(1);
-    window.location.hash = id;
-  });
-  
-  // on load of the page: switch to the currently selected tab
-  var hash = window.location.hash;
-  $('#myTab a[href="' + hash + '"]').tab('show');
 </script>
 </head>
 
