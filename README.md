@@ -1,5 +1,11 @@
-LHL Node Skeleton
+Resource Wall
 =========
+
+!['Main page showing all public resources. Toggle between resources and your liked resources'](./docs/main-page.png)
+!['Register page'](./docs/register.png)
+!['Login page'](./docs/login.png)
+!['Edit profile information'](./docs/edit-profile.png)
+
 
 ## Project Setup
 
